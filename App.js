@@ -26,9 +26,7 @@ console.disableYellowBox = true
       <Provider store={store}>
         {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
         <NavigationContainer linking={LinkingConfiguration}>
-          <Stack.Navigator screenOptions={{title: 'null'}}>
-            <Stack.Screen name="Home" component={HomeScreen}/>
-          </Stack.Navigator>
+          <BottomTabNavigator />
         </NavigationContainer>
       </Provider>
     );
