@@ -3,7 +3,6 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { persistStore, persistReducer } from 'redux-persist'
 // import autoMergeLevel2 from 'redux-persist/lib/stateReconciler'
-import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import { AsyncStorage } from 'react-native'
 import reducers from './reducers'
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2'
