@@ -13,11 +13,17 @@ const Container = styled(View)`
 `
  const HomeScreen = props => {
   return (
+
+    <ScrollView>
     <Layout>
       {
-        posts.map((post, index) => <Post key={post.id || index} {...post} />)
+        posts.map((post, index) =>
+          <Post key={post.id || index} {...post} />
+        )
       }
-    </Layout>
+      </Layout>
+    </ScrollView>
+
   )
 }
 

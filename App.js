@@ -23,7 +23,7 @@ export default function App(props) {
   } else {
     return (
       <Provider store={store}>
-        <UIProvider {...eva} theme={eva.dark}>
+        <UIProvider {...eva} theme={eva.light}>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
             <NavigationContainer linking={LinkingConfiguration}>
