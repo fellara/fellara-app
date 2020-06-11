@@ -7,7 +7,7 @@ export default function TabBarIcon(props) {
   return (
     <AntDesign
       name={props.name}
-      size={20}
+      size={24}
       style={{ marginBottom: -3 }}
       color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
     />

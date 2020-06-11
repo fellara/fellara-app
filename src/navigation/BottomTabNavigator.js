@@ -14,7 +14,7 @@ export default function BottomTabNavigator({ navigation, route }) {
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
   navigation.setOptions({headerTitle: () => (
     <Image
-      style={{ width: 50, height: 50 }}
+      style={{ width: 45, height: 45 }}
       source={require('../assets/images/logo.jpg')}
     />
   )});
