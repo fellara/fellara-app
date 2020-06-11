@@ -1,35 +1,40 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
-import HomeScreen from './src/screens/HomeScreen'
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Provider } from 'react-redux'
+
+import {store} from './src/store'
 import useCachedResources from './src/hooks/useCachedResources';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import LinkingConfiguration from './src/navigation/LinkingConfiguration';
-import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import rootReducer from './src/reducers'
 
+const Stack = createStackNavigator();
 
-const store = createStore(rootReducer)
-const Stack = createStackNavigator()
-console.disableYellowBox = true
-
-
- const App = (props) => {
+export default function App(props) {
   const isLoadingComplete = useCachedResources();
 
   if (!isLoadingComplete) {
-    return <Text>not finished</Text>;
+    return null;
   } else {
     return (
       <Provider store={store}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
-        <NavigationContainer linking={LinkingConfiguration}>
-          <BottomTabNavigator />
-        </NavigationContainer>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
+          <NavigationContainer linking={LinkingConfiguration}>
+            <Stack.Navigator>
+              <Stack.Screen name="Root" component={BottomTabNavigator} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
       </Provider>
     );
   }
 }
-export default App
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
