@@ -11,6 +11,8 @@ import LinkingConfiguration from './src/navigation/LinkingConfiguration';
 
 const Stack = createStackNavigator();
 
+console.disableYellowBox = true
+
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
 
