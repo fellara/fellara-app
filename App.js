@@ -4,10 +4,10 @@ import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux'
 
-import {store} from './store'
-import useCachedResources from './hooks/useCachedResources';
-import BottomTabNavigator from './navigation/BottomTabNavigator';
-import LinkingConfiguration from './navigation/LinkingConfiguration';
+import {store} from './src/store'
+import useCachedResources from './src/hooks/useCachedResources';
+import BottomTabNavigator from './src/navigation/BottomTabNavigator';
+import LinkingConfiguration from './src/navigation/LinkingConfiguration';
 
 const Stack = createStackNavigator();
 
