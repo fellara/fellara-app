@@ -3,7 +3,7 @@ import axios from 'axios'
 import store from '../store'
 import {api_url} from '../constants'
 
-const fetch = new Promise((resolve, reject) => (url, method, data, hasFile) => {
+const fetchAPI = new Promise((resolve, reject) => (url, method, data, hasFile) => {
   let config = {
     method: method || 'GET',
     url: api_url + url,
@@ -21,7 +21,7 @@ const fetch = new Promise((resolve, reject) => (url, method, data, hasFile) => {
     const formData = new FormData()
 
     for (key in data) {
-      
+
     }
   }
 
