@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-import store from '../store'
-import {api_url} from '../constants'
+import {store} from './store'
+import {api_url} from './constants'
 
-const fetchAPI = new Promise((resolve, reject) => (url, method, data, hasFile) => {
+const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) => {
   let config = {
     method: method || 'GET',
     url: api_url + url,
@@ -12,7 +12,7 @@ const fetchAPI = new Promise((resolve, reject) => (url, method, data, hasFile) =
     }
   }
 
-  const token = store.getState().user.token
+  const token = store.getState().token
   if (token) {
     config.headers.Authorization = 'Token ' + token
   }
@@ -20,14 +20,28 @@ const fetchAPI = new Promise((resolve, reject) => (url, method, data, hasFile) =
   if (hasFile) {
     const formData = new FormData()
 
-    for (key in data) {
+    for (let key in data) {
+      formData.append(key, data[key])
 
+      config.data = formData
     }
+  } else if (data) {
+    config.data = data
   }
 
   axios(config).then(res => {
-    resolve(res)
+    resolve({
+      status: res.status,
+      statusText: res.statusText,
+      data: res.data
+    })
   }).catch(error => {
-    reject(error)
+    resolve({
+      status: error.status,
+      statusText: error.statusText,
+      data: error.data
+    })
   })
 })
+
+export default fetchAPI
