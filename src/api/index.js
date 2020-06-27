@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-import {store} from './store'
-import {api_url} from './constants'
+import {store} from '../store'
+import {api_url} from '../constants'
 
 const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) => {
   let config = {
@@ -28,7 +28,9 @@ const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) =
   } else if (data) {
     config.data = data
   }
+  
 
+  
   axios(config).then(res => {
     resolve({
       status: res.status,

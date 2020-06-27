@@ -1,45 +1,48 @@
 import * as WebBrowser from 'expo-web-browser';
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Image, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import styled from 'styled-components'
 import { Layout, Text } from '@ui-kitten/components';
 
-import { MonoText } from '../components/StyledText';
-import Post from '../components/post';
+import { getPosts, getTags } from '../api/posts'
+import PostsList from '../components/post/PostsList';
+import TagsList from '../components/post/TagsList';
 
-const Container = styled(View)`
+const HomeScreen = props => {
+  const [posts, setPosts] = useState([])
+  const [tags, setTags] = useState([])
+  const [activeTag, setActiveTag] = useState(null)
+  const [loading, setLoading] = useState(false)
 
-`
- const HomeScreen = props => {
+  useEffect(() => {
+    getTags().then(res => {
+      setTags(res.data)
+      setActiveTag(res.data[0].id)
+      getPosts(res.data[0].id).then(res => {
+        setPosts(res.data.results)
+      })
+    })
+  }, [])
+
+  useEffect(() => {
+    getPosts(activeTag).then(res => {
+      setPosts(res.data.results)
+    })
+  }, [activeTag])
+
   return (
-
-    <ScrollView>
-    <Layout>
-      {
-        posts.map((post, index) =>
-          <Post key={post.id || index} {...post} />
-        )
-      }
+    <View>
+      <Layout>
+        <TagsList data={tags} active={activeTag} setActive={setActiveTag}/>
+        <PostsList data={posts} />
       </Layout>
-    </ScrollView>
-
+    </View>
   )
 }
 
 HomeScreen.navigationOptions = {
   header: null,
 }
-
-const posts = [
-  {
-    user: {
-      name: '',
-      region: '',
-      image: ''
-    },
-    image: '',
-  }
-]
 
 export default HomeScreen
