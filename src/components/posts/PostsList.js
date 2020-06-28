@@ -6,13 +6,7 @@ import { Avatar, Layout } from '@ui-kitten/components'
 import Post from './'
 import { Colors } from '../../assets/utils/Colors'
 import { Images } from '../../assets/images'
-
-const Container = styled(ScrollView)`
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-top: 10px;
-  height: 100%;
-`
+import Container from '../../components/layouts'
 
 const PostsList = props => {
     return (

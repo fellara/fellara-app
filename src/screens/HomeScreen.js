@@ -6,8 +6,9 @@ import styled from 'styled-components'
 import { Layout, Text } from '@ui-kitten/components';
 
 import { getPosts, getTags } from '../api/posts'
-import PostsList from '../components/post/PostsList';
-import TagsList from '../components/post/TagsList';
+import PostsList from '../components/posts/PostsList';
+import TagsList from '../components/posts/TagsList';
+import Container from '../components/layouts';
 
 const HomeScreen = props => {
   const [posts, setPosts] = useState([])

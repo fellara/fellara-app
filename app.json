@@ -9,10 +9,10 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/logo.jpg",
+    "icon": "./src/assets/images/logo.png",
     "scheme": "fellas",
     "splash": {
-      "image": "./src/assets/images/logo.jpg",
+      "image": "./src/assets/images/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -26,7 +26,7 @@
       "supportsTablet": true
     },
     "web": {
-      "favicon": "./src/assets/images/logo.jpg"
+      "favicon": "./src/assets/images/logo.png"
     }
   }
 }

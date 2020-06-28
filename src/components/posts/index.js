@@ -1,12 +1,13 @@
 import React from 'react'
-import {View, Image} from 'react-native'
+import {View} from 'react-native'
 import styled from 'styled-components'
 import { Avatar, Layout } from '@ui-kitten/components'
+import { Image } from "react-native-expo-image-cache";
 
 import { Colors } from '../../assets/utils/Colors'
 import { Images } from '../../assets/images'
 import {base_url} from '../../constants/'
-import { MonoText } from '../StyledText';
+import Text from '../typography';
 
 
 const Container = styled(View)`
@@ -21,6 +22,7 @@ const PostHeader = styled(View)`
   flex-direction: row
 `
 const PostImageWrapper = styled(View)`
+  margin-top: 10px;
   height: 450px;
   justify-content: center;
   align-items: center;
@@ -37,16 +39,14 @@ const NameAndLocationWrapper = styled(View)`
   margin-left: 10
 `
 
-const Name = styled(MonoText)`
+const Name = styled(Text)`
 
 `
-const Location = styled(MonoText)`
+const Location = styled(Text)`
 
 `
 
 const Post = props => {
-  console.log('hey', props);
-  
   return (
     <Container>
       <PostHeader>
@@ -57,7 +57,7 @@ const Post = props => {
         </NameAndLocationWrapper>
       </PostHeader>
       <PostImageWrapper>
-        <PostImage source={{uri: props.image_medium}}/>
+        <PostImage uri={props.image_medium}/>
       </PostImageWrapper>
     </Container>
   )
