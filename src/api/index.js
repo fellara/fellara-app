@@ -11,12 +11,10 @@ const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) =
       'Content-Type': hasFile ? 'multipart/form-data' : 'application/json',
     }
   }
-
   const token = store.getState().token
   if (token) {
     config.headers.Authorization = 'Token ' + token
   }
-
   if (hasFile) {
     const formData = new FormData()
 
@@ -28,9 +26,6 @@ const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) =
   } else if (data) {
     config.data = data
   }
-  
-
-  
   axios(config).then(res => {
     resolve({
       status: res.status,
@@ -45,5 +40,4 @@ const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) =
     })
   })
 })
-
 export default fetchAPI

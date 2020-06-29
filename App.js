@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider as UIProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import LoginScreen from './src/screens/auth/LoginScreen'
 import {
   createCollapsibleStack,
   // disableExpoTranslucentStatusBar,
@@ -19,7 +20,7 @@ import LinkingConfiguration from './src/navigation/LinkingConfiguration';
 const Stack = createStackNavigator();
 
 console.disableYellowBox = true
-
+console.log('store', store.getState())
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
 
@@ -34,7 +35,8 @@ export default function App(props) {
             {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
             <NavigationContainer linking={LinkingConfiguration}>
               <Stack.Navigator>
-                  <Stack.Screen name="Root" component={BottomTabNavigator} />
+
+                <Stack.Screen name="Root" component={BottomTabNavigator} />
               </Stack.Navigator>
             </NavigationContainer>
           </View>
@@ -50,3 +52,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
+
+//<Stack.Screen name="Login" component={LoginScreen} />

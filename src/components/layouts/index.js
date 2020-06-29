@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView} from 'react-native'
+import { View, ScrollView } from 'react-native'
 import styled from 'styled-components'
 
 const StyledContainer = styled.View`
@@ -10,6 +10,8 @@ const StyledContainer = styled.View`
   min-height: 40px;
 `
 
-const Container = props => (<StyledContainer {...props}>{props.children}</StyledContainer>)
+const Container = props => (
+  <StyledContainer {...props}>{props.children}</StyledContainer>
+)
 
 export default Container
