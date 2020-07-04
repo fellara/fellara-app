@@ -27,7 +27,7 @@ const fields = [
 
 ]
 
-const LoginScreen = props => {
+const RegisterScreen = props => {
   const [loading, setLoading] = useState(false)
   const handleSubmit = (data) => {
     setLoading(true)
@@ -43,8 +43,8 @@ const LoginScreen = props => {
   }
   return (
     <Container as={ScrollView}>
-      <Heading>Login</Heading>
-      <Subheading marginBottom>Login to get more of Fellas stuff!</Subheading>
+      <Heading>Register</Heading>
+      <Subheading marginBottom>Register to get more of Fellas stuff!</Subheading>
       <Form 
         fields={fields}
         onSubmit={handleSubmit}
@@ -52,12 +52,12 @@ const LoginScreen = props => {
       />
 
       <Button style={{justifySelf: 'flex-end', marginTop: 20}} appearance='ghost' status='primary'
-        onPress={() => props.navigation.push('Register')}
+        onPress={() => props.navigation.push('Login')}
       >
-        Not registered yet? Join now!
+        Already registered? Login then!
       </Button>
     </Container>
   );
 }
 
-export default connect(null, {setToken, setProfile})(LoginScreen)
+export default connect(null, {setToken, setProfile})(RegisterScreen)

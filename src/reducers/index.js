@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux'
 
+import {user, token} from './user'
+
 export const loading = (state = false, action) => {
   switch (action.type) {
     case 'LOADING_ON':
@@ -10,5 +12,7 @@ export const loading = (state = false, action) => {
 }
 
 export default combineReducers({
-  loading
+  loading,
+  user,
+  token,
 })

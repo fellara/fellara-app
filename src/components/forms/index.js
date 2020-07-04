@@ -17,9 +17,9 @@ const LoadingIndicator = (props) => (
     </View>
 );
 
-const Form = props => {
+const Form = ({loading, ...props}) => {
     const [form, setForm] = useState({})
-    const [loading, setLoading] = useState(false)
+    // const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         setForm(form => {
@@ -34,7 +34,6 @@ const Form = props => {
 
     const handleSubmit = () => {
         if (!validateFields()) return
-        setLoading(true)
 
         if (props.onSubmit) props.onSubmit(form)
     }
@@ -51,7 +50,6 @@ const Form = props => {
     return (
         <View>
             {props.fields.map(field => {
-
                 return (<Input
                         {...field}
                     onChangeText={(value) => handleChange(value, field.name)}
@@ -61,7 +59,8 @@ const Form = props => {
             <StyledButton 
                 status='primary' 
                 onPress={handleSubmit}
-                accessoryLeft={false && LoadingIndicator}
+                accessoryLeft={loading && LoadingIndicator}
+                disabled={loading}
             >
                 {props.submitText || 'Submit'}
             </StyledButton>

@@ -7,7 +7,15 @@ export default {
       path: 'root',
       screens: {
         Home: 'home',
-        Links: 'links',
+        AddPost: 'add-post',
+        Profile: 'profile',
+        Auth: {
+          path: 'auth',
+          screens: {
+            Login: 'login',
+            Register: 'register',
+          }
+        },
       },
     },
   },
