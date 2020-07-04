@@ -15,6 +15,7 @@ export default class AddPostScreen extends React.Component {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Button title="Pick an image from camera roll" onPress={this._pickImage} />
+        <Button title="Take a Photo" onPress={this._takePhoto} />
         {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
       </View>
     );
@@ -36,6 +37,24 @@ export default class AddPostScreen extends React.Component {
   _pickImage = async () => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        this.setState({ image: result.uri });
+      }
+
+      console.log(result);
+    } catch (E) {
+      console.log(E);
+    }
+  };
+
+  _takePhoto = async () => {
+    try {
+      let result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
         aspect: [4, 3],
