@@ -8,11 +8,23 @@ import {connect} from 'react-redux'
 import Form from '../../components/forms'
 import Container from '../../components/layouts';
 import Text, { Heading, Subheading } from '../../components/typography';
-import {login, getProfile} from '../../api/user'
+import {login, getProfile, register} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
 import { Button } from '@ui-kitten/components';
 
 const fields = [
+  {
+    label: 'First Name',
+    placeholder: 'John',
+    type: 'text',
+    name: 'first_name'
+  },  
+  {
+    label: 'Last Name',
+    placeholder: 'White',
+    type: 'text',
+    name: 'last_name'
+  }, 
   {
     label: 'Email',
     placeholder: 'jackwhite@example.com',
@@ -22,16 +34,20 @@ const fields = [
   {
     label: 'Password',
     type: 'password',
-    name: 'password'
-  },
-
+    name: 'password1'
+  },  
+  {
+    label: 'Confirm Password',
+    type: 'password',
+    name: 'password2'
+  }
 ]
 
 const RegisterScreen = props => {
   const [loading, setLoading] = useState(false)
   const handleSubmit = (data) => {
     setLoading(true)
-    login(data).then(res => {
+    register(data).then(res => {
       props.setToken(res.data.key)
       getProfile().then(res => {
         props.setProfile(res.data)
@@ -52,7 +68,7 @@ const RegisterScreen = props => {
       />
 
       <Button style={{justifySelf: 'flex-end', marginTop: 20}} appearance='ghost' status='primary'
-        onPress={() => props.navigation.push('Login')}
+        onPress={() => props.navigation.navigate('Login')}
       >
         Already registered? Login then!
       </Button>

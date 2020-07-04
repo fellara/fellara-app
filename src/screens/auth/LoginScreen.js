@@ -52,7 +52,7 @@ const LoginScreen = props => {
       />
 
       <Button style={{justifySelf: 'flex-end', marginTop: 20}} appearance='ghost' status='primary'
-        onPress={() => props.navigation.push('Register')}
+        onPress={() => props.navigation.navigate('Register')}
       >
         Not registered yet? Join now!
       </Button>
