@@ -1,7 +1,7 @@
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import * as React from 'react';
 
-import Colors from '../constants/Colors';
+import Colors from '../constants/colors';
 
 export default function TabBarIcon(props) {
   return (

@@ -7,12 +7,13 @@ import styled from 'styled-components'
 import Form from '../components/forms'
 import Container from '../components/layouts';
 import Text, { Header, Subheader } from '../components/typography';
+import LoginScreen from './auth/LoginScreen';
 
 
 const ProfileScreen = props => {
   return (
     <Container as={ScrollView}>
-      <Text>this is profile screen</Text>
+      <LoginScreen />
     </Container>
   )
 }

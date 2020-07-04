@@ -36,7 +36,7 @@ const Form = props => {
         if (!validateFields()) return
         setLoading(true)
 
-        props.onSubmit()
+        if (props.onSubmit) props.onSubmit(form)
     }
 
     const handleChange = (value, name) => {
@@ -47,8 +47,6 @@ const Form = props => {
         return true
     }
 
-    console.log(form);
-    
 
     return (
         <View>
