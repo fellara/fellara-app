@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Button, Icon, Layout, Spinner } from '@ui-kitten/components';
 
 import Input from './Input'
+import Image from './Image'
 
 const StyledButton = styled(Button)`
     margin-top: 10px;
@@ -19,6 +20,7 @@ const LoadingIndicator = (props) => (
 
 const Form = ({loading, ...props}) => {
     const [form, setForm] = useState({})
+    const [errors, setErrors] = useState([])
     // const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -39,21 +41,40 @@ const Form = ({loading, ...props}) => {
     }
 
     const handleChange = (value, name) => {
+        console.log(name, value);
+        
         setForm(form => ({...form, [name]: value}))
     }
 
     const validateFields = () => {
-        return true
+        let tempErrors = []
+        props.fields.forEach(field => {
+            if (field.required && !form[field.name]) {
+                tempErrors = [...tempErrors, {type: 'EMPTY', field: field.name}]
+            }
+        });
+
+        setErrors(tempErrors)
+        if (tempErrors.length > 0) return false;
+        else return true;
     }
 
+    console.log(form);
+    
+    
 
     return (
         <View>
             {props.fields.map(field => {
-                return (<Input
-                        {...field}
-                    onChangeText={(value) => handleChange(value, field.name)}
-                    />)
+                return (field.type === 'image'
+                ? <Image 
+                    {...field}
+                    onChange={(value) => handleChange(value, field.name)}
+                />
+                : <Input
+                    {...field}
+                    onChange={(value) => handleChange(value, field.name)}
+                />)
             })}
 
             <StyledButton 

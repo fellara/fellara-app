@@ -14,6 +14,11 @@ import { Button } from '@ui-kitten/components';
 
 const fields = [
   {
+    label: 'Avatar',
+    type: 'image',
+    name: 'profile_image'
+  },    
+  {
     label: 'First Name',
     placeholder: 'John',
     type: 'text',

@@ -7,9 +7,11 @@ const Stack = createStackNavigator();
 
 export default () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+    <Stack.Navigator
+      initialRouteName='register'
+    >
+      <Stack.Screen name="login" component={LoginScreen} />
+      <Stack.Screen name="register" component={RegisterScreen} />
     </Stack.Navigator>
   );
 }

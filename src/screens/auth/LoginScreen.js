@@ -17,12 +17,14 @@ const fields = [
     label: 'Email',
     placeholder: 'jackwhite@example.com',
     type: 'text',
-    name: 'email'
+    name: 'email',
+    required: true,
   }, 
   {
     label: 'Password',
     type: 'password',
-    name: 'password'
+    name: 'password',
+    required: true,
   },
 
 ]

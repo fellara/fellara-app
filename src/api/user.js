@@ -5,7 +5,7 @@ export const login = async (data) => {
 }
 
 export const register = async (data) => {
-    return await fetchAPI('user/rest-auth/registration/', 'POST', data)
+    return await fetchAPI('user/rest-auth/registration/', 'POST', data, true)
 }
 
 export const logout = async () => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import {View} from 'react-native'
+import {View, Image as RNImage} from 'react-native'
 import styled from 'styled-components'
 import { Avatar, Layout } from '@ui-kitten/components'
 import { Image } from "react-native-expo-image-cache";
@@ -27,7 +27,7 @@ const PostImageWrapper = styled(View)`
   justify-content: center;
   align-items: center;
 `
-const PostImage = styled(Image)`
+const PostImage = styled(RNImage)`
   width: 100%;
   height: 100%;
   border-radius: 15px;
@@ -57,7 +57,8 @@ const Post = props => {
         </NameAndLocationWrapper>
       </PostHeader>
       <PostImageWrapper>
-        <PostImage uri={props.image_medium}/>
+        {/* <PostImage uri={props.image_medium}/> */}
+        <PostImage source={{uri: props.image_medium}}/>
       </PostImageWrapper>
     </Container>
   )
