@@ -40,18 +40,13 @@ const Form = ({loading, ...props}) => {
     const handleSubmit = () => {
         // Validation commented in order to test the process.
         // Must get uncommented as soon as the tests are gone.
-        // if (!validateFields()) return
+        if (!validateFields()) return
         const cleanedForm = Object.entries(form).reduce((a,[k,v]) => (v == null ? a : (a[k]=v, a)), {})
-
-        console.log(cleanedForm);
-        
 
         if (props.onSubmit) props.onSubmit(cleanedForm)
     }
 
     const handleChange = (value, name) => {
-        console.log(name, value);
-        
         setForm(form => ({...form, [name]: value}))
     }
 
@@ -67,8 +62,6 @@ const Form = ({loading, ...props}) => {
         if (tempErrors.length > 0) return false;
         else return true;
     }
-
-    console.log(form);
 
     return (
         <View>
