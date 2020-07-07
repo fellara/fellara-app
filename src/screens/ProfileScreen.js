@@ -28,7 +28,12 @@ const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
   return (
     <Container as={ScrollView} center>
       <Header>
-        <Avatar size='giant' source={profile.profile_image} style={{'width': 100, 'height': 100, 'marginBottom': 10}} />
+        <Avatar 
+          size='giant' 
+          source={profile.profile_image} 
+          style={{'width': 100, 'height': 100, 'marginBottom': 10}} 
+          resizeMode='cover'
+        />
         <Heading>{profile.first_name + ' ' + profile.last_name}</Heading>
         <Subheading marginbottom>{profile.city + ', ' + profile.country}</Subheading>
       </Header>

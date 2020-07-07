@@ -23,7 +23,10 @@ export default class CustomImage extends React.Component {
             }}
         >
           <View size='giant' style={{backgroundColor: '#ccc', width: 70, height: 70, borderRadius: 50, justifyContent: 'center', alignItems: 'center'}}>
-            {image && <Avatar size='giant' source={{uri: image}} style={{position: 'absolute', backgroundColor: '#ccc', width: 70, height: 70}}/>}
+            {image && <Avatar size='giant' source={{uri: image}} 
+              style={{position: 'absolute', backgroundColor: '#ccc', width: 70, height: 70}}
+              resizeMode='cover'
+            />}
             <Icon name='plus' style={{zIndex: 9999, width: 40, height: 40, color: '#777'}}/>
           </View>
         </TouchableOpacity>
@@ -49,7 +52,7 @@ export default class CustomImage extends React.Component {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        aspect: [4, 3],
+        aspect: [1, 1],
         quality: 1,
       });
       if (!result.cancelled) {
