@@ -4,7 +4,6 @@ import styled from 'styled-components/native'
 import { Avatar, Layout } from '@ui-kitten/components'
 import { Image } from "react-native-expo-image-cache";
 
-import { Colors } from '../../assets/utils/Colors'
 import { Images } from '../../assets/images'
 import {base_url} from '../../constants/'
 import Text from '../typography';

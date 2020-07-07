@@ -63,6 +63,9 @@ const Form = ({loading, ...props}) => {
         else return true;
     }
 
+    console.log(form);
+    
+
     return (
         <View>
             {props.fields.map(field => {

@@ -5,6 +5,7 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { Icon, Avatar, Input} from '@ui-kitten/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { urltoFile } from '../../assets/utils';
 
 export default class CustomImage extends React.Component {
   state = {
@@ -61,24 +62,23 @@ export default class CustomImage extends React.Component {
 
       let uriParts = []
       let fileType = '';
-      // try {
-      //   uriParts = result.uri.split('/')[1].split(';');
-      //   fileType = uriParts[0]
-      // } catch {
+      let file = null;
+
+      if (!result.uri.startsWith('data:')) {
         uriParts = result.uri.split('.');
         fileType = uriParts[uriParts.length - 1]
-      // }
-
-      console.log('fileTypefileType', fileType);
-
-      const file = {
-        uri: result.uri,
-        name: `photo.${fileType}`,
-        type: `image/${fileType}`,
+        file = {
+          uri: result.uri,
+          name: `photo.${fileType}`,
+          type: `image/${fileType}`,
+        }
+      } else {
+        uriParts = result.uri.split('/')[1].split(';');
+        fileType = uriParts[0]
+        file = urltoFile(result.uri, 'avatar.' + fileType)
       }
 
       this.props.onChange(file)
-      console.log(file);
     } catch (E) {
       console.log(E);
     }

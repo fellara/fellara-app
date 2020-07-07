@@ -4,7 +4,6 @@ import styled from 'styled-components/native'
 import { Avatar, Layout } from '@ui-kitten/components'
 
 import Post from './'
-import { Colors } from '../../assets/utils/Colors'
 import { Images } from '../../assets/images'
 import Container from '../../components/layouts'
 import layouts from '../../constants/layouts'

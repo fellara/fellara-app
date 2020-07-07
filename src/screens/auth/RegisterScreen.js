@@ -44,14 +44,14 @@ const fields = [
     placeholder: 'NYC',
     type: 'text',
     name: 'city',
-    required: false,
+    required: true,
   }, 
   {
     label: 'Country',
     placeholder: 'United States',
     type: 'text',
     name: 'country',
-    required: false,
+    required: true,
   },    
   {
     label: 'Gender',

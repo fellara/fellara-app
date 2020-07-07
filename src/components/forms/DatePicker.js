@@ -9,18 +9,20 @@ const CalendarIcon = (props) => (
 export const CustomCalendar = (props) => {
   const [date, setDate] = React.useState(new Date());
 
+  const now = new Date();
+  const min = new Date(now.getFullYear() - 120, now.getMonth(), now.getDate());
+  
   const handleSelect = (nextDate) => {
     const formatted = dayjs().format('YYYY-MM-DD')
-    console.log(formatted);
     
     setDate(nextDate)
-
     if (props.onChange) props.onChange(formatted)
   }
-
   return (
     <Datepicker
       date={date}
+      min={min}
+      // max={now}
       onSelect={handleSelect}
       accessoryRight={CalendarIcon}
     />
