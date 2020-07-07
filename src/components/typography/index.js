@@ -14,9 +14,14 @@ export default function CustomText(props) {
     return <Text {...props} appearance={'default'} />;
 }
 
+export const Muted = (props) => {
+    return <CustomText {...props} category='s2' appearance={'hint'} />
+}
+
 export const Heading = (props) => {
     return <StyledHeading {...props} category='h3' />
 }
+
 export const Subheading = (props) => {
     return <StyledSubheading {...props} category='s1' />
 }

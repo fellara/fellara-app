@@ -14,6 +14,7 @@ const PostsList = props => {
             // A fix for flatlist not scrolling in web.
             // Buggy though. Need a change.
             style={{height: layouts.window.height}}
+            paddingbottom
         >
             <FlatList
                 keyExtractor={(item) => item.id}

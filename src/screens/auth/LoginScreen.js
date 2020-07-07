@@ -10,7 +10,7 @@ import Container from '../../components/layouts';
 import Text, { Heading, Subheading } from '../../components/typography';
 import {login, getProfile} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
-import { Button } from '@ui-kitten/components';
+import { Button, Layout } from '@ui-kitten/components';
 
 const fields = [
   {
@@ -44,6 +44,7 @@ const LoginScreen = props => {
     })
   }
   return (
+    <Layout>
     <Container as={ScrollView}>
       <Heading>Login</Heading>
       <Subheading marginbottom>Login to get more of Fellas stuff!</Subheading>
@@ -59,6 +60,7 @@ const LoginScreen = props => {
         Not registered yet? Join now!
       </Button>
     </Container>
+    </Layout>
   );
 }
 

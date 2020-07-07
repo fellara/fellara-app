@@ -28,8 +28,6 @@ const AddPostScreen = () => {
       if (!result.cancelled) {
         this.setState({ image: result.uri });
       }
-
-      console.log(result);
     } catch (E) {
       console.log(E);
     }
@@ -46,8 +44,6 @@ const AddPostScreen = () => {
       if (!result.cancelled) {
         this.setState({ image: result.uri });
       }
-
-      console.log(result);
     } catch (E) {
       console.log(E);
     }

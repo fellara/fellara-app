@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, View, TouchableOpacity } from 'react-native'
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import { Avatar, Layout } from '@ui-kitten/components'
 
 import Post from './'
@@ -9,11 +9,12 @@ import Text from '../typography';
 import Container from '../../components/layouts'
 
 const Tag = styled(TouchableOpacity)`
-  padding: 10px 20px;
   background: ${p => p.active ? '#222' : '#777'};
-  margin-left: 10px;
+  margin-right: 10px;
   border-radius: 20px;
-  ${p => p.last && 'margin-right: 10px;'}
+  height: 35px;
+  padding: 0 20px;
+  justify-content: center;
 `
 
 const StyledText = styled(Text)`
@@ -32,7 +33,6 @@ const TagsList = props => {
                         key={tag.id}
                         active={props.active === tag.id} 
                         onPress={() => props.setActive(tag.id)}
-                        last={index === props.data.length - 1}
                     >
                         <StyledText style={{
                             color: '#fff'

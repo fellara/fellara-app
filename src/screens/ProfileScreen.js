@@ -9,7 +9,7 @@ import Form from '../components/forms'
 import Container from '../components/layouts';
 import Text, { Heading, Subheading } from '../components/typography';
 import AuthScreen from '../navigation/AuthNavigator';
-import { Avatar, Button } from '@ui-kitten/components';
+import { Avatar, Button, Layout } from '@ui-kitten/components';
 import { logout } from '../api/user';
 import { logoutUser } from '../actions/user';
 
@@ -26,6 +26,7 @@ const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
   if (!isLoggedIn) return <AuthScreen />;
 
   return (
+    <Layout>
     <Container as={ScrollView} center>
       <Header>
         <Avatar 
@@ -44,6 +45,7 @@ const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
         Exit
       </Button>
     </Container>
+    </Layout>
   )
 }
 

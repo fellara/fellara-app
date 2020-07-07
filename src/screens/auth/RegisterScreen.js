@@ -10,7 +10,8 @@ import Container from '../../components/layouts';
 import Text, { Heading, Subheading } from '../../components/typography';
 import {login, getProfile, register} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
-import { Button } from '@ui-kitten/components';
+import { Button, Layout } from '@ui-kitten/components';
+import layouts from '../../constants/layouts'
 
 const fields = [
   {
@@ -101,21 +102,27 @@ const RegisterScreen = props => {
     })
   }
   return (
-    <Container as={ScrollView}>
-      <Heading>Register</Heading>
-      <Subheading marginbottom>It took you less than a minute! But helps the others get to know you, your culture and your people.</Subheading>
-      <Form 
-        fields={fields}
-        onSubmit={handleSubmit}
-        loading={loading}
-      />
-
-      <Button style={{marginTop: 20}} appearance='ghost' status='primary'
-        onPress={() => props.navigation.navigate('login')}
+    <Layout
+      style={{height: layouts.window.height}}
+    >
+      <Container as={ScrollView}
+        paddingbottom
       >
-        Already registered? Login then!
-      </Button>
-    </Container>
+        <Heading>Register</Heading>
+        <Subheading marginbottom>It took you less than a minute! But helps the others get to know you, your culture and your people.</Subheading>
+        <Form 
+          fields={fields}
+          onSubmit={handleSubmit}
+          loading={loading}
+        />
+
+        <Button style={{marginTop: 20}} appearance='ghost' status='primary'
+          onPress={() => props.navigation.navigate('login')}
+        >
+          Already registered? Login then!
+        </Button>
+      </Container>
+    </Layout>
   );
 }
 

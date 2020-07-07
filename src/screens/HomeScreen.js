@@ -2,7 +2,7 @@ import * as WebBrowser from 'expo-web-browser';
 import React, {useEffect, useState} from 'react';
 import { Image, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import { Layout, Text } from '@ui-kitten/components';
 
 import { getPosts, getTags } from '../api/posts'
@@ -33,12 +33,10 @@ const HomeScreen = props => {
   }, [activeTag])
 
   return (
-    <View>
-      <Layout>
-        <TagsList data={tags} active={activeTag} setActive={setActiveTag}/>
-        <PostsList data={posts} />
-      </Layout>
-    </View>
+    <Layout>
+      <TagsList data={tags} active={activeTag} setActive={setActiveTag}/>
+      <PostsList data={posts} />
+    </Layout>
   )
 }
 
