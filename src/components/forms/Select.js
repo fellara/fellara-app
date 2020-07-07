@@ -1,40 +1,29 @@
 import React from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
-import { Icon, Input } from '@ui-kitten/components';
-
-const AlertIcon = (props) => (
-    <Icon {...props} name='alert-circle-outline' />
-);
+import { StyleSheet } from 'react-native';
+import { IndexPath, Layout, Select, SelectItem } from '@ui-kitten/components';
 
 const CustomSelect = (props) => {
-    const [value, setValue] = React.useState(null);
-    const [secureTextEntry, setSecureTextEntry] = React.useState(true);
+  const [selectedIndex, setSelectedIndex] = React.useState(
+    new IndexPath(props.options.map(option => option.value).indexOf(props.default) || 0)
+  );
 
-    const toggleSecureEntry = () => {
-        setSecureTextEntry(!secureTextEntry);
-    };
+  const handleSelect = (index) => {
+    setSelectedIndex(index);
+    if (props.onSelect) props.onSelect(props.options[index].value)
+  }
 
-    const renderIcon = (p) => (
-        <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-            <Icon {...p} name={secureTextEntry ? 'eye-off' : 'eye'} />
-        </TouchableWithoutFeedback>
-    );
-
-    let label = props.label
-    if (props.required) label += ' *';
-
-    return (
-        <Input
-            value={value}
-            label={label}
-            placeholder={props.placeholder}
-            caption={props.caption}
-            accessoryRight={props.type === 'password' && renderIcon}
-            captionIcon={props.caption && AlertIcon}
-            secureTextEntry={props.type === 'password' && secureTextEntry}
-            onChangeText={props.onChangeText}
-        />
-    );
+  return (
+    <>
+      <Select
+        selectedIndex={selectedIndex}
+        onSelect={handleSelect}
+        placeholder={props.placeholder}
+        value={props.options[selectedIndex.row].title}
+      >
+        {props.options.map(option => <SelectItem key={option.value} title={option.title} />)}
+      </Select>
+    </>
+  );
 };
 
 export default CustomSelect

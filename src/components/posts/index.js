@@ -1,6 +1,6 @@
 import React from 'react'
 import {View, Image as RNImage} from 'react-native'
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import { Avatar, Layout } from '@ui-kitten/components'
 import { Image } from "react-native-expo-image-cache";
 
@@ -36,7 +36,7 @@ const PostImage = styled(RNImage)`
 
 const NameAndLocationWrapper = styled(View)`
   flex-direction: column;
-  margin-left: 10
+  margin-left: 10px;
 `
 
 const Name = styled(Text)`

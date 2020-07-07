@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, View, TouchableOpacity } from 'react-native'
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import { Avatar, Layout } from '@ui-kitten/components'
 
 import Post from './'

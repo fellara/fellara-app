@@ -6,8 +6,6 @@ import * as Permissions from 'expo-permissions';
 import { Icon, Avatar, Input} from '@ui-kitten/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import Label from './Label';
-
 export default class CustomImage extends React.Component {
   state = {
     image: null,
@@ -16,22 +14,18 @@ export default class CustomImage extends React.Component {
   render() {
     let { image } = this.state;
 
-    let label = this.props.label
-    if (this.props.required) label += ' *';
-
     return (
       <>
-        <Label>{label}</Label>
         <TouchableOpacity
             onPress={this._pickImage} 
             style={{
                 justifyContent: 'center', alignItems: 'center'
             }}
         >
-            <View size='giant' style={{backgroundColor: '#ccc', width: 70, height: 70, borderRadius: '50%', justifyContent: 'center', alignItems: 'center'}}>
-                {image && <Avatar size='giant' source={{uri: image}} style={{position: 'absolute', backgroundColor: '#ccc', width: 70, height: 70}}/>}
-                <Icon name='plus' style={{zIndex: 9999, width: 40, height: 40, color: '#777'}}/>
-            </View>
+          <View size='giant' style={{backgroundColor: '#ccc', width: 70, height: 70, borderRadius: 50, justifyContent: 'center', alignItems: 'center'}}>
+            {image && <Avatar size='giant' source={{uri: image}} style={{position: 'absolute', backgroundColor: '#ccc', width: 70, height: 70}}/>}
+            <Icon name='plus' style={{zIndex: 9999, width: 40, height: 40, color: '#777'}}/>
+          </View>
         </TouchableOpacity>
       </>
     );
@@ -64,14 +58,15 @@ export default class CustomImage extends React.Component {
 
       let uriParts = []
       let fileType = '';
-      try {
-        uriParts = result.uri.split('/')[1].split(';');
-        fileType = uriParts[0]
-
-      } catch {
+      // try {
+      //   uriParts = result.uri.split('/')[1].split(';');
+      //   fileType = uriParts[0]
+      // } catch {
         uriParts = result.uri.split('.');
         fileType = uriParts[uriParts.length - 1]
-      }
+      // }
+
+      console.log('fileTypefileType', fileType);
 
       const file = {
         uri: result.uri,

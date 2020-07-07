@@ -1,7 +1,6 @@
 import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import { Icon, Input } from '@ui-kitten/components';
-import Label from './Label';
 
 const AlertIcon = (props) => (
     <Icon {...props} name='alert-circle-outline' />
@@ -21,12 +20,8 @@ const CustomInput = (props) => {
         </TouchableWithoutFeedback>
     );
 
-    let label = props.label
-    if (props.required) label += ' *';
-
     return (
         <>
-            <Label>{label}</Label>
             <Input
                 value={value}
                 placeholder={props.placeholder}

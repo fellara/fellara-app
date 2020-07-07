@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 
 import Form from '../components/forms'
@@ -30,10 +30,10 @@ const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
       <Header>
         <Avatar size='giant' source={profile.profile_image} style={{'width': 100, 'height': 100, 'marginBottom': 10}} />
         <Heading>{profile.first_name + ' ' + profile.last_name}</Heading>
-        <Subheading marginBottom>{profile.city + ', ' + profile.country}</Subheading>
+        <Subheading marginbottom>{profile.city + ', ' + profile.country}</Subheading>
       </Header>
 
-      <Button style={{justifySelf: 'flex-end'}} appearance='ghost' status='primary'
+      <Button appearance='ghost' status='primary'
         onPress={handleLogout}
       >
         Exit

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, ScrollView } from 'react-native'
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 
 const StyledContainer = styled(View)`
   padding-left: 10px;
@@ -8,7 +8,7 @@ const StyledContainer = styled(View)`
   margin-top: 10px;
   margin-bottom: 10px;
   min-height: 40px;
-  ${p => p.center && `align-items: center`};
+  ${p => (p.center && p.as !== ScrollView) && `align-items: center`};
 `
 
 const Container = props => (

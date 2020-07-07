@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 
 import Form from '../../components/forms'
@@ -17,34 +17,71 @@ const fields = [
     label: 'Avatar',
     type: 'image',
     name: 'profile_image'
-  },    
+  },   
   {
     label: 'First Name',
     placeholder: 'John',
     type: 'text',
-    name: 'first_name'
+    name: 'first_name',
+    required: true,
   },  
   {
     label: 'Last Name',
     placeholder: 'White',
     type: 'text',
-    name: 'last_name'
+    name: 'last_name',
+    required: true,
   }, 
   {
     label: 'Email',
     placeholder: 'jackwhite@example.com',
     type: 'text',
-    name: 'email'
+    name: 'email',
+    required: true,
+  }, 
+  {
+    label: 'City',
+    placeholder: 'NYC',
+    type: 'text',
+    name: 'city',
+    required: false,
+  }, 
+  {
+    label: 'Country',
+    placeholder: 'United States',
+    type: 'text',
+    name: 'country',
+    required: false,
+  },    
+  {
+    label: 'Gender',
+    type: 'select',
+    name: 'gender',
+    default: 4,
+    options: [
+      {title: 'Male', value: 1},
+      {title: 'Female', value: 2},
+      {title: 'Non-Binary', value: 3},
+      {title: 'Prefer Not to Disclose', value: 4},
+    ]
+  }, 
+  {
+    label: 'Birth Date',
+    placeholder: 'Pick Date',
+    type: 'date',
+    name: 'date_of_birth'
   }, 
   {
     label: 'Password',
     type: 'password',
-    name: 'password1'
+    name: 'password1',
+    required: true,
   },  
   {
     label: 'Confirm Password',
     type: 'password',
-    name: 'password2'
+    name: 'password2',
+    required: true,
   }
 ]
 
@@ -60,20 +97,21 @@ const RegisterScreen = props => {
       })
     }).catch(err => {
       console.log(err);
+      setLoading(false)
     })
   }
   return (
     <Container as={ScrollView}>
       <Heading>Register</Heading>
-      <Subheading marginBottom>Register to get more of Fellas stuff!</Subheading>
+      <Subheading marginbottom>It took you less than a minute! But helps the others get to know you, your culture and your people.</Subheading>
       <Form 
         fields={fields}
         onSubmit={handleSubmit}
         loading={loading}
       />
 
-      <Button style={{justifySelf: 'flex-end', marginTop: 20}} appearance='ghost' status='primary'
-        onPress={() => props.navigation.navigate('Login')}
+      <Button style={{marginTop: 20}} appearance='ghost' status='primary'
+        onPress={() => props.navigation.navigate('login')}
       >
         Already registered? Login then!
       </Button>

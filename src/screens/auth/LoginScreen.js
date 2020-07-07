@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 
 import Form from '../../components/forms'
@@ -46,15 +46,15 @@ const LoginScreen = props => {
   return (
     <Container as={ScrollView}>
       <Heading>Login</Heading>
-      <Subheading marginBottom>Login to get more of Fellas stuff!</Subheading>
+      <Subheading marginbottom>Login to get more of Fellas stuff!</Subheading>
       <Form 
         fields={fields}
         onSubmit={handleSubmit}
         loading={loading}
       />
 
-      <Button style={{justifySelf: 'flex-end', marginTop: 20}} appearance='ghost' status='primary'
-        onPress={() => props.navigation.navigate('Register')}
+      <Button style={{marginTop: 20}} appearance='ghost' status='primary'
+        onPress={() => props.navigation.navigate('register')}
       >
         Not registered yet? Join now!
       </Button>

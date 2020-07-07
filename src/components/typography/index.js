@@ -1,13 +1,13 @@
 import React from 'react';
 import { Text } from '@ui-kitten/components';
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 
 const StyledHeading = styled(CustomText)`
-    ${p => p.marginBottom && `margin-bottom: 15px`};
+    ${p => p.marginbottom && `margin-bottom: 15px`};
 `
 
 const StyledSubheading = styled(CustomText)`
-    ${p => p.marginBottom && `margin-bottom: 15px`};
+    ${p => p.marginbottom && `margin-bottom: 15px`};
 `
 
 export default function CustomText(props) {
