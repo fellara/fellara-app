@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet } from 'react-native';
 import { IndexPath, Layout, Select, SelectItem } from '@ui-kitten/components';
 
@@ -7,9 +7,15 @@ const CustomSelect = (props) => {
     new IndexPath(props.options.map(option => option.value).indexOf(props.default) || 0)
   );
 
+  useEffect(() => {
+    console.log(props);
+  }, [props.options, props.default])
+
   const handleSelect = (index) => {
+    console.log(props.options[index].value, index);
+    
     setSelectedIndex(index);
-    if (props.onSelect) props.onSelect(props.options[index].value)
+    if (props.onChange) props.onChange(props.options[index - 1].value)
   }
 
   return (
@@ -18,7 +24,7 @@ const CustomSelect = (props) => {
         selectedIndex={selectedIndex}
         onSelect={handleSelect}
         placeholder={props.placeholder}
-        value={props.options[selectedIndex.row].title}
+        value={props.options[selectedIndex.row]?.title}
       >
         {props.options.map(option => <SelectItem key={option.value} title={option.title} />)}
       </Select>

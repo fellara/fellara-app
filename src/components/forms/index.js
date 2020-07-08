@@ -47,6 +47,8 @@ const Form = ({loading, ...props}) => {
     }
 
     const handleChange = (value, name) => {
+        console.log('value, name', value, name);
+        
         setForm(form => ({...form, [name]: value}))
     }
 
@@ -65,14 +67,13 @@ const Form = ({loading, ...props}) => {
 
     console.log(form);
     
-
     return (
         <View>
             {props.fields.map(field => {
                 let label = field.label
                 if (field.required) label += ' *';
 
-                return (<>
+                return (<React.Fragment key={field.name}>
                 <Label>{label}</Label>
                 {field.type === 'image'
                 ? <Image 
@@ -98,7 +99,7 @@ const Form = ({loading, ...props}) => {
                         .filter(error => error.type === 'EMPTY')
                         .map(error => error.field)
                         .includes(field.name) && <Label isError>* This field is required!</Label>}
-                </>)
+                </React.Fragment>)
             })}
 
             <StyledButton 

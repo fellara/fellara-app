@@ -6,6 +6,17 @@ import * as Permissions from 'expo-permissions';
 import { Icon, Avatar, Input} from '@ui-kitten/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { urltoFile } from '../../assets/utils';
+import styled from 'styled-components/native'
+
+const StyledTouchable = styled(TouchableOpacity)`
+  justify-content: center;
+  align-items: center;
+  backgroundColor: #ccc;
+  width: 70px;
+  height: 70px;
+  borderRadius: 50px; 
+  align-self: center;
+`
 
 export default class CustomImage extends React.Component {
   state = {
@@ -16,22 +27,16 @@ export default class CustomImage extends React.Component {
     let { image } = this.state;
 
     return (
-      <>
-        <TouchableOpacity
-            onPress={this._pickImage} 
-            style={{
-                justifyContent: 'center', alignItems: 'center'
-            }}
-        >
-          <View size='giant' style={{backgroundColor: '#ccc', width: 70, height: 70, borderRadius: 50, justifyContent: 'center', alignItems: 'center'}}>
-            {image && <Avatar size='giant' source={{uri: image}} 
-              style={{position: 'absolute', backgroundColor: '#ccc', width: 70, height: 70}}
-              resizeMode='cover'
-            />}
-            <Icon name='plus' style={{zIndex: 9999, width: 40, height: 40, color: '#777'}}/>
-          </View>
-        </TouchableOpacity>
-      </>
+      <StyledTouchable
+        {...this.props}
+        onPress={this._pickImage} 
+      >
+        {image && <Avatar size='giant' source={{uri: image}} 
+          style={{position: 'absolute', backgroundColor: '#ccc', width: 70, height: 70}}
+          resizeMode='cover'
+        />}
+        <Icon name='plus' style={{zIndex: 9999, width: 40, height: 40, color: '#777'}}/>
+      </StyledTouchable>
     );
   }
 
@@ -78,7 +83,7 @@ export default class CustomImage extends React.Component {
         file = urltoFile(result.uri, 'avatar.' + fileType)
       }
 
-      this.props.onChange(file)
+      this.props.onChange(file, result.uri)
     } catch (E) {
       console.log(E);
     }

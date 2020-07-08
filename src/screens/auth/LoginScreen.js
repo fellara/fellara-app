@@ -4,13 +4,14 @@ import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
+import { Button, Layout } from '@ui-kitten/components';
 
 import Form from '../../components/forms'
 import Container from '../../components/layouts';
 import Text, { Heading, Subheading } from '../../components/typography';
 import {login, getProfile} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
-import { Button, Layout } from '@ui-kitten/components';
+import layouts from '../../constants/layouts'
 
 const fields = [
   {
@@ -44,22 +45,24 @@ const LoginScreen = props => {
     })
   }
   return (
-    <Layout>
-    <Container as={ScrollView}>
-      <Heading>Login</Heading>
-      <Subheading marginbottom>Login to get more of Fellas stuff!</Subheading>
-      <Form 
-        fields={fields}
-        onSubmit={handleSubmit}
-        loading={loading}
-      />
+    <Layout
+      style={{height: layouts.window.height}}
+    >
+      <Container as={ScrollView}>
+        <Heading>Login</Heading>
+        <Subheading marginbottom>Login to get more of Fellas stuff!</Subheading>
+        <Form 
+          fields={fields}
+          onSubmit={handleSubmit}
+          loading={loading}
+        />
 
-      <Button style={{marginTop: 20}} appearance='ghost' status='primary'
-        onPress={() => props.navigation.navigate('register')}
-      >
-        Not registered yet? Join now!
-      </Button>
-    </Container>
+        <Button style={{marginTop: 20}} appearance='ghost' status='primary'
+          onPress={() => props.navigation.navigate('register')}
+        >
+          Not registered yet? Join now!
+        </Button>
+      </Container>
     </Layout>
   );
 }

@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import styled from 'styled-components/native'
+import { Button, Layout } from '@ui-kitten/components';
 import {connect} from 'react-redux'
 
 import Form from '../../components/forms'
@@ -10,7 +11,6 @@ import Container from '../../components/layouts';
 import Text, { Heading, Subheading } from '../../components/typography';
 import {login, getProfile, register} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
-import { Button, Layout } from '@ui-kitten/components';
 import layouts from '../../constants/layouts'
 
 const fields = [
