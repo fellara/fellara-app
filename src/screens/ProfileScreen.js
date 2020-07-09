@@ -77,6 +77,7 @@ const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
       justifyContent: 'center',
       alignItems: 'center',
       height: height,
+      width: height
     },
   });
 
@@ -104,7 +105,7 @@ const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
             <FlatList
               data={posts}
               renderItem={({ item }) => (
-                <View style={{ flex: 1, flexDirection: 'column', margin}}>
+                <View style={{ flexDirection: 'column', margin, width: height}}>
                   <Image style={styles.imageThumbnail} 
                     resizeMode='cover'
                     source={{ uri: base_url + item.clean_image_medium.url }} />
