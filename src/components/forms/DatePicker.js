@@ -13,7 +13,8 @@ export const CustomCalendar = (props) => {
   const min = new Date(now.getFullYear() - 120, now.getMonth(), now.getDate());
   
   const handleSelect = (nextDate) => {
-    const formatted = dayjs().format('YYYY-MM-DD')
+    const formatted = dayjs(nextDate).format('YYYY-MM-DD')
+    console.log(formatted);
     
     setDate(nextDate)
     if (props.onChange) props.onChange(formatted)
