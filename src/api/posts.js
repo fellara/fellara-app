@@ -8,6 +8,11 @@ export const getPosts = async (tag) => {
     return await fetchAPI(url)
 }
 
+export const getMyPosts = async () => {
+    let url = 'posts/mine/'
+    return await fetchAPI(url)
+}
+
 export const getTags = async () => {
     return await fetchAPI('tags/')
 }

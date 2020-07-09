@@ -11,6 +11,7 @@ const StyledContainer = styled(View)`
 
   ${p => p.paddingbottom && `padding-bottom: ${p.paddingbottom}px`};
   ${p => (p.center && p.as !== ScrollView) && `align-items: center`};
+  ${p => p.nopadding && `padding: 0; margin: 0`};
 `
 
 const Container = props => (

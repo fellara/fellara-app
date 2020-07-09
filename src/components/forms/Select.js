@@ -13,7 +13,6 @@ const CustomSelect = (props) => {
 
   const handleSelect = (index) => {
     const idx = index.row
-    console.log(props.options[idx].value, idx);
     
     setSelectedIndex(index);
     if (props.onChange) props.onChange(props.options[idx].value)
