@@ -18,6 +18,9 @@ const CustomSelect = (props) => {
     if (props.onChange) props.onChange(props.options[index - 1].value)
   }
 
+  console.log(props.options[selectedIndex.row]?.title);
+  
+
   return (
     <>
       <Select

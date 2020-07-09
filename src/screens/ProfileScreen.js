@@ -12,20 +12,29 @@ import AuthScreen from '../navigation/AuthNavigator';
 import { Avatar, Button, Layout } from '@ui-kitten/components';
 import { logout } from '../api/user';
 import { logoutUser } from '../actions/user';
+import TopNavigation from '../components/layouts/TopNavigation'
 
 const Header = styled(View)`
   align-items: center;
 `
 
 const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
+  let _back = null;
+  if (props.route.params) _back = props.route.params._back;
+
   const handleLogout = () => {
     props.logoutUser()
     logout()
   }
 
-  if (!isLoggedIn) return <AuthScreen />;
+  if (!isLoggedIn) return <AuthScreen _back={_back} />;
+  if (_back) {
+    props.navigation.navigate(_back)
+  }
 
-  return (
+  return (<>
+    <TopNavigation title={'Profile'} />
+
     <Layout>
     <Container as={ScrollView} center>
       <Header>
@@ -46,6 +55,7 @@ const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
       </Button>
     </Container>
     </Layout>
+    </>
   )
 }
 

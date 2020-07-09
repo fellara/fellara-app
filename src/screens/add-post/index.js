@@ -31,10 +31,9 @@ const AddPostScreen = (props) => {
     const handleChange = (file, uri) => {
         setImage({file, uri})
     }
-    console.log(image);
     
     return (<>
-      {image && <TopNavigation />}
+      {image && <TopNavigation onBack={() => setImage(null)} title={'Publish Post'}/>}
       <StyledLayout
         style={{height: layouts.window.height}}
       >
@@ -42,7 +41,7 @@ const AddPostScreen = (props) => {
             <Dots />
             <StyledButton onChange={handleChange}/>
             <Muted>Tap on the plus to add a photo</Muted>
-        </> : <PublishPostScreen image={image} setImage={setImage} />}
+        </> : <PublishPostScreen image={image} setImage={setImage} navigation={props.navigation} />}
       </StyledLayout>
     </>
   )

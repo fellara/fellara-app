@@ -6,8 +6,8 @@ const BackIcon = (props) => (
   <Icon {...props} name='arrow-back'/>
 );
 
-const renderBackAction = () => (
-    <TopNavigationAction icon={BackIcon}/>
+const renderBackAction = (props) => (
+    <TopNavigationAction icon={BackIcon} onPress={props.onBack}/>
   );
 
 const CustomTopNavigation = (props) => {
@@ -16,6 +16,7 @@ const CustomTopNavigation = (props) => {
     return (<TopNavigation
         accessoryLeft={renderBackAction}
         title={props.title}
+        onBack={props.onBack}
     />
 )};
 

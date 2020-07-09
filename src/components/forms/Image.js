@@ -5,7 +5,7 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { Icon, Avatar, Input} from '@ui-kitten/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { urltoFile } from '../../assets/utils';
+import { urltoFile } from '../../utils';
 import styled from 'styled-components/native'
 
 const StyledTouchable = styled(TouchableOpacity)`

@@ -2,6 +2,17 @@ import { combineReducers } from 'redux'
 
 import {user, token} from './user'
 
+export const initials = (state = {
+  tags: []
+}, action) => {
+  switch (action.type) {
+    case 'GOT_TAGS':
+      return {...state, tags: action.tags}
+    default:
+      return state
+  }
+}
+
 export const loading = (state = false, action) => {
   switch (action.type) {
     case 'LOADING_ON':
@@ -12,6 +23,7 @@ export const loading = (state = false, action) => {
 }
 
 export default combineReducers({
+  initials,
   loading,
   user,
   token,

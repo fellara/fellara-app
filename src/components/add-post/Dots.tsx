@@ -9,7 +9,7 @@ import {
   ViewProps,
 } from 'react-native';
 
-// https://github.com/watadarkstar/react-native-typing-animation/issues/18
+import {getRandomFloat} from '../../utils'
 
 const UpAndDown = ({
   easing = Easing.ease,
@@ -48,7 +48,11 @@ const UpAndDown = ({
   });
   const rotate = base.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
+    outputRange: ['0deg', '180deg'],
+  });
+  const skewX = base.interpolate({
+    inputRange: [0, 0.45, 0.55, 1],
+    outputRange: ['0deg', '-5deg', '5deg', '0deg'],
   });
   const scale = base.interpolate({
     inputRange: [0, 0.45, 0.55, 1],
@@ -73,6 +77,9 @@ const UpAndDown = ({
         break;
       case 'rotate':
         transform.push({ rotate });
+        break;
+      case 'skew':
+        transform.push({ skewX, skewY: skewX });
         break;
       case 'translateX':
         transform.push({ translateX });
@@ -107,7 +114,7 @@ interface DotProps {
   size?: number;
 }
 const dotSize = 250;
-const dotColor = 'rgba(0, 0, 0, 0.10)';
+const dotColor = 'rgba(0, 0, 0, 0.09)';
 const Dot = ({ color, size }: DotProps) => (
   <View
     style={{
@@ -133,7 +140,7 @@ const ContainerContent = (props: View['props']) => (
   />
 );
 
-type Transformation = 'scale' | 'translateY' | 'translateX' | 'opacity';
+type Transformation = 'scale' | 'translateY' | 'translateX' | 'opacity' | 'skew';
 
 interface TypingProps {
   transformation?: Transformation | Transformation[];
@@ -163,5 +170,5 @@ Typing.defaultProps = {
 };
 
 export default () => (
-    <Typing transformation={['translateY', 'translateX', 'scale', 'opacity']} />
+    <Typing transformation={['translateY', 'translateX', 'scale', 'opacity', 'skew', 'rotate']} />
 );

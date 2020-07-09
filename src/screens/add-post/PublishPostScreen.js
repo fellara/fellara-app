@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import { View, Image } from 'react-native'
+import { View, Image, ScrollView } from 'react-native'
 import styled from 'styled-components/native'
+import {connect} from 'react-redux'
 
 import layouts from '../../constants/layouts'
 import Container from '../../components/layouts';
@@ -16,7 +17,7 @@ const PublishPostScreen = props => {
     const [ratio, setRatio] = useState(1)
     const [loading, setLoading] = useState(false)
     const [tags, setTags] = useState([])
-    const [activeTag, setActiveTag] = useState(null)
+    const [activeTag, setActiveTag] = useState(props.tags[0].id)
 
     const fields = [
         {
@@ -24,8 +25,8 @@ const PublishPostScreen = props => {
             type: 'select',
             placeholder: 'Choose a Tag',
             name: 'tag',
-            // default: activeTag,
-            options: tags,
+            default: activeTag,
+            options: props.tags.map(tag => ({value: tag.id, title: tag.title})),
             required: true,
         },
     ]
@@ -34,38 +35,37 @@ const PublishPostScreen = props => {
         setRatio(height / width)
     })
 
-    useEffect(() => {
-        getTags().then(res => {
-            setTags(res.data.map(t => ({title: t.title, value: t.id})))
-            setActiveTag(res.data[0].id)
-          })
-    }, [])
-
     const handleSubmit = (data) => {
-        setLoading(true)
-        createPost({...data, image: props.image.file}).then(res => {
-            console.log(res);
-            setLoading(false)
-            props.setImage(null)
+        if (props.isLoggedIn) {
+            setLoading(true)
+            createPost({...data, image: props.image.file}).then(res => {
+                setLoading(false)
+                props.setImage(null)
+                props.navigation.navigate('Home', {tag: data.tag})
         })
+        } else {
+            props.navigation.navigate('Profile', {_back: 'AddPost'})
+        }
     }
 
     return (
-        <View style={{
+        <ScrollView style={{
             width: '100%',
             flex: 1,
+            height: layouts.window.height,
         }}>
             <StyledImage source={{uri: props.image.uri}} ratio={ratio} />
-            <Container>
+            <Container paddingbottom>
                 <Form 
                     fields={fields}
                     onSubmit={handleSubmit}
                     loading={loading}
                 />
             </Container>
-            
-        </View>
+        </ScrollView>
     )
 }
 
-export default PublishPostScreen
+export default connect(state => ({
+    isLoggedIn: state.user.isLoggedIn, 
+    tags: state.initials.tags}))(PublishPostScreen)

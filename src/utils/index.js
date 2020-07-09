@@ -12,3 +12,11 @@ export const urltoFile = (dataurl, filename)  => {
   
   return new File([u8arr], filename, {type:mime});
 }
+
+export function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+export function getRandomFloat(max) {
+  return Math.random() * Math.floor(max);
+}

@@ -8,10 +8,10 @@ import RegisterScreen from '../screens/auth/RegisterScreen';
 
 const Stack = createStackNavigator();
 
-export default () => {
+export default (props) => {
   return (
     <Stack.Navigator
-      initialRouteName='register'
+      initialRouteName='login'
       screenOptions={{
         header: () => (
           <Layout level='1'>
@@ -37,7 +37,9 @@ export default () => {
         )
       }}
     >
-      <Stack.Screen name="login" component={LoginScreen} />
+      <Stack.Screen name="login">
+        {p => <LoginScreen {...p} {...props} />}
+      </Stack.Screen>
       <Stack.Screen name="register" component={RegisterScreen} />
     </Stack.Navigator>
   );

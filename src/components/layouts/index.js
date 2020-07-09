@@ -9,7 +9,7 @@ const StyledContainer = styled(View)`
   margin-bottom: 0px;
   min-height: 40px;
 
-  ${p => p.paddingbottom && `padding-bottom: 100px`};
+  ${p => p.paddingbottom && `padding-bottom: 150px`};
   ${p => (p.center && p.as !== ScrollView) && `align-items: center`};
 `
 
