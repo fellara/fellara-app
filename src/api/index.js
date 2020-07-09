@@ -26,6 +26,14 @@ const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) =
   } else if (data) {
     config.data = data
   }
+
+  const CancelToken = axios.CancelToken;
+  const source = CancelToken.source();
+  config = {
+    ...config,
+    cancelToken: source.token
+  }
+
   axios(config).then(res => {
     resolve({
       status: res.status,
@@ -33,11 +41,15 @@ const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) =
       data: res.data
     })
   }).catch(error => {
-    resolve({
-      status: error.status,
-      statusText: error.statusText,
-      data: error.data
-    })
+    if (axios.isCancel(error)) {
+      console.log('Request canceled', thrown.message);
+    } else {
+      resolve({
+        status: error.status,
+        statusText: error.statusText,
+        data: error.data
+      })
+    }
   })
 })
 export default fetchAPI

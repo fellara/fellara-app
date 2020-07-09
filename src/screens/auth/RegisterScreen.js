@@ -106,7 +106,7 @@ const RegisterScreen = props => {
       style={{height: layouts.window.height}}
     >
       <Container as={ScrollView}
-        paddingbottom
+        paddingbottom={120}
       >
         <Heading>Register</Heading>
         <Subheading marginbottom>It took you less than a minute! But helps the others get to know you, your culture and your people.</Subheading>

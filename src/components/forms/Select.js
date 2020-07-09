@@ -12,10 +12,11 @@ const CustomSelect = (props) => {
   }, [props.options, props.default])
 
   const handleSelect = (index) => {
-    console.log(props.options[index].value, index);
+    const idx = index.row
+    console.log(props.options[idx].value, idx);
     
     setSelectedIndex(index);
-    if (props.onChange) props.onChange(props.options[index - 1].value)
+    if (props.onChange) props.onChange(props.options[idx].value)
   }
 
   console.log(props.options[selectedIndex.row]?.title);

@@ -55,7 +55,7 @@ const PublishPostScreen = props => {
             height: layouts.window.height,
         }}>
             <StyledImage source={{uri: props.image.uri}} ratio={ratio} />
-            <Container paddingbottom>
+            <Container paddingbottom={150}>
                 <Form 
                     fields={fields}
                     onSubmit={handleSubmit}

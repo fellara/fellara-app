@@ -47,8 +47,6 @@ const Form = ({loading, ...props}) => {
     }
 
     const handleChange = (value, name) => {
-        console.log('value, name', value, name);
-        
         setForm(form => ({...form, [name]: value}))
     }
 
@@ -65,8 +63,6 @@ const Form = ({loading, ...props}) => {
         else return true;
     }
 
-    console.log(form);
-    
     return (
         <View>
             {props.fields.map(field => {

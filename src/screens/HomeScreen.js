@@ -13,21 +13,21 @@ const HomeScreen = props => {
 
   const [posts, setPosts] = useState([])
   const [tags, setTags] = useState([])
-  const [activeTag, setActiveTag] = useState(tag)
+  const [activeTag, setActiveTag] = useState(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setTags(props.tags)
     setActiveTag(props.tags[0]?.id)
     // tag = null;
-    getPosts(props.tags[0]?.id).then(res => {
-      setPosts(res.data.results)
-    })
+    // getPosts(props.tags[0]?.id).then(res => {
+    //   setPosts(res.data.results)
+    // })
   }, [props.tags])
 
   useEffect(() => {
-    if (tag) setActiveTag(activeTag)
-    getPosts(activeTag).then(res => {
+    // if (tag) setActiveTag(activeTag)
+    if (activeTag) getPosts(activeTag).then(res => {
       setPosts(res.data.results)
     })
   }, [activeTag])

@@ -12,7 +12,7 @@ import Text, {Muted} from '../typography';
 
 const Container = styled(View)`
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `
 const PostHeader = styled(View)`
   height: 50px;
@@ -20,7 +20,7 @@ const PostHeader = styled(View)`
   flex-direction: row
 `
 const PostImageWrapper = styled(View)`
-  margin-top: 10px;
+  margin-top: 5px;
   justify-content: center;
   align-items: center;
 `

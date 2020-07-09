@@ -9,7 +9,7 @@ import Text from '../typography';
 import Container from '../../components/layouts'
 
 const Tag = styled(TouchableOpacity)`
-  background: ${p => p.active ? '#222' : '#777'};
+  background: ${p => p.active ? '#222' : '#b1b1b1'};
   margin-right: 10px;
   border-radius: 20px;
   height: 35px;
@@ -48,25 +48,26 @@ const TagsList = props => {
     }
 
     return (
-        <Container
-        >
-            <FlatList
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (<Tag 
-                    onLayout={(event) => handleLayout(event, item.id)}
-                    active={props.active === item.id} 
-                    onPress={() => handlePress(item.id)}
-                >
-                    <StyledText style={{
-                        color: '#fff'
-                    }}>{item.title}</StyledText>
-                </Tag>)}
-                data={props.data}
-                horizontal={true}
-                getItemLayout={getItemLayout}
-                ref={(ref) => { list = ref; }}
-            />
-        </Container>
+        <FlatList
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (<Tag 
+                onLayout={(event) => handleLayout(event, item.id)}
+                active={props.active === item.id} 
+                onPress={() => handlePress(item.id)}
+            >
+                <StyledText style={{
+                    color: '#fff'
+                }}>{item.title}</StyledText>
+            </Tag>)}
+            data={props.data}
+            horizontal={true}
+            getItemLayout={getItemLayout}
+            ref={(ref) => { list = ref; }}
+            contentContainerStyle={{
+                paddingLeft: 10,
+                paddingTop: 10,
+            }}
+        />
     )
 }
 
