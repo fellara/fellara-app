@@ -80,7 +80,7 @@ export default class CustomImage extends React.Component {
       } else {
         uriParts = result.uri.split('/')[1].split(';');
         fileType = uriParts[0]
-        file = urltoFile(result.uri, 'avatar.' + fileType)
+        file = urltoFile(result.uri, 'photo.' + fileType)
       }
 
       this.props.onChange(file, result.uri)
