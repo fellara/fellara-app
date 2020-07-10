@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
-import { ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import * as WebBrowser from 'expo-web-browser';
+import { ScrollView, SafeAreaView } from 'react-native';
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 import { Button, Layout } from '@ui-kitten/components';
@@ -14,7 +12,6 @@ import {setToken, setProfile} from '../../actions/user'
 import layouts from '../../constants/layouts'
 
 const StyledLayout = styled(Layout)`
-  padding-top: 40
 `
 
 const fields = [
@@ -53,21 +50,25 @@ const LoginScreen = props => {
     <StyledLayout
       style={{height: layouts.window.height}}
     >
-      <Container as={ScrollView}>
-        <Heading>Login</Heading>
-        <Subheading marginbottom>{!props._back ? 'Login to get more of Fellas stuff!' : 'In order to move further you need to login first.'}</Subheading>
-        <Form
-          fields={fields}
-          onSubmit={handleSubmit}
-          loading={loading}
-        />
+      <SafeAreaView style={{
+        flex: 1,
+      }}>
+        <Container as={ScrollView}>
+          <Heading>Login</Heading>
+          <Subheading marginbottom>{!props._back ? 'Login to get more of Fellas stuff!' : 'In order to move further you need to login first.'}</Subheading>
+          <Form
+            fields={fields}
+            onSubmit={handleSubmit}
+            loading={loading}
+          />
 
-        <Button style={{marginTop: 20}} appearance='ghost' status='primary'
-          onPress={() => props.navigation.navigate('register', {_back: props._back})}
-        >
-          Not registered yet? Join now!
-        </Button>
-      </Container>
+          <Button style={{marginTop: 20}} appearance='ghost' status='primary'
+            onPress={() => props.navigation.navigate('register', {_back: props._back})}
+          >
+            Not registered yet? Join now!
+          </Button>
+        </Container>
+      </SafeAreaView>
     </StyledLayout>
   );
 }

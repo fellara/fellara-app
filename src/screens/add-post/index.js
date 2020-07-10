@@ -10,7 +10,7 @@ import ImagePicker from '../../components/forms/Image'
 import PublishPostScreen from './PublishPostScreen';
 
 const StyledButton = styled(ImagePicker)`
-    border-radius: 50;
+    border-radius: 200px;
     width: 150px;
     height: 150px;
     background-color: #eee;

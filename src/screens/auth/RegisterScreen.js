@@ -1,8 +1,5 @@
 import React, {useState} from 'react';
-import { ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import * as WebBrowser from 'expo-web-browser';
-import styled from 'styled-components/native'
+import { ScrollView, SafeAreaView } from 'react-native';
 import { Button, Layout } from '@ui-kitten/components';
 import {connect} from 'react-redux'
 
@@ -106,23 +103,27 @@ const RegisterScreen = props => {
     <Layout
       style={{height: layouts.window.height}}
     >
-      <Container as={ScrollView}
-        paddingbottom={120}
-      >
-        <Heading>Register</Heading>
-        <Subheading marginbottom>It took you less than a minute! But helps the others get to know you, your culture and your people.</Subheading>
-        <Form 
-          fields={fields}
-          onSubmit={handleSubmit}
-          loading={loading}
-        />
-
-        <Button style={{marginTop: 20}} appearance='ghost' status='primary'
-          onPress={() => props.navigation.navigate('login')}
+      <SafeAreaView style={{
+        flex: 1,
+      }}>
+        <Container as={ScrollView}
+          paddingbottom={120}
         >
-          Already registered? Login then!
-        </Button>
-      </Container>
+          <Heading>Register</Heading>
+          <Subheading marginbottom>It took you less than a minute! But helps the others get to know you, your culture and your people.</Subheading>
+          <Form 
+            fields={fields}
+            onSubmit={handleSubmit}
+            loading={loading}
+          />
+
+          <Button style={{marginTop: 20}} appearance='ghost' status='primary'
+            onPress={() => props.navigation.navigate('login')}
+          >
+            Already registered? Login then!
+          </Button>
+        </Container>
+      </SafeAreaView>
     </Layout>
   );
 }

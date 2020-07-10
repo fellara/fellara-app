@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react'
-import { ScrollView, View, TouchableOpacity, FlatList } from 'react-native'
+import { SafeAreaView, View, TouchableOpacity, FlatList } from 'react-native'
 import styled from 'styled-components/native'
 import { Avatar, Layout } from '@ui-kitten/components'
 
@@ -48,6 +48,9 @@ const TagsList = props => {
     }
 
     return (
+      <SafeAreaView style={{
+        flex: 1,
+      }}>
         <FlatList
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
@@ -71,9 +74,10 @@ const TagsList = props => {
             ref={(ref) => { list = ref; }}
             contentContainerStyle={{
                 paddingLeft: 10,
-                paddingTop: 45,
+                paddingTop: 10,
             }}
         />
+      </SafeAreaView>
     )
 }
 
