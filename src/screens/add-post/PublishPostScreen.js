@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 
 import layouts from '../../constants/layouts'
+import {forceProfileUpdate, forceTagUpdate} from '../../actions/updates'
 import Container from '../../components/layouts';
 import Form from '../../components/forms'
 import { getTags, createPost } from '../../api/posts'
@@ -18,6 +19,9 @@ const PublishPostScreen = props => {
     const [loading, setLoading] = useState(false)
     const [tags, setTags] = useState([])
     const [activeTag, setActiveTag] = useState(props.tags[0].id)
+
+    console.log(props);
+    
 
     const fields = [
         {
@@ -40,6 +44,8 @@ const PublishPostScreen = props => {
             setLoading(true)
             createPost({...data, image: props.image.file}).then(res => {
                 setLoading(false)
+                props.forceTagUpdate(data.tag)
+                props.forceProfileUpdate()
                 props.setImage(null)
                 props.navigation.navigate('Home', {tag: data.tag})
         })
@@ -68,4 +74,8 @@ const PublishPostScreen = props => {
 
 export default connect(state => ({
     isLoggedIn: state.user.isLoggedIn, 
-    tags: state.initials.tags}))(PublishPostScreen)
+    tags: state.initials.tags,
+}), {
+    forceProfileUpdate,
+    forceTagUpdate,
+})(PublishPostScreen)

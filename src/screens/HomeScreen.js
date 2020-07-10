@@ -3,6 +3,7 @@ import { Layout } from '@ui-kitten/components';
 import { connect } from 'react-redux'
 
 import { getPosts, getTags } from '../api/posts'
+import { forceTagUpdateDone } from '../actions/updates'
 import PostsList from '../components/posts/PostsList';
 import TagsList from '../components/posts/TagsList';
 import Container from '../components/layouts';
@@ -32,6 +33,18 @@ const HomeScreen = props => {
     })
   }, [activeTag])
 
+  useEffect(() => {
+    // if (tag) setActiveTag(activeTag)
+    console.log(props.updates, activeTag);
+    
+    if (props.updates && (props.updates === activeTag)) {
+      getPosts(activeTag).then(res => {
+        setPosts(res.data.results)
+      })
+      props.forceTagUpdateDone()
+    }
+  }, [props.updates])
+
   return (
     <Layout>
       <TagsList data={tags} active={activeTag} setActive={setActiveTag}/>
@@ -44,4 +57,9 @@ HomeScreen.navigationOptions = {
   header: null,
 }
 
-export default connect(state => ({tags: state.initials.tags}))(HomeScreen)
+export default connect(state => ({
+  tags: state.initials.tags,
+  updates: state.updates.tag,
+}), {
+  forceTagUpdateDone
+})(HomeScreen)

@@ -11,6 +11,7 @@ import { Avatar, Button, Layout } from '@ui-kitten/components';
 import { logout } from '../api/user';
 import { getMyPosts } from '../api/posts';
 import { logoutUser } from '../actions/user';
+import { forceProfileUpdateDone } from '../actions/updates';
 import TopNavigation from '../components/layouts/TopNavigation'
 import PostsList from '../components/posts/PostsList';
 import {base_url} from '../constants/'
@@ -39,7 +40,7 @@ const StyledImage = styled(Image)`
   margin: 15px;
 `
 
-const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
+const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
   const [posts, setPosts] = useState([])
   // const [height, setHeight] = useState(100)
   const [loading, setLoading] = useState(false)
@@ -55,6 +56,15 @@ const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
       setPosts(res.data.results)
     })
   }, [isLoggedIn])
+
+  useEffect(() => {
+    if (updates) {
+      getMyPosts().then(res => {
+        setPosts(res.data.results)
+      })
+      props.forceProfileUpdateDone()
+    }
+  }, [updates])
 
   const handleLogout = () => {
     props.logoutUser()
@@ -82,7 +92,7 @@ const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
   });
 
   return (<>
-      <TopNavigation title={'Profile'} />
+      <TopNavigation title={'Profile'} noBack />
       <Container 
           as={ScrollView} 
           center
@@ -128,6 +138,9 @@ const ProfileScreen = ({isLoggedIn, profile, ...props}) => {
   )
 }
 
-export default connect(state => ({isLoggedIn: state.user.isLoggedIn, profile: state.user}), {
-  logoutUser
+export default connect(state => ({
+  isLoggedIn: state.user.isLoggedIn, profile: state.user, updates: state.updates.profile
+}), {
+  logoutUser,
+  forceProfileUpdateDone,
 })(ProfileScreen)
