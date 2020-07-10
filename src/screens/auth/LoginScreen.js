@@ -19,6 +19,7 @@ const fields = [
     label: 'Email',
     placeholder: 'jackwhite@example.com',
     type: 'text',
+    regex: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
     name: 'email',
     required: true,
   },
@@ -26,9 +27,10 @@ const fields = [
     label: 'Password',
     type: 'password',
     name: 'password',
+    regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/i,
+    regexError: 'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters',
     required: true,
-  },
-
+  }
 ]
 
 const LoginScreen = props => {

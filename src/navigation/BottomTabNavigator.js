@@ -59,7 +59,6 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={HomeScreen}
         options={{
           title: 'Get Started',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="home" />,
         }}
       />
       <BottomTab.Screen
@@ -67,7 +66,6 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={AddPostScreen}
         options={{
           title: 'AddPost',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="pluscircleo" />,
         }}
       />
       <BottomTab.Screen
@@ -75,7 +73,6 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={ProfileScreen}
         options={{
           title: 'Profile',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="user" />,
         }}
       />
     </BottomTab.Navigator>

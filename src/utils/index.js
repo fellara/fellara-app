@@ -20,3 +20,9 @@ export function getRandomInt(max) {
 export function getRandomFloat(max) {
   return Math.random() * Math.floor(max);
 }
+
+export const checkRegex = (text, regex) => {
+  return regex.test(text)
+  // return new RegExp(text, 'g').test(text) // 'g' is for global search
+
+} 

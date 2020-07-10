@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import {View} from 'react-native'
 import styled from 'styled-components/native'
-import { Button, Icon, Layout, Spinner } from '@ui-kitten/components';
+import { Button, Icon, Card, Spinner, Divider } from '@ui-kitten/components';
 
 import Label from './Label';
 import Input from './Input'
 import Image from './Image'
 import Select from './Select'
 import DatePicker from './DatePicker';
+import {checkRegex} from '../../utils';
+import Text from '../../components/typography'
 
 const StyledButton = styled(Button)`
     margin-top: 10px;
@@ -55,6 +57,10 @@ const Form = ({loading, ...props}) => {
         props.fields.forEach(field => {
             if (field.required && !form[field.name]) {
                 tempErrors = [...tempErrors, {type: 'EMPTY', field: field.name}]
+            } else if (field.regex && !checkRegex(form[field.name], field.regex)) {
+                tempErrors = [...tempErrors, {type: 'REGEX', field: field.name}]
+            } else if (field.validator && !field.validator(form)) {
+                tempErrors = [...tempErrors, {type: 'CUSTOM', field: field.name}]
             }
         });
 
@@ -94,7 +100,15 @@ const Form = ({loading, ...props}) => {
                     {errors
                         .filter(error => error.type === 'EMPTY')
                         .map(error => error.field)
-                        .includes(field.name) && <Label isError>* This field is required!</Label>}
+                        .includes(field.name) && <Label isError>This field is required!</Label>}
+                    {errors
+                        .filter(error => error.type === 'CUSTOM')
+                        .map(error => error.field)
+                        .includes(field.name) && <Label isError>{field.validatorError}</Label>}
+                    {errors
+                        .filter(error => error.type === 'REGEX')
+                        .map(error => error.field)
+                        .includes(field.name) && <Label isError>{field.regexError || 'This field is not valid!'}</Label>}
                 </React.Fragment>)
             })}
 
@@ -106,6 +120,30 @@ const Form = ({loading, ...props}) => {
             >
                 {props.submitText || 'Submit'}
             </StyledButton>
+            {errors.length > 0 && <Label isError>Fix errors shown above!</Label>}
+            {
+                // errors.length > 0 && <Card status='danger' style={{
+                //     marginTop: 15,
+                // }}>
+                //     <Text>{'These fields must not be empty:'}</Text>
+                //     <Label isError>
+                //         {
+                //         errors
+                //             .filter(error => error.type === 'EMPTY')
+                //             .map((error, index) => error.field + (index !== errors.length - 1 ? ', ' : ''))
+                //         }
+                //     </Label>
+                //     <Divider/>
+                //     <Text>{'These fields are not valid:'}</Text>
+                //     <Label isError>
+                //         {
+                //         errors
+                //             .filter(error => error.type === 'REGEX')
+                //             .map((error, index) => error.field + (index !== errors.length - 1 ? ', ' : ''))
+                //         }
+                //     </Label>
+                // </Card>
+            }
         </View>
     )
 }

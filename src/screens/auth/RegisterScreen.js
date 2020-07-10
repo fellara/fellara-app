@@ -34,6 +34,7 @@ const fields = [
   {
     label: 'Email',
     placeholder: 'jackwhite@example.com',
+    regex: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
     type: 'text',
     name: 'email',
     required: true,
@@ -75,6 +76,10 @@ const fields = [
     type: 'password',
     name: 'password1',
     required: true,
+    validator: (data) => {
+      if (data.password1 === data.password2) return true
+    },
+    validatorError: 'Password and confirm password must be the same.'
   },  
   {
     label: 'Confirm Password',
