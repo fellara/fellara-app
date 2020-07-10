@@ -14,7 +14,6 @@ export const CustomCalendar = (props) => {
   
   const handleSelect = (nextDate) => {
     const formatted = dayjs(nextDate).format('YYYY-MM-DD')
-    console.log(formatted);
     
     setDate(nextDate)
     if (props.onChange) props.onChange(formatted)

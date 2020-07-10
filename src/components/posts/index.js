@@ -1,14 +1,17 @@
 import React from 'react'
-import {View, Image as RNImage} from 'react-native'
+import {View, Image as RNImage, ImageBackground} from 'react-native'
 import styled from 'styled-components/native'
-import { Avatar, Layout } from '@ui-kitten/components'
+import { Avatar, Icon } from '@ui-kitten/components'
 import { Image } from "react-native-expo-image-cache";
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { Images } from '../../assets/images'
 import layouts from '../../constants/layouts'
 import {base_url} from '../../constants/'
 import Text, {Muted} from '../typography';
 
+dayjs.extend(relativeTime)
 
 const Container = styled(View)`
   margin-top: 10px;
@@ -24,15 +27,18 @@ const PostImageWrapper = styled(View)`
   justify-content: center;
   align-items: center;
 `
-const PostImage = styled(RNImage)`
+const PostImage = styled(ImageBackground)`
   width: ${layouts.window.width - 20}px;
   height: ${p => (layouts.window.width - 20) * p.ratio}px;
   border-radius: 15px;
 `
 
 const NameAndLocationWrapper = styled(View)`
-  flex-direction: column;
+  flex-direction: row;
   margin-left: 10px;
+  justify-content: space-between;
+  flex: 1;
+  align-items: flex-end;
 `
 
 const Name = styled(Text)`
@@ -51,13 +57,43 @@ const Post = props => {
       <PostHeader>
         <Avatar size='medium' source={{uri: base_url + avatar}}/>
         <NameAndLocationWrapper>
-          <Name>{name}</Name>
-          <Location>{location}</Location>
+          <View>
+            <Name>{name}</Name>
+            <Location>{location}</Location>
+          </View>
+          <Text 
+            category='label'
+            style={{
+            //  textShadowColor: 'rgba(0, 0, 0, 0.95)',
+            //  textShadowOffset: {width: 0, height: 0},
+            //  textShadowRadius: 5,
+            //  color: '#fff',
+            //  position: 'absolute',
+            //  right: 10,
+            //  bottom: 10,
+            color: '#888',
+            alignSelf: 'flex-end',
+            justifySelf: 'flex-start',
+          }}>{dayjs(props.created_at).fromNow()}</Text>
         </NameAndLocationWrapper>
       </PostHeader>
       <PostImageWrapper>
         {/* <PostImage uri={props.image_medium}/> */}
-        <PostImage source={{uri: base_url + url}} ratio={height / width} resizeMode='cover' />
+        <PostImage source={{uri: base_url + url}} ratio={height / width} resizeMode='cover'
+          imageStyle={{
+            borderRadius: 15,
+          }}
+        >
+          {/* <Icon name='heart-outline' style={{
+            width: 40,
+            height: 40,
+            padding: 10,
+            alignSelf: 'flex-end',
+            // position: 'absolute',
+            // zIndex: 9999,
+          }} /> */}
+
+        </PostImage>
       </PostImageWrapper>
     </Container>
   )

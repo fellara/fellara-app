@@ -17,7 +17,8 @@ const fields = [
   {
     label: 'Avatar',
     type: 'image',
-    name: 'profile_image'
+    name: 'profile_image',
+    required: true,
   },   
   {
     label: 'First Name',
