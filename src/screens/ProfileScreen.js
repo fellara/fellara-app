@@ -118,7 +118,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
                 <View style={{ flexDirection: 'column', margin, width: height}}>
                   <Image style={styles.imageThumbnail} 
                     resizeMode='cover'
-                    source={{ uri: base_url + item.clean_image_medium.url }} />
+                    source={{ uri: base_url + item.clean_image_small?.url }} />
                     {/* onLayout={event => setHeight(event.layout.width)} */}
                 </View>
               )}
