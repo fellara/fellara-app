@@ -1,7 +1,7 @@
 import fetchAPI from './'
 
 export const getPosts = async (tag) => {
-    let url = 'posts/'
+    let url = 'post/list/'
     if (tag) {
         url += '?tag=' + tag
     }
@@ -9,14 +9,14 @@ export const getPosts = async (tag) => {
 }
 
 export const getMyPosts = async () => {
-    let url = 'posts/mine/'
+    let url = 'post/list/mine/'
     return await fetchAPI(url)
 }
 
 export const getTags = async () => {
-    return await fetchAPI('tags/')
+    return await fetchAPI('post/tags/')
 }
 
 export const createPost = async (payload) => {
-    return await fetchAPI('post/', 'POST', payload, true)
+    return await fetchAPI('post/create/', 'POST', payload, true)
 }

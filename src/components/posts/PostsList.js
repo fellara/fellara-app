@@ -9,6 +9,11 @@ import Container from '../../components/layouts'
 import layouts from '../../constants/layouts'
 
 const PostsList = props => {
+    // const [next, setNext] 
+    const handlePagination = () => {
+
+    }
+
     return (
         <Container 
             // A fix for flatlist not scrolling in web.
@@ -20,6 +25,7 @@ const PostsList = props => {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (<Post {...item} />)}
                 data={props.data}
+                onEndReached={handlePagination}
                 contentContainerStyle={{
                     paddingBottom: 120,
                 }}
