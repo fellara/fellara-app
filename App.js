@@ -6,6 +6,8 @@ import { Provider } from 'react-redux'
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider as UIProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+
+import {theme} from './theme'
 import {store} from './src/store'
 import useCachedResources from './src/hooks/useCachedResources';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
@@ -29,7 +31,7 @@ export default function App(props) {
   } else {
     return (
       <Provider store={store}>
-        <UIProvider {...eva} theme={eva.light}>
+        <UIProvider {...eva} theme={{...eva.light, ...theme}}>
           <IconRegistry icons={EvaIconsPack} />
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
