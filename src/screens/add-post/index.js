@@ -10,7 +10,7 @@ import ImagePicker from '../../components/forms/Image'
 import PublishPostScreen from './PublishPostScreen';
 
 const StyledButton = styled(ImagePicker)`
-    border-radius: 50%;
+    border-radius: 50;
     width: 150px;
     height: 150px;
     background-color: #eee;
@@ -31,7 +31,7 @@ const AddPostScreen = (props) => {
     const handleChange = (file, uri) => {
         setImage({file, uri})
     }
-    
+
     return (<>
       {image && <TopNavigation onBack={() => setImage(null)} title={'Publish Post'}/>}
       <StyledLayout

@@ -13,6 +13,10 @@ import {login, getProfile} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
 import layouts from '../../constants/layouts'
 
+const StyledLayout = styled(Layout)`
+  padding-top: 40
+`
+
 const fields = [
   {
     label: 'Email',
@@ -20,7 +24,7 @@ const fields = [
     type: 'text',
     name: 'email',
     required: true,
-  }, 
+  },
   {
     label: 'Password',
     type: 'password',
@@ -32,7 +36,7 @@ const fields = [
 
 const LoginScreen = props => {
   const [loading, setLoading] = useState(false)
-  
+
   const handleSubmit = (data) => {
     setLoading(true)
     login(data).then(res => {
@@ -46,13 +50,13 @@ const LoginScreen = props => {
     })
   }
   return (
-    <Layout
+    <StyledLayout
       style={{height: layouts.window.height}}
     >
       <Container as={ScrollView}>
         <Heading>Login</Heading>
         <Subheading marginbottom>{!props._back ? 'Login to get more of Fellas stuff!' : 'In order to move further you need to login first.'}</Subheading>
-        <Form 
+        <Form
           fields={fields}
           onSubmit={handleSubmit}
           loading={loading}
@@ -64,7 +68,7 @@ const LoginScreen = props => {
           Not registered yet? Join now!
         </Button>
       </Container>
-    </Layout>
+    </StyledLayout>
   );
 }
 

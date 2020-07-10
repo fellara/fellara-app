@@ -41,31 +41,37 @@ const TagsList = props => {
     }
 
     const handleLayout = ({nativeEvent}, id) => {
-        const {width} = nativeEvent.layout 
+        const {width} = nativeEvent.layout
         let newSizes = sizes.filter(s => s.id !== id)
-        
+
         setSizes(prev => ([...prev, {id, width}]))
     }
 
     return (
         <FlatList
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (<Tag 
+            renderItem={({ item }) => (
+              <Tag
                 onLayout={(event) => handleLayout(event, item.id)}
-                active={props.active === item.id} 
+                active={props.active === item.id}
                 onPress={() => handlePress(item.id)}
-            >
-                <StyledText style={{
+              >
+                <StyledText
+                  style={{
                     color: '#fff'
-                }}>{item.title}</StyledText>
-            </Tag>)}
+                  }}
+                >
+                {item.title}
+                </StyledText>
+              </Tag>
+            )}
             data={props.data}
             horizontal={true}
             getItemLayout={getItemLayout}
             ref={(ref) => { list = ref; }}
             contentContainerStyle={{
                 paddingLeft: 10,
-                paddingTop: 10,
+                paddingTop: 45,
             }}
         />
     )
