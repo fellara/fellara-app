@@ -13,8 +13,10 @@ const Tag = styled(TouchableOpacity)`
   margin-right: 10px;
   border-radius: 20px;
   height: 35px;
+  width: 90px;
   padding: 0 20px;
   justify-content: center;
+  align-items: center;
 `
 
 const StyledText = styled(Text)`
@@ -27,8 +29,9 @@ const TagsList = props => {
 
     const getItemLayout = (data, index) => {
         let current = data[index]
-        // return({ length: 80, offset: 50 * index, index })
-        return({ length: sizes.find(s => current.id === s.id)?.width || 70, offset: 50 * index, index })
+        const length = 85
+        // const length = sizes.find(s => current.id === s.id)?.width || 70
+        return({ length: (length), offset: (length - 15) * index, index })
     }
 
     const handlePress = id => {
