@@ -104,7 +104,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
           <Header>
             <Avatar 
               size='giant' 
-              source={profile.profile_image} 
+              source={profile.profile_image_thumbnail} 
               style={{'width': 100, 'height': 100, 'marginBottom': 10}} 
               resizeMode='cover'
             />
