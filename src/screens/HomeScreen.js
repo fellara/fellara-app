@@ -38,8 +38,10 @@ const HomeScreen = props => {
   }, [props.updates])
 
   const changeActiveTag = (tag) => {
-    setActiveTag(tag)
-    setPosts([])
+    if (activeTag !== tag) {
+      setActiveTag(tag)
+      setPosts([])
+    }
   }
 
   const handleGetPosts = (tag, page) => {
