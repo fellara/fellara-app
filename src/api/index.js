@@ -4,6 +4,9 @@ import {store} from '../store'
 import {api_url} from '../constants'
 import {setUploadProgress} from '../actions/posts'
 
+export const CancelToken = axios.CancelToken;
+export const source = CancelToken.source();
+
 const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) => {
   let config = {
     method: method || 'GET',
@@ -28,9 +31,6 @@ const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) =
     config.data = data
   }
 
-  const CancelToken = axios.CancelToken;
-  const source = CancelToken.source();
-
   store.dispatch(setUploadProgress(0))
   config = {
     ...config,
@@ -49,7 +49,7 @@ const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) =
     })
   }).catch(error => {
     if (axios.isCancel(error)) {
-      console.log('Request canceled', thrown.message);
+      console.log('Request canceled', error);
     } else {
       resolve({
         status: error.status,

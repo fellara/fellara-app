@@ -3,6 +3,7 @@ import { Layout } from '@ui-kitten/components';
 import { connect } from 'react-redux'
 import { Text } from 'react-native'
 
+import { source } from '../api'
 import { getPosts, getTags } from '../api/posts'
 import { forceTagUpdateDone } from '../actions/updates'
 import PostsList from '../components/posts/PostsList';
@@ -49,6 +50,8 @@ const HomeScreen = props => {
   }
 
   const handleGetPosts = (tag, page) => {
+    // source.cancel()
+
     getPosts(tag, page).then(res => {
       if (res.status === 200) {
         setPosts([...posts, ...res.data.results])

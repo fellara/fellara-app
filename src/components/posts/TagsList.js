@@ -11,18 +11,18 @@ import Text from '../typography';
 import Container from '../../components/layouts'
 
 const Tag = styled(TouchableOpacity)`
-  background: ${p => p.active ? '#222' : '#b1b1b1'};
+  background: ${p => p.active ? '#222' : '#fff'};
+  ${p => !p.active && 'border: 1px solid #b1b1b1'};
   margin-right: 10px;
   border-radius: 20px;
   height: 35px;
-  width: 90px;
   padding: 0 20px;
   justify-content: center;
   align-items: center;
 `
 
 const StyledText = styled(Text)`
-
+  color: ${p => !p.active ? '#444' : '#fff'};
 `
 
 const TagsList = props => {
@@ -64,9 +64,7 @@ const TagsList = props => {
                 onPress={() => handlePress(item.id)}
               >
                 <StyledText
-                  style={{
-                    color: '#fff'
-                  }}
+                  active={props.active === item.id}
                 >
                 {item.title}
                 </StyledText>
