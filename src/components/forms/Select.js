@@ -4,7 +4,7 @@ import { IndexPath, Layout, Select, SelectItem } from '@ui-kitten/components';
 
 const CustomSelect = (props) => {
   const [selectedIndex, setSelectedIndex] = React.useState(
-    new IndexPath(props.options.map(option => option.value).indexOf(props.default) || 0)
+    new IndexPath(props.options.map(option => option.value).indexOf(props.value || props.default) || 0)
   );
 
   const handleSelect = (index) => {

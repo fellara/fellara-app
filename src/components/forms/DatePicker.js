@@ -7,7 +7,7 @@ const CalendarIcon = (props) => (
 );
 
 export const CustomCalendar = (props) => {
-  const [date, setDate] = React.useState(new Date());
+  const [date, setDate] = React.useState(new Date(props.value || props.default || null));
 
   const now = new Date();
   const min = new Date(now.getFullYear() - 120, now.getMonth(), now.getDate());

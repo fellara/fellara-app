@@ -17,7 +17,7 @@ export const getProfile = async () => {
 }
 
 export const updateProfile = async (data) => {
-    return await fetchAPI('user/rest-auth/user/', 'PATCH', data)
+    return await fetchAPI('user/rest-auth/user/', 'PATCH', data, true)
 }
 
 export const getCountries = async (query = '') => {

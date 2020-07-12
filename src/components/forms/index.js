@@ -32,7 +32,9 @@ const Form = ({loading, ...props}) => {
     useEffect(() => {
         setForm(form => {
             let data = {}
-            props.fields.forEach(field => {
+            props.fields
+            .filter(field => !field.invisible)
+            .forEach(field => {
                 data = {...data, [field.name]: field.default || null}
             });
 
@@ -53,8 +55,10 @@ const Form = ({loading, ...props}) => {
 
     const validateFields = () => {
         let tempErrors = []
-        props.fields.forEach(field => {
-            if (field.required && !form[field.name]) {
+        props.fields
+        .filter(field => !field.invisible)
+        .forEach(field => {
+            if (field.required && !form[field.name] && !field.value) {
                 tempErrors = [...tempErrors, {type: 'EMPTY', field: field.name}]
             } else if (field.regex && !checkRegex(form[field.name], field.regex)) {
                 tempErrors = [...tempErrors, {type: 'REGEX', field: field.name}]
@@ -68,9 +72,14 @@ const Form = ({loading, ...props}) => {
         else return true;
     }
 
+    console.log(form);
+    
+
     return (
         <View>
-            {props.fields.map(field => {
+            {props.fields
+            .filter(field => !field.invisible)
+            .map(field => {
                 let label = field.label
                 if (field.required) label += ' *';
 

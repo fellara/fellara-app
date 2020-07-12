@@ -7,7 +7,7 @@ const AlertIcon = (props) => (
 );
 
 const CustomInput = (props) => {
-    const [value, setValue] = React.useState(null);
+    const [value, setValue] = React.useState(props.value || props.default);
     const [secureTextEntry, setSecureTextEntry] = React.useState(true);
 
     const toggleSecureEntry = () => {
@@ -20,6 +20,11 @@ const CustomInput = (props) => {
         </TouchableWithoutFeedback>
     );
 
+    const handleChange = (val) => {
+        setValue(val)
+        props.onChange(val)
+    }
+
     return (
         <>
             <Input
@@ -29,7 +34,7 @@ const CustomInput = (props) => {
                 accessoryRight={props.type === 'password' && renderIcon}
                 captionIcon={props.caption && AlertIcon}
                 secureTextEntry={props.type === 'password' && secureTextEntry}
-                onChangeText={props.onChange}
+                onChangeText={handleChange}
             />
         </>
     );

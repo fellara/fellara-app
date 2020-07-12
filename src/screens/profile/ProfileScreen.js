@@ -2,20 +2,22 @@ import React, {useEffect, useState} from 'react';
 import { ScrollView, View, Image, FlatList, StyleSheet } from 'react-native';
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
+import { Avatar, Button, Layout, Icon, MenuItem, OverflowMenu, 
+  TopNavigationAction } from '@ui-kitten/components';
 
-import Form from '../components/forms'
-import Container from '../components/layouts';
-import Text, { Heading, Subheading } from '../components/typography';
-import AuthScreen from '../navigation/AuthNavigator';
-import { Avatar, Button, Layout } from '@ui-kitten/components';
-import { logout } from '../api/user';
-import { getMyPosts } from '../api/posts';
-import { logoutUser } from '../actions/user';
-import { forceProfileUpdateDone } from '../actions/updates';
-import TopNavigation from '../components/layouts/TopNavigation'
-import PostsList from '../components/posts/PostsList';
-import {base_url} from '../constants/'
-import layouts from '../constants/layouts'
+import Form from '../../components/forms'
+import Container from '../../components/layouts';
+import Text, { Heading, Subheading } from '../../components/typography';
+import AuthScreen from '../../navigation/AuthNavigator';
+import { logout } from '../../api/user';
+import { getMyPosts } from '../../api/posts';
+import { logoutUser } from '../../actions/user';
+import { forceProfileUpdateDone } from '../../actions/updates';
+import TopNavigation from '../../components/layouts/TopNavigation'
+import PostsList from '../../components/posts/PostsList';
+import {base_url} from '../../constants/'
+import layouts from '../../constants/layouts'
+import EditProfileScreen from './EditProfileScreen'
 
 const Header = styled(View)`
   align-items: center;
@@ -40,10 +42,36 @@ const StyledImage = styled(Image)`
   margin: 15px;
 `
 
+const MenuIcon = (props) => (
+  <Icon {...props} name='more-vertical'/>
+);
+
+const CheckIcon = (props) => (
+  <Icon {...props} name='checkmark'/>
+);
+
+const EditIcon = (props) => (
+  <Icon {...props} name='edit'/>
+);
+
+const LogoutIcon = (props) => (
+  <Icon {...props} name='log-out'/>
+);
+
 const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
   const [posts, setPosts] = useState([])
+  const [editing, setEditing] = useState(false)
   // const [height, setHeight] = useState(100)
   const [loading, setLoading] = useState(false)
+  const [menuVisible, setMenuVisible] = React.useState(false);
+
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+
+  const renderMenuAction = () => (
+    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu}/>
+  );
 
   const margin = 2;
   const height = (layouts.window.width - (20 + 6 * margin)) / 3
@@ -58,6 +86,11 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
   }, [isLoggedIn])
 
   useEffect(() => {
+    console.log(profile);
+    
+  }, [profile])
+
+  useEffect(() => {
     if (updates) {
       getMyPosts().then(res => {
         setPosts(res.data.results)
@@ -69,6 +102,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
   const handleLogout = () => {
     props.logoutUser()
     logout()
+    setMenuVisible(false);
   }
 
   if (!isLoggedIn) return <AuthScreen _back={_back} />;
@@ -91,8 +125,38 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
     },
   });
 
+  const renderOverflowMenuAction = () => (
+    <React.Fragment>
+      <OverflowMenu
+        anchor={renderMenuAction}
+        visible={menuVisible}
+        onBackdropPress={toggleMenu}>
+        <MenuItem accessoryLeft={EditIcon} title='Edit'
+          onPress={handleSetEditing}
+        />
+        <MenuItem accessoryLeft={LogoutIcon} title='Logout'
+          onPress={handleLogout}
+        />
+      </OverflowMenu>
+    </React.Fragment>
+  );
+
+  const handleSetEditing = () => {
+    setEditing(true);
+    setMenuVisible(false)
+  }
+
+  const renderSubmitEditing = () => (
+      <TopNavigationAction icon={CheckIcon}
+        onPress={() => setEditing(false)}
+      />
+  );
+
   return (<>
-      <TopNavigation title={'Profile'} noBack />
+      <TopNavigation title={!editing ? 'Profile' : 'Edit Profile'} noBack={!editing}
+        onBack={() => setEditing(false)}
+        accessoryRight={!editing ? renderOverflowMenuAction : null}
+      />
       <Container 
           as={ScrollView} 
           center
@@ -101,6 +165,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
         <StyledLayout
           style={{height: layouts.window.height}}
         >
+          {!editing ? <>
           <Header>
             <Avatar 
               size='giant' 
@@ -127,11 +192,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
               keyExtractor={(item, index) => index.toString()}
             />
           </ImagesWrap>
-          <Button appearance='ghost' status='primary'
-            onPress={handleLogout}
-          >
-            Exit
-          </Button>
+          </> : <EditProfileScreen profile={profile} setEditing={setEditing}/>}
         </StyledLayout>
       </Container>
     </>

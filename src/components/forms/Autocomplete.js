@@ -14,7 +14,7 @@ const CustomAutoComplete = (props) => {
   useEffect(() => {
     async function fetchData() {
       if (!props.preventPreload || !props.preventPreload(data)) {
-        loadOptions('', true);
+        loadOptions(props.value || props.default || '', true);
       }
     }
     fetchData();
@@ -25,11 +25,14 @@ const CustomAutoComplete = (props) => {
     props.onChange(data[index].id)
   };
 
-  const loadOptions = async (query = '') => {
+  const loadOptions = async (query = '', fromEffect) => {
     let res = []
+    console.log(query);
+    
     if (props.loadOptions) res = await props.loadOptions(query, props.data)
-
-    setData(res.data.results.map(d => ({id: d.id, title: d.name})));
+    const cleaned = res.data.results.map(d => ({id: d.id, title: d.name}))
+    setData(cleaned);
+    if (fromEffect && (props.value || props.default)) setValue(cleaned[0]?.title)
   }
 
   const onChangeText = async (query) => {

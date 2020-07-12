@@ -5,7 +5,7 @@ import { BottomNavigation, BottomNavigationTab, Layout, Icon } from '@ui-kitten/
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import AddPostScreen from '../screens/add-post';
-import ProfileScreen from '../screens/ProfileScreen';
+import ProfileScreen from '../screens/profile/ProfileScreen';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';

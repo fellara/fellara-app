@@ -31,6 +31,7 @@ const CustomTopNavigation = (props) => {
     
     return (<TopNavigation
         accessoryLeft={() => !props.noBack ? renderBackAction(props) : renderNoBack()}
+        accessoryRight={props.accessoryRight && props.accessoryRight}
         title={props.title}
         onBack={props.onBack}
     />

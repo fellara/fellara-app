@@ -5,8 +5,10 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { Icon, Avatar, Input} from '@ui-kitten/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { urltoFile } from '../../utils';
 import styled from 'styled-components/native'
+
+import { base_url } from '../../constants';
+import { urltoFile } from '../../utils';
 
 const StyledTouchable = styled(TouchableOpacity)`
   justify-content: center;
@@ -25,13 +27,13 @@ export default class CustomImage extends React.Component {
 
   render() {
     let { image } = this.state;
-
+    
     return (
       <StyledTouchable
         {...this.props}
         onPress={this._pickImage} 
       >
-        {image && <Avatar size='giant' source={{uri: image}} 
+        {(image || this.props.value || this.props.default) && <Avatar size='giant' source={{uri: (image || this.props.value || this.props.default)}} 
           style={{position: 'absolute', backgroundColor: '#ccc', width: 70, height: 70}}
           resizeMode='cover'
         />}
@@ -82,6 +84,8 @@ export default class CustomImage extends React.Component {
         fileType = uriParts[0]
         file = urltoFile(result.uri, 'photo.' + fileType)
       }
+
+      console.log('filefile', file, result);
 
       this.props.onChange(file, result.uri)
     } catch (E) {
