@@ -21,7 +21,7 @@ const HomeScreen = props => {
 
   useEffect(() => {
     setTags(props.tags)
-    setActiveTag(props.tags[0]?.id)
+    changeActiveTag(props.tags[0]?.id)
   }, [props.tags])
 
   useEffect(() => {
@@ -36,6 +36,11 @@ const HomeScreen = props => {
       props.forceTagUpdateDone()
     }
   }, [props.updates])
+
+  const changeActiveTag = (tag) => {
+    setActiveTag(tag)
+    setPosts([])
+  }
 
   const handleGetPosts = (tag, page) => {
     getPosts(tag).then(res => {
@@ -54,7 +59,7 @@ const HomeScreen = props => {
 
   return (
     <Layout>
-      <TagsList data={tags} active={activeTag} setActive={setActiveTag}/>
+      <TagsList data={tags} active={activeTag} setActive={changeActiveTag}/>
       <PostsList data={posts} onPagination={handlePagination} paginationLoading={paginationLoading}/>
     </Layout>
   )
