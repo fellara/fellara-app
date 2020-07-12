@@ -83,32 +83,33 @@ const Form = ({loading, ...props}) => {
                 let label = field.label
                 if (field.required) label += ' *';
 
+                const params = {
+                    ...field,
+                    onChange: (value) => handleChange(value, field.name),
+                    data: form,
+                    status: errors.map(error => error.field).includes(field.name) ? 'danger' : '',
+                }
+
                 return (<React.Fragment key={field.name}>
                 <Label>{label}</Label>
                 {field.type === 'image'
                 ? <Image
-                    {...field}
-                    onChange={(value) => handleChange(value, field.name)}
+                    {...params}
                 />
                 : field.type === 'select'
                     ? <Select
-                        {...field}
-                        onChange={(value) => handleChange(value, field.name)}
+                        {...params}
                     />
                     :  field.type === 'date'
                         ? <DatePicker
-                            {...field}
-                            onChange={(value) => handleChange(value, field.name)}
+                            {...params}
                         />
                         :  field.type === 'autocomplete'
                             ? <Autocomplete
-                                {...field}
-                                data={form}
-                                onChange={(value) => handleChange(value, field.name)}
+                                {...params}
                             />
                             : <Input
-                                {...field}
-                                onChange={(value) => handleChange(value, field.name)}
+                                {...params}
                             />}
 
                     {errors

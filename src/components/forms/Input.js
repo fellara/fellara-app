@@ -25,10 +25,14 @@ const CustomInput = (props) => {
         props.onChange(val)
     }
 
+    console.log('statusstatus', props);
+    
+
     return (
         <>
             <Input
                 value={value}
+                status={props.status}
                 placeholder={props.placeholder}
                 caption={props.caption}
                 accessoryRight={props.type === 'password' && renderIcon}

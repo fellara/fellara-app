@@ -9,6 +9,7 @@ import styled from 'styled-components/native'
 
 import { base_url } from '../../constants';
 import { urltoFile } from '../../utils';
+import {theme} from '../../../theme'
 
 const StyledTouchable = styled(TouchableOpacity)`
   justify-content: center;
@@ -18,7 +19,8 @@ const StyledTouchable = styled(TouchableOpacity)`
   height: 70px;
   borderRadius: 50px; 
   align-self: center;
-`
+  ${p => p.status === 'danger' && `border: 1px solid ${theme['color-danger-500']}`};
+  `
 
 export default class CustomImage extends React.Component {
   state = {
@@ -84,8 +86,6 @@ export default class CustomImage extends React.Component {
         fileType = uriParts[0]
         file = urltoFile(result.uri, 'photo.' + fileType)
       }
-
-      console.log('filefile', file, result);
 
       this.props.onChange(file, result.uri)
     } catch (E) {
