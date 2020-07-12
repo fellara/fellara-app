@@ -1,15 +1,15 @@
 import fetchAPI from './'
 
-export const getPosts = async (tag) => {
-    let url = 'post/list/'
+export const getPosts = async (tag, page = 1) => {
+    let url = `post/list/?page=${page}`
     if (tag) {
-        url += '?tag=' + tag
+        url += '&tag=' + tag
     }
     return await fetchAPI(url)
 }
 
-export const getMyPosts = async () => {
-    let url = 'post/list/mine/'
+export const getMyPosts = async (page = 1) => {
+    let url = `post/list/mine/?page=${page}`
     return await fetchAPI(url)
 }
 

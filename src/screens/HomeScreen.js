@@ -13,6 +13,8 @@ const HomeScreen = props => {
   if (props.route.params) tag = props.route.params.tag;
 
   const [posts, setPosts] = useState([])
+  const [next, setNext] = useState(null)
+  const [paginationLoading, setPaginationLoading] = useState(false)
   const [tags, setTags] = useState([])
   const [activeTag, setActiveTag] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -20,35 +22,40 @@ const HomeScreen = props => {
   useEffect(() => {
     setTags(props.tags)
     setActiveTag(props.tags[0]?.id)
-    // tag = null;
-    // getPosts(props.tags[0]?.id).then(res => {
-    //   setPosts(res.data.results)
-    // })
   }, [props.tags])
 
   useEffect(() => {
-    // if (tag) setActiveTag(activeTag)
-    if (activeTag) getPosts(activeTag).then(res => {
-      setPosts(res.data.results)
-    })
+    if (activeTag) {
+      handleGetPosts(activeTag)
+    }
   }, [activeTag])
 
   useEffect(() => {
-    // if (tag) setActiveTag(activeTag)
-    console.log(props.updates, activeTag);
-    
     if (props.updates && (props.updates === activeTag)) {
-      getPosts(activeTag).then(res => {
-        setPosts(res.data.results)
-      })
+      handleGetPosts(activeTag)
       props.forceTagUpdateDone()
     }
   }, [props.updates])
 
+  const handleGetPosts = (tag, page) => {
+    getPosts(tag).then(res => {
+      setPosts([...res.data.results, ...posts])
+      setNext(res.data.next)
+      setPaginationLoading(false)
+    })
+  }
+
+  const handlePagination = () => {
+    if (next) {
+      setPaginationLoading(true)
+      handleGetPosts(activeTag, next)
+    }
+  }
+
   return (
     <Layout>
       <TagsList data={tags} active={activeTag} setActive={setActiveTag}/>
-      <PostsList data={posts} />
+      <PostsList data={posts} onPagination={handlePagination} paginationLoading={paginationLoading}/>
     </Layout>
   )
 }
