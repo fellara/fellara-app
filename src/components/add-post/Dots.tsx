@@ -78,9 +78,9 @@ const UpAndDown = ({
       case 'rotate':
         transform.push({ rotate });
         break;
-      // case 'skew':
-      //   transform.push({ skewX, skewY: skewX });
-      //   break;
+      case 'skew':
+        transform.push({ skewX });
+        break;
       case 'translateX':
         transform.push({ translateX });
         break;
