@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { ScrollView, SafeAreaView } from 'react-native';
+import { ScrollView, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Button, Layout } from '@ui-kitten/components';
 import {connect} from 'react-redux'
 
@@ -16,21 +16,21 @@ const fields = [
     type: 'image',
     name: 'profile_image',
     required: true,
-  },   
+  },
   {
     label: 'First Name',
     placeholder: 'John',
     type: 'text',
     name: 'first_name',
     required: true,
-  },  
+  },
   {
     label: 'Last Name',
     placeholder: 'White',
     type: 'text',
     name: 'last_name',
     required: true,
-  }, 
+  },
   {
     label: 'Country',
     placeholder: 'United States',
@@ -38,7 +38,7 @@ const fields = [
     name: 'country',
     loadOptions: getCountries,
     required: true,
-  },  
+  },
   {
     label: 'City',
     placeholder: 'NYC',
@@ -52,7 +52,7 @@ const fields = [
     selectTextOnFocus: false,
     // disabled: (data) => data.country,
     required: true,
-  }, 
+  },
   {
     label: 'Email',
     placeholder: 'jackwhite@example.com',
@@ -60,7 +60,7 @@ const fields = [
     type: 'text',
     name: 'email',
     required: true,
-  }, 
+  },
   {
     label: 'Gender',
     type: 'select',
@@ -72,13 +72,13 @@ const fields = [
       {title: 'Non-Binary', value: 3},
       {title: 'Prefer Not to Disclose', value: 4},
     ]
-  }, 
+  },
   {
     label: 'Birth Date',
     placeholder: 'Pick Date',
     type: 'date',
     name: 'date_of_birth'
-  }, 
+  },
   {
     label: 'Password',
     type: 'password',
@@ -88,7 +88,7 @@ const fields = [
       if (data.password1 === data.password2) return true
     },
     validatorError: 'Password and confirm password must be the same.'
-  },  
+  },
   {
     label: 'Confirm Password',
     type: 'password',
@@ -116,27 +116,36 @@ const RegisterScreen = props => {
     <Layout
       style={{height: layouts.window.height}}
     >
-      <SafeAreaView style={{
-        flex: 1,
-      }}>
-        <Container as={ScrollView}
-          paddingbottom={120}
-        >
-          <Heading>Register</Heading>
-          <Subheading marginbottom>It took you less than a minute! But helps the others get to know you, your culture and your people.</Subheading>
-          <Form 
-            fields={fields}
-            onSubmit={handleSubmit}
-            loading={loading}
-          />
-
-          <Button style={{marginTop: 20}} appearance='ghost' status='primary'
-            onPress={() => props.navigation.navigate('login')}
+        <SafeAreaView style={{
+          flex: 1,
+        }}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            enabled
           >
-            Already registered? Login then!
-          </Button>
-        </Container>
-      </SafeAreaView>
+            <Container as={ScrollView}
+              paddingbottom={120}
+              contentContainerStyle={{
+                paddingBottom: 90
+              }}
+            >
+              <Heading>Register</Heading>
+              <Subheading marginbottom>It took you less than a minute! But helps the others get to know you, your culture and your people.</Subheading>
+              <Form
+                fields={fields}
+                onSubmit={handleSubmit}
+                loading={loading}
+              />
+
+              <Button style={{marginTop: 20}} appearance='ghost' status='primary'
+                onPress={() => props.navigation.navigate('login')}
+              >
+                Already registered? Login then!
+              </Button>
+
+            </Container>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
     </Layout>
   );
 }

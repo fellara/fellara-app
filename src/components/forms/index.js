@@ -18,7 +18,7 @@ const StyledButton = styled(Button)`
 
 const LoadingIndicator = (props) => (
     <View>
-        <Spinner size='small' 
+        <Spinner size='small'
             status='control'
         />
     </View>
@@ -73,7 +73,7 @@ const Form = ({loading, ...props}) => {
     }
 
     console.log(form);
-    
+
 
     return (
         <View>
@@ -86,22 +86,22 @@ const Form = ({loading, ...props}) => {
                 return (<React.Fragment key={field.name}>
                 <Label>{label}</Label>
                 {field.type === 'image'
-                ? <Image 
+                ? <Image
                     {...field}
                     onChange={(value) => handleChange(value, field.name)}
                 />
                 : field.type === 'select'
-                    ? <Select 
+                    ? <Select
                         {...field}
                         onChange={(value) => handleChange(value, field.name)}
                     />
                     :  field.type === 'date'
-                        ? <DatePicker 
+                        ? <DatePicker
                             {...field}
                             onChange={(value) => handleChange(value, field.name)}
                         />
                         :  field.type === 'autocomplete'
-                            ? <Autocomplete 
+                            ? <Autocomplete
                                 {...field}
                                 data={form}
                                 onChange={(value) => handleChange(value, field.name)}
@@ -110,7 +110,7 @@ const Form = ({loading, ...props}) => {
                                 {...field}
                                 onChange={(value) => handleChange(value, field.name)}
                             />}
-                
+
                     {errors
                         .filter(error => error.type === 'EMPTY')
                         .map(error => error.field)
@@ -126,8 +126,8 @@ const Form = ({loading, ...props}) => {
                 </React.Fragment>)
             })}
 
-            <StyledButton 
-                status='primary' 
+            <StyledButton
+                status='primary'
                 onPress={handleSubmit}
                 accessoryLeft={loading && LoadingIndicator}
                 disabled={loading}
