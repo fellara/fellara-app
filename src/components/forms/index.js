@@ -41,8 +41,6 @@ const Form = ({loading, ...props}) => {
     }, [])
 
     const handleSubmit = () => {
-        // Validation commented in order to test the process.
-        // Must get uncommented as soon as the tests are gone.
         if (!validateFields()) return
         const cleanedForm = Object.entries(form).reduce((a,[k,v]) => (v == null ? a : (a[k]=v, a)), {})
 

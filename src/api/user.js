@@ -25,5 +25,7 @@ export const getCountries = async (query = '') => {
 }
 
 export const getCities = async (query = '', country) => {
-    return await fetchAPI(`places/cities/?country=${country}&search=${query}`)
+    let url = `places/cities/?search=${query}`
+    if (country) url += `&country=${country}`
+    return await fetchAPI(url)
 }

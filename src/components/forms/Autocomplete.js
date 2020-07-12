@@ -4,11 +4,8 @@ import { Autocomplete, AutocompleteItem } from '@ui-kitten/components';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 const CustomAutoComplete = (props) => {
-  const [value, setValue] = useState(null);
-  const [showed, setShowed] = useState(false);
-  const [data, setData] = useState([{
-    
-  }]);
+  const [value, setValue] = useState('');
+  const [data, setData] = useState([{}]);
 
   let input = useRef()
 
@@ -16,8 +13,6 @@ const CustomAutoComplete = (props) => {
 
   useEffect(() => {
     async function fetchData() {
-      console.log(props.preventPreload && props.preventPreload(data));
-    
       if (!props.preventPreload || !props.preventPreload(data)) {
         loadOptions('', true);
       }
@@ -30,15 +25,10 @@ const CustomAutoComplete = (props) => {
     props.onChange(data[index].id)
   };
 
-  const loadOptions = async (query = '', fromEffect) => {
+  const loadOptions = async (query = '') => {
     let res = []
     if (props.loadOptions) res = await props.loadOptions(query, props.data)
-    // input.current.show()
-    if (!input.current.isFocused()) input.current.show()
-    // if (!fromEffect && !showed) {
-    //   setShowed(true)
-    // }
-    
+
     setData(res.data.results.map(d => ({id: d.id, title: d.name})));
   }
 
@@ -58,6 +48,7 @@ const CustomAutoComplete = (props) => {
     <Autocomplete
       placeholder={props.placeholder}
       value={value}
+      disabled={props.disabled && props.disabled(props.data)}
       onSelect={onSelect}
       ref={input}
       onChangeText={onChangeText}

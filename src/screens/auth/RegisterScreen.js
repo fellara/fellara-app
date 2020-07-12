@@ -45,10 +45,12 @@ const fields = [
     type: 'autocomplete',
     name: 'city',
     preventPreload: (data) => {
-      if (data.country) return false;
-      else return true;
+      if (!data.country) return true;
     },
     loadOptions: (query, data) => getCities(query, data.country),
+    disabled: (data) => !data.country,
+    selectTextOnFocus: false,
+    // disabled: (data) => data.country,
     required: true,
   }, 
   {
