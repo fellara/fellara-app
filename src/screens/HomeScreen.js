@@ -14,6 +14,7 @@ const HomeScreen = props => {
 
   const [posts, setPosts] = useState([])
   const [next, setNext] = useState(null)
+  const [page, setPage] = useState(1)
   const [paginationLoading, setPaginationLoading] = useState(false)
   const [tags, setTags] = useState([])
   const [activeTag, setActiveTag] = useState(null)
@@ -55,7 +56,8 @@ const HomeScreen = props => {
   const handlePagination = () => {
     if (next) {
       setPaginationLoading(true)
-      handleGetPosts(activeTag, next)
+      handleGetPosts(activeTag, page + 1)
+      setPage(page + 1)
     }
   }
 

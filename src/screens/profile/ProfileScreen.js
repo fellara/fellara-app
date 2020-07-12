@@ -3,7 +3,7 @@ import { ScrollView, View, Image, FlatList, StyleSheet } from 'react-native';
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 import { Avatar, Button, Layout, Icon, MenuItem, OverflowMenu, 
-  TopNavigationAction } from '@ui-kitten/components';
+  TopNavigationAction, Spinner } from '@ui-kitten/components';
 
 import Form from '../../components/forms'
 import Container from '../../components/layouts';
@@ -42,6 +42,12 @@ const StyledImage = styled(Image)`
   margin: 15px;
 `
 
+const LoadingWrap = styled(View)`
+    padding-bottom: 120px;
+    justify-content: center;
+    align-items: center;
+`
+
 const MenuIcon = (props) => (
   <Icon {...props} name='more-vertical'/>
 );
@@ -64,6 +70,9 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
   // const [height, setHeight] = useState(100)
   const [loading, setLoading] = useState(false)
   const [menuVisible, setMenuVisible] = React.useState(false);
+  const [next, setNext] = useState(null)
+  const [page, setPage] = useState(1)
+  const [paginationLoading, setPaginationLoading] = useState(false)
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -80,9 +89,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
   if (props.route.params) _back = props.route.params._back;
 
   useEffect(() => {
-    getMyPosts().then(res => {
-      setPosts(res.data.results)
-    })
+    handleGetPosts()
   }, [isLoggedIn])
 
   useEffect(() => {
@@ -92,12 +99,29 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
 
   useEffect(() => {
     if (updates) {
-      getMyPosts().then(res => {
-        setPosts(res.data.results)
-      })
+      handleGetPosts()
+
       props.forceProfileUpdateDone()
     }
   }, [updates])
+
+  const handleGetPosts = (p) => {
+    getMyPosts(p).then(res => {
+      setPosts([...res.data.results, ...posts])
+      setNext(res.data.next)
+      setPaginationLoading(false)
+    })
+  }
+
+  const handlePagination = () => {
+    console.log('hay');
+    
+    if (next) {
+      setPaginationLoading(true)
+      handleGetPosts(page + 1)
+      setPage(page + 1)
+    }
+  }
 
   const handleLogout = () => {
     props.logoutUser()
@@ -146,12 +170,6 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
     setMenuVisible(false)
   }
 
-  const renderSubmitEditing = () => (
-      <TopNavigationAction icon={CheckIcon}
-        onPress={() => setEditing(false)}
-      />
-  );
-
   return (<>
       <TopNavigation title={!editing ? 'Profile' : 'Edit Profile'} noBack={!editing}
         onBack={() => setEditing(false)}
@@ -163,7 +181,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
           nopadding
         >
         <StyledLayout
-          style={{height: layouts.window.height}}
+          style={{minHeight: layouts.window.height}}
         >
           {!editing ? <>
           <Header>
@@ -179,6 +197,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
           <ImagesWrap>
             <FlatList
               data={posts}
+              onEndReached={handlePagination}
               renderItem={({ item }) => (
                 <View style={{ flexDirection: 'column', margin, width: height}}>
                   <Image style={styles.imageThumbnail} 
@@ -190,8 +209,12 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
               //Setting the number of column
               numColumns={3}
               keyExtractor={(item, index) => index.toString()}
+              onEndReachedThreshold={300}
             />
           </ImagesWrap>
+          {paginationLoading && <LoadingWrap>
+                <Spinner />
+            </LoadingWrap>}
           </> : <EditProfileScreen profile={profile} setEditing={setEditing}/>}
         </StyledLayout>
       </Container>
