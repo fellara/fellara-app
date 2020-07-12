@@ -107,15 +107,13 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
 
   const handleGetPosts = (p) => {
     getMyPosts(p).then(res => {
-      setPosts([...res.data.results, ...posts])
+      setPosts([...posts, ...res.data.results])
       setNext(res.data.next)
       setPaginationLoading(false)
     })
   }
 
   const handlePagination = () => {
-    console.log('hay');
-    
     if (next) {
       setPaginationLoading(true)
       handleGetPosts(page + 1)

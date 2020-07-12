@@ -18,7 +18,7 @@ const PublishPostScreen = props => {
     const [ratio, setRatio] = useState(1)
     const [loading, setLoading] = useState(false)
     const [tags, setTags] = useState([])
-    const [activeTag, setActiveTag] = useState(props.tags[0].id)
+    const [activeTag, setActiveTag] = useState(props.activeTag)
 
     console.log(props);
     
@@ -66,6 +66,7 @@ const PublishPostScreen = props => {
                     fields={fields}
                     onSubmit={handleSubmit}
                     loading={loading}
+                    submitText={loading && (props.uploadProgress + '% completed...')}
                 />
             </Container>
         </ScrollView>
@@ -75,6 +76,8 @@ const PublishPostScreen = props => {
 export default connect(state => ({
     isLoggedIn: state.user.isLoggedIn, 
     tags: state.initials.tags,
+    activeTag: state.posts.activeTag,
+    uploadProgress: state.posts.uploadProgress,
 }), {
     forceProfileUpdate,
     forceTagUpdate,

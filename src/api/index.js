@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import {store} from '../store'
 import {api_url} from '../constants'
+import {setUploadProgress} from '../actions/posts'
 
 const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) => {
   let config = {
@@ -31,7 +32,12 @@ const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) =
   const source = CancelToken.source();
   config = {
     ...config,
-    cancelToken: source.token
+    cancelToken: source.token,
+    onUploadProgress: (progressEvent) => {
+      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+      console.log('percentCompleted', percentCompleted)
+      store.dispatch(setUploadProgress(percentCompleted))
+    }
   }
 
   axios(config).then(res => {

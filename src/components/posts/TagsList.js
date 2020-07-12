@@ -2,9 +2,11 @@ import React, {useRef, useState} from 'react'
 import { SafeAreaView, View, TouchableOpacity, FlatList } from 'react-native'
 import styled from 'styled-components/native'
 import { Avatar, Layout } from '@ui-kitten/components'
+import {connect} from 'react-redux'
 
 import Post from './'
 import { Images } from '../../assets/images'
+import { setActiveTag } from '../../actions/posts'
 import Text from '../typography';
 import Container from '../../components/layouts'
 
@@ -36,7 +38,7 @@ const TagsList = props => {
 
     const handlePress = id => {
         props.setActive(id),
-
+        props.setActiveTag(id)
         list.scrollToIndex({
             index: props.data.map(d => d.id).indexOf(id),
             animated: true
@@ -84,4 +86,4 @@ const TagsList = props => {
     )
 }
 
-export default TagsList
+export default connect(null, {setActiveTag})(TagsList)

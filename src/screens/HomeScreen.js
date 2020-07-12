@@ -47,7 +47,7 @@ const HomeScreen = props => {
 
   const handleGetPosts = (tag, page) => {
     getPosts(tag).then(res => {
-      setPosts([...res.data.results, ...posts])
+      setPosts([...posts, ...res.data.results])
       setNext(res.data.next)
       setPaginationLoading(false)
     })
