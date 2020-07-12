@@ -31,7 +31,7 @@ const UpAndDown = ({
           toValue: 1,
           duration: 2000,
           easing,
-          useNativeDriver: Platform.OS !== 'web',
+          // useNativeDriver: Platform.OS !== 'web',
         })
       ),
     ]);
@@ -78,8 +78,9 @@ const UpAndDown = ({
       case 'rotate':
         transform.push({ rotate });
         break;
+
       case 'skew':
-        transform.push({ skewX });
+        transform.push({ skewY: skewX });
         break;
       case 'translateX':
         transform.push({ translateX });
