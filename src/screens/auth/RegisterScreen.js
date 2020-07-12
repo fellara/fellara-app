@@ -119,17 +119,17 @@ const RegisterScreen = props => {
         <SafeAreaView style={{
           flex: 1,
         }}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+            enabled={true}
+            style={{flex: 1}}
+          >
             <Container as={ScrollView}
-              paddingbottom={120}
               contentContainerStyle={{
                 paddingBottom: 90
               }}
             >
-            <KeyboardAvoidingView
-              behavior={Platform.OS == "ios" ? "padding" : "height"}
-              enabled
-               style={{flexGrow: 1}}
-            >
+
               <Heading>Register</Heading>
               <Subheading marginbottom>It took you less than a minute! But helps the others get to know you, your culture and your people.</Subheading>
               <Form
@@ -143,8 +143,8 @@ const RegisterScreen = props => {
                 Already registered? Login then!
               </Button>
 
-              </KeyboardAvoidingView>
             </Container>
+          </KeyboardAvoidingView>
         </SafeAreaView>
     </Layout>
   );

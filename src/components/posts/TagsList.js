@@ -75,7 +75,7 @@ const TagsList = props => {
             data={props.data}
             horizontal={true}
             getItemLayout={getItemLayout}
-            ref={(ref) => { list = ref; }}
+            ref={(ref) => { list = ref}}
             contentContainerStyle={{
                 paddingLeft: 10,
                 paddingTop: 10,

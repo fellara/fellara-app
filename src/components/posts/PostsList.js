@@ -15,13 +15,13 @@ const LoadingWrap = styled(View)`
 `
 
 const PostsList = props => {
-    // const [next, setNext] 
+    // const [next, setNext]
     const handlePagination = () => {
         if (props.onPagination) props.onPagination()
     }
 
     return (
-        <Container 
+        <Container
             // A fix for flatlist not scrolling in web.
             // Buggy though. Need a change.
             style={{height: layouts.window.height}}
@@ -33,7 +33,7 @@ const PostsList = props => {
                 data={props.data}
                 onEndReached={handlePagination}
                 contentContainerStyle={{
-                    paddingBottom: 120,
+                    paddingBottom: 150,
                 }}
             />
             {props.paginationLoading && <LoadingWrap>
