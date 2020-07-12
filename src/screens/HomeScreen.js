@@ -53,8 +53,8 @@ const HomeScreen = props => {
       if (res.status === 200) {
         setPosts([...posts, ...res.data.results])
         setNext(res.data.next)
-        setPaginationLoading(false)
       }
+      setPaginationLoading(false)
     })
   }
 

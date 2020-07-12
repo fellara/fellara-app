@@ -33,14 +33,14 @@ const PostsList = props => {
                 renderItem={({ item }) => (<Post {...item} />)}
                 data={props.data}
                 onEndReached={handlePagination}
-                onEndReachedThreshold={20}
+                // onEndReachedThreshold={20}
                 contentContainerStyle={{
                     paddingBottom: 150,
                 }}
+                ListFooterComponent={props.paginationLoading && <LoadingWrap>
+                    <Spinner />
+                </LoadingWrap>}
             />
-            {props.paginationLoading && <LoadingWrap>
-                <Spinner />
-            </LoadingWrap>}
         </Container>
     )
 }

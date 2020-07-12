@@ -43,9 +43,10 @@ const StyledImage = styled(Image)`
 `
 
 const LoadingWrap = styled(View)`
-    padding-bottom: 120px;
-    justify-content: center;
-    align-items: center;
+  padding-bottom: 120px;
+  justify-content: center;
+  align-items: center;
+  padding-top: 15px;
 `
 
 const MenuIcon = (props) => (
@@ -110,8 +111,8 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
       if (res.status === 200) {
         setPosts([...posts, ...res.data.results])
         setNext(res.data.next)
-        setPaginationLoading(false)
       }
+      setPaginationLoading(false)
     })
   }
 
@@ -198,7 +199,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
             <FlatList
               data={posts}
               onEndReached={handlePagination}
-              onEndReachedThreshold={10}
+              // onEndReachedThreshold={10}
               renderItem={({ item }) => (
                 <View style={{ flexDirection: 'column', margin, width: height}}>
                   <Image style={styles.imageThumbnail} 
@@ -210,11 +211,11 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
               //Setting the number of column
               numColumns={3}
               keyExtractor={(item, index) => index.toString()}
-            />
-          </ImagesWrap>
-          {paginationLoading && <LoadingWrap>
+              ListFooterComponent={paginationLoading && <LoadingWrap>
                 <Spinner />
             </LoadingWrap>}
+            />
+          </ImagesWrap>
           </> : <EditProfileScreen profile={profile} setEditing={setEditing}/>}
         </StyledLayout>
       </Container>
