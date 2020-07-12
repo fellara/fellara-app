@@ -5,3 +5,7 @@ export const getInitals = () => async (dispatch) => {
     dispatch({type: 'GOT_TAGS', tags: tags.data})
     if (tags.length > 0) return true
 }
+
+export const makeAlert = (text, type) => {
+  return { type: 'ADD_TO_ALERTS', text, alertType: type }
+}

@@ -24,6 +24,21 @@ export const loading = (state = false, action) => {
   }
 }
 
+const alerts = (state = [], action) => {
+  switch (action.type) {
+    case 'ADD_TO_ALERTS':
+      return [
+        {
+          text: action.text,
+          type: action.alertType
+        },
+        ...state
+      ]
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   initials,
   loading,
