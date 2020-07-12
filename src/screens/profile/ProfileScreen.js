@@ -105,11 +105,13 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
     }
   }, [updates])
 
-  const handleGetPosts = (p) => {
-    getMyPosts(p).then(res => {
-      setPosts([...posts, ...res.data.results])
-      setNext(res.data.next)
-      setPaginationLoading(false)
+  const handleGetPosts = (pageIndex) => {
+    getMyPosts(pageIndex).then(res => {
+      if (res.status === 200) {
+        setPosts([...posts, ...res.data.results])
+        setNext(res.data.next)
+        setPaginationLoading(false)
+      }
     })
   }
 
@@ -196,6 +198,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
             <FlatList
               data={posts}
               onEndReached={handlePagination}
+              onEndReachedThreshold={10}
               renderItem={({ item }) => (
                 <View style={{ flexDirection: 'column', margin, width: height}}>
                   <Image style={styles.imageThumbnail} 
@@ -207,7 +210,6 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
               //Setting the number of column
               numColumns={3}
               keyExtractor={(item, index) => index.toString()}
-              onEndReachedThreshold={300}
             />
           </ImagesWrap>
           {paginationLoading && <LoadingWrap>

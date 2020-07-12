@@ -30,12 +30,13 @@ const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) =
 
   const CancelToken = axios.CancelToken;
   const source = CancelToken.source();
+
+  store.dispatch(setUploadProgress(0))
   config = {
     ...config,
     cancelToken: source.token,
     onUploadProgress: (progressEvent) => {
       const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-      console.log('percentCompleted', percentCompleted)
       store.dispatch(setUploadProgress(percentCompleted))
     }
   }

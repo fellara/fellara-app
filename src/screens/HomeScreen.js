@@ -22,8 +22,10 @@ const HomeScreen = props => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    setTags(props.tags)
-    changeActiveTag(props.tags[0]?.id)
+    if (props.tags.length > 0) {
+      setTags(props.tags)
+      changeActiveTag(props.tags[0]?.id)
+    }
   }, [props.tags])
 
   useEffect(() => {
@@ -48,9 +50,11 @@ const HomeScreen = props => {
 
   const handleGetPosts = (tag, page) => {
     getPosts(tag, page).then(res => {
-      setPosts([...posts, ...res.data.results])
-      setNext(res.data.next)
-      setPaginationLoading(false)
+      if (res.status === 200) {
+        setPosts([...posts, ...res.data.results])
+        setNext(res.data.next)
+        setPaginationLoading(false)
+      }
     })
   }
 

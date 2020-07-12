@@ -12,6 +12,7 @@ const LoadingWrap = styled(View)`
     padding-bottom: 120px;
     justify-content: center;
     align-items: center;
+    padding-top: 15px;
 `
 
 const PostsList = props => {
@@ -32,6 +33,7 @@ const PostsList = props => {
                 renderItem={({ item }) => (<Post {...item} />)}
                 data={props.data}
                 onEndReached={handlePagination}
+                onEndReachedThreshold={20}
                 contentContainerStyle={{
                     paddingBottom: 150,
                 }}
