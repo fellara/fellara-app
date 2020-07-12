@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 export default (props) => {
   return (
     <Stack.Navigator
-      initialRouteName='login'
+      initialRouteName='register'
       screenOptions={{
         header: () => (
           <Layout level='1'>

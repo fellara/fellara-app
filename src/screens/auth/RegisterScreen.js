@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import Form from '../../components/forms'
 import Container from '../../components/layouts';
 import Text, { Heading, Subheading } from '../../components/typography';
-import {login, getProfile, register} from '../../api/user'
+import {login, getProfile, register, getCountries, getCities} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
 import layouts from '../../constants/layouts'
 
@@ -32,6 +32,26 @@ const fields = [
     required: true,
   }, 
   {
+    label: 'Country',
+    placeholder: 'United States',
+    type: 'autocomplete',
+    name: 'country',
+    loadOptions: getCountries,
+    required: true,
+  },  
+  {
+    label: 'City',
+    placeholder: 'NYC',
+    type: 'autocomplete',
+    name: 'city',
+    preventPreload: (data) => {
+      if (data.country) return false;
+      else return true;
+    },
+    loadOptions: (query, data) => getCities(query, data.country),
+    required: true,
+  }, 
+  {
     label: 'Email',
     placeholder: 'jackwhite@example.com',
     regex: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
@@ -39,20 +59,6 @@ const fields = [
     name: 'email',
     required: true,
   }, 
-  {
-    label: 'City',
-    placeholder: 'NYC',
-    type: 'text',
-    name: 'city',
-    required: true,
-  }, 
-  {
-    label: 'Country',
-    placeholder: 'United States',
-    type: 'text',
-    name: 'country',
-    required: true,
-  },    
   {
     label: 'Gender',
     type: 'select',

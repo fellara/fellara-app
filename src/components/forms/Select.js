@@ -7,19 +7,12 @@ const CustomSelect = (props) => {
     new IndexPath(props.options.map(option => option.value).indexOf(props.default) || 0)
   );
 
-  useEffect(() => {
-    console.log(props);
-  }, [props.options, props.default])
-
   const handleSelect = (index) => {
     const idx = index.row
     
     setSelectedIndex(index);
     if (props.onChange) props.onChange(props.options[idx].value)
   }
-
-  console.log(props.options[selectedIndex.row]?.title);
-  
 
   return (
     <>

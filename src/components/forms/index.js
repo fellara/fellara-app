@@ -8,6 +8,7 @@ import Input from './Input'
 import Image from './Image'
 import Select from './Select'
 import DatePicker from './DatePicker';
+import Autocomplete from './Autocomplete';
 import {checkRegex} from '../../utils';
 import Text from '../../components/typography'
 
@@ -92,10 +93,16 @@ const Form = ({loading, ...props}) => {
                             {...field}
                             onChange={(value) => handleChange(value, field.name)}
                         />
-                        : <Input
-                            {...field}
-                            onChange={(value) => handleChange(value, field.name)}
-                        />}
+                        :  field.type === 'autocomplete'
+                            ? <Autocomplete 
+                                {...field}
+                                data={form}
+                                onChange={(value) => handleChange(value, field.name)}
+                            />
+                            : <Input
+                                {...field}
+                                onChange={(value) => handleChange(value, field.name)}
+                            />}
                 
                     {errors
                         .filter(error => error.type === 'EMPTY')

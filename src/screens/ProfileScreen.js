@@ -104,12 +104,12 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
           <Header>
             <Avatar 
               size='giant' 
-              source={profile.profile_image_thumbnail} 
+              source={profile.profile_image_small} 
               style={{'width': 100, 'height': 100, 'marginBottom': 10}} 
               resizeMode='cover'
             />
             <Heading>{profile.first_name + ' ' + profile.last_name}</Heading>
-            <Subheading marginbottom>{profile.city + ', ' + profile.country}</Subheading>
+            <Subheading marginbottom>{profile.location}</Subheading>
           </Header>
           <ImagesWrap>
             <FlatList

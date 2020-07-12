@@ -19,3 +19,11 @@ export const getProfile = async () => {
 export const updateProfile = async (data) => {
     return await fetchAPI('user/rest-auth/user/', 'PATCH', data)
 }
+
+export const getCountries = async (query = '') => {
+    return await fetchAPI(`places/?search=${query}`)
+}
+
+export const getCities = async (query = '', country) => {
+    return await fetchAPI(`places/cities/?country=${country}&search=${query}`)
+}

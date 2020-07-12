@@ -64,16 +64,8 @@ const Post = props => {
           <Text 
             category='label'
             style={{
-            //  textShadowColor: 'rgba(0, 0, 0, 0.95)',
-            //  textShadowOffset: {width: 0, height: 0},
-            //  textShadowRadius: 5,
-            //  color: '#fff',
-            //  position: 'absolute',
-            //  right: 10,
-            //  bottom: 10,
-            color: '#888',
-            alignSelf: 'flex-end',
-            justifySelf: 'flex-start',
+              color: '#888',
+              alignSelf: 'flex-end',
           }}>{dayjs(props.created_at).fromNow()}</Text>
         </NameAndLocationWrapper>
       </PostHeader>
