@@ -53,10 +53,9 @@ const TagsList = props => {
     }
 
     return (
-      <SafeAreaView style={{
-        flex: 1,
-      }}>
+      <SafeAreaView>
         <FlatList
+            showsHorizontalScrollIndicator={false}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <Tag

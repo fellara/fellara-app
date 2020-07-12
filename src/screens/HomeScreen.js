@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Layout } from '@ui-kitten/components';
 import { connect } from 'react-redux'
+import { Text } from 'react-native'
 
 import { getPosts, getTags } from '../api/posts'
 import { forceTagUpdateDone } from '../actions/updates'
@@ -60,7 +61,6 @@ const HomeScreen = props => {
       setPage(page + 1)
     }
   }
-
   return (
     <Layout>
       <TagsList data={tags} active={activeTag} setActive={changeActiveTag}/>
