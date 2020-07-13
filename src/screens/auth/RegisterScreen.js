@@ -83,11 +83,13 @@ const fields = [
     label: 'Password',
     type: 'password',
     name: 'password1',
-    required: true,
+    regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/i,
+    regexError: 'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters',
     validator: (data) => {
       if (data.password1 === data.password2) return true
     },
-    validatorError: 'Password and confirm password must be the same.'
+    validatorError: 'Password and confirm password must be the same.',
+    required: true,
   },
   {
     label: 'Confirm Password',
