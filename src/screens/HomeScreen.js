@@ -30,6 +30,12 @@ const HomeScreen = props => {
   }, [props.tags])
 
   useEffect(() => {
+    console.log(tag);
+    
+    changeActiveTag(tag)
+  }, [tag])
+
+  useEffect(() => {
     if (activeTag) {
       handleGetPosts(activeTag)
     }

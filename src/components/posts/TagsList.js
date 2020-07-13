@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import { SafeAreaView, View, TouchableOpacity, FlatList } from 'react-native'
 import styled from 'styled-components/native'
 import { Avatar, Layout } from '@ui-kitten/components'
@@ -28,6 +28,15 @@ const StyledText = styled(Text)`
 const TagsList = props => {
     let list = useRef();
     const [sizes, setSizes] = useState([])
+
+    useEffect(() => {
+      if (props.active) {
+        list.scrollToIndex({
+          index: props.data.map(d => d.id).indexOf(parseInt(props.active)),
+          animated: true
+        })
+      }
+    }, [props.active])
 
     const getItemLayout = (data, index) => {
         let current = data[index]

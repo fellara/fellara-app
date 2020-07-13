@@ -18,10 +18,7 @@ const PublishPostScreen = props => {
     const [ratio, setRatio] = useState(1)
     const [loading, setLoading] = useState(false)
     const [tags, setTags] = useState([])
-    const [activeTag, setActiveTag] = useState(props.activeTag)
-
-    console.log(props);
-    
+    const [activeTag, setActiveTag] = useState(props.activeTag || tags[0].id)
 
     const fields = [
         {
