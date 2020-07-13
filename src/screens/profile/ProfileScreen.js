@@ -142,6 +142,9 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
       flex: 1,
       paddingTop: 30,
     },
+    list: {
+      paddingBottom: 150,
+    },
     imageThumbnail: {
       justifyContent: 'center',
       alignItems: 'center',
@@ -166,6 +169,33 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
     </React.Fragment>
   );
 
+  const renderHeader = (profile) => (
+    <Header>
+      <Avatar 
+        size='giant' 
+        source={profile.profile_image_small} 
+        style={{'width': 100, 'height': 100, 'marginBottom': 10}} 
+        resizeMode='cover'
+      />
+      <Heading>{profile.first_name + ' ' + profile.last_name}</Heading>
+      <Subheading marginbottom>{profile.location}</Subheading>
+    </Header>
+  );
+
+  const renderFooter = (paginationLoading) => (
+    paginationLoading && <LoadingWrap>
+      <Spinner />
+    </LoadingWrap>
+  )
+
+  const renderItem = (item, margin, height, styles) => (
+    <View style={{ flexDirection: 'column', margin, width: height}}>
+      <Image style={styles.imageThumbnail} 
+        resizeMode='cover'
+        source={{ uri: base_url + item.clean_image_small?.url }} />
+    </View>
+  )
+
   const handleSetEditing = () => {
     setEditing(true);
     setMenuVisible(false)
@@ -176,49 +206,21 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
         onBack={() => setEditing(false)}
         accessoryRight={!editing ? renderOverflowMenuAction : null}
       />
-      <Container 
-          as={ScrollView} 
-          center
-          nopadding
-        >
-        <StyledLayout
-          style={{minHeight: layouts.window.height}}
-        >
-          {!editing ? <>
-          <Header>
-            <Avatar 
-              size='giant' 
-              source={profile.profile_image_small} 
-              style={{'width': 100, 'height': 100, 'marginBottom': 10}} 
-              resizeMode='cover'
-            />
-            <Heading>{profile.first_name + ' ' + profile.last_name}</Heading>
-            <Subheading marginbottom>{profile.location}</Subheading>
-          </Header>
-          <ImagesWrap>
-            <FlatList
-              data={posts}
-              onEndReached={handlePagination}
-              // onEndReachedThreshold={10}
-              renderItem={({ item }) => (
-                <View style={{ flexDirection: 'column', margin, width: height}}>
-                  <Image style={styles.imageThumbnail} 
-                    resizeMode='cover'
-                    source={{ uri: base_url + item.clean_image_small?.url }} />
-                    {/* onLayout={event => setHeight(event.layout.width)} */}
-                </View>
-              )}
-              //Setting the number of column
-              numColumns={3}
-              keyExtractor={(item, index) => index.toString()}
-              ListFooterComponent={paginationLoading && <LoadingWrap>
-                <Spinner />
-            </LoadingWrap>}
-            />
-          </ImagesWrap>
-          </> : <EditProfileScreen profile={profile} setEditing={setEditing}/>}
-        </StyledLayout>
-      </Container>
+      <StyledLayout
+        style={{height: layouts.window.height}}
+      >
+        {!editing ? <FlatList
+            data={posts}
+            onEndReached={handlePagination}
+            // onEndReachedThreshold={10}
+            renderItem={({ item }) => renderItem(item, margin, height, styles)}
+            numColumns={3}
+            keyExtractor={(item, index) => index.toString()}
+            ListHeaderComponent={() => renderHeader(profile)}
+            ListFooterComponent={() => renderFooter(paginationLoading)}
+            contentContainerStyle={styles.list}
+          /> : <EditProfileScreen profile={profile} setEditing={setEditing}/>}
+      </StyledLayout>
     </>
   )
 }
