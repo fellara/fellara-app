@@ -66,6 +66,7 @@ const LogoutIcon = (props) => (
 );
 
 const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
+  const [showHeader, setShowHeader] = useState(false)
   const [posts, setPosts] = useState([])
   const [editing, setEditing] = useState(false)
   // const [height, setHeight] = useState(100)
@@ -106,6 +107,8 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
       if (res.status === 200) {
         setPosts([...posts, ...res.data.results])
         setNext(res.data.next)
+      } else if (res.status === 404) {
+        setNext(null)
       }
       setPaginationLoading(false)
     })
@@ -203,15 +206,35 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
     </TouchableOpacity>
   )}
 
+  const handleScroll = ({nativeEvent}) => {
+    if (nativeEvent.contentOffset.y > 200) {
+      setShowHeader(true)
+    } else {
+      setShowHeader(false)
+    }
+  }
+
   const handleSetEditing = () => {
     setEditing(true);
     setMenuVisible(false)
   }
 
+
+  const renderImage = (props) => (
+    <Avatar 
+      source={profile.profile_image_small} 
+      style={{'width': 30, 'height': 30, marginRight: 12}} 
+      resizeMode='cover'
+    />
+  );
+
   return (<>
-      <TopNavigation title={!editing ? 'Profile' : 'Edit Profile'} noBack={!editing}
+      <TopNavigation 
+        title={!editing ? !showHeader ? 'Profile' : profile.first_name + ' ' + profile.last_name : 'Edit Profile'} 
+        noBack={!editing}
         onBack={() => setEditing(false)}
         accessoryRight={!editing ? renderOverflowMenuAction : null}
+        accessoryLeft={!editing ? showHeader ? renderImage() : null : null}
       />
       <StyledLayout
         style={{height: layouts.window.height}}
@@ -220,6 +243,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
             data={posts}
             onEndReached={handlePagination}
             // onEndReachedThreshold={10}
+            onScroll={handleScroll}
             renderItem={({ item }) => renderItem(item, margin, height, styles, profile)}
             numColumns={3}
             keyExtractor={(item, index) => index.toString()}

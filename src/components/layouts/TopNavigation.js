@@ -26,11 +26,23 @@ const renderNoBack = (props) => {
   )
 };
 
+const renderAccessoryLeft = (props) => {
+  return (
+    <View style={{
+      flexDirection: 'row',
+      alignItems: 'center',
+    }}>
+      {!props.noBack ? renderBackAction(props) : renderNoBack()}
+      {props.accessoryLeft && props.accessoryLeft}
+    </View>
+  )
+};
+
 const CustomTopNavigation = (props) => {
     const navigation = useNavigation();
     
     return (<TopNavigation
-        accessoryLeft={() => !props.noBack ? renderBackAction(props) : renderNoBack()}
+        accessoryLeft={() => renderAccessoryLeft(props)}
         accessoryRight={props.accessoryRight && props.accessoryRight}
         title={props.title}
         onBack={props.onBack}

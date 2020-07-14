@@ -13,9 +13,6 @@ const PostScreen = props => {
   if (props.route.params) post = props.route.params;
   const tag = props.tags.find(t => t.id === parseInt(post.tag))
 
-  console.log(props);
-  
-
   return (<>
       <TopNavigation 
         title={'From ' + tag?.title}
