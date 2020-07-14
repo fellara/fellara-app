@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import { View } from 'react-native'
+import { ScrollView } from 'react-native'
 import {connect} from 'react-redux'
 
 import Form from '../../components/forms'
 import {updateProfile, getCountries, getCities} from '../../api/user'
+import Container from '../../components/layouts';
 import {setProfile} from '../../actions/user'
+import TopNavigation from '../../components/layouts/TopNavigation'
 
 const EditProfileScreen = ({profile, ...props}) => {
     const [loading, setLoading] = useState(false)
@@ -86,13 +88,17 @@ const EditProfileScreen = ({profile, ...props}) => {
     }
 
     return (
-        <View>
+        <Container as={ScrollView}
+              contentContainerStyle={{
+                paddingBottom: 150
+              }}
+            >
             <Form
                 fields={fields}
                 onSubmit={handleSubmit}
                 loading={loading}
             />
-        </View>
+        </Container>
     )
 }
 

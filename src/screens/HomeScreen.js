@@ -30,8 +30,6 @@ const HomeScreen = props => {
   }, [props.tags])
 
   useEffect(() => {
-    console.log(tag);
-    
     changeActiveTag(tag)
   }, [tag])
 

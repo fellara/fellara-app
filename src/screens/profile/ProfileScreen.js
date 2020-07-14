@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { ScrollView, View, Image, FlatList, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Image, FlatList, StyleSheet } from 'react-native';
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 import { Avatar, Button, Layout, Icon, MenuItem, OverflowMenu, 
@@ -94,11 +94,6 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
   }, [isLoggedIn])
 
   useEffect(() => {
-    console.log(profile);
-    
-  }, [profile])
-
-  useEffect(() => {
     if (updates) {
       handleGetPosts()
 
@@ -188,13 +183,24 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
     </LoadingWrap>
   )
 
-  const renderItem = (item, margin, height, styles) => (
-    <View style={{ flexDirection: 'column', margin, width: height}}>
+  const renderItem = (item, margin, height, styles, profile) => {
+    return (<TouchableOpacity 
+      onPress={() => props.navigation.navigate('post', {
+        name: profile.first_name + ' ' + profile.last_name,
+        location: profile.location,
+        avatar: profile.profile_image_small,
+        url: item.clean_image_small.url,
+        width: item.clean_image_small.width,
+        height: item.clean_image_small.height,
+        tag: item.tag,
+        id: item.id,
+      })}
+      style={{ flexDirection: 'column', margin, width: height}}>
       <Image style={styles.imageThumbnail} 
         resizeMode='cover'
         source={{ uri: base_url + item.clean_image_small?.url }} />
-    </View>
-  )
+    </TouchableOpacity>
+  )}
 
   const handleSetEditing = () => {
     setEditing(true);
@@ -213,7 +219,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
             data={posts}
             onEndReached={handlePagination}
             // onEndReachedThreshold={10}
-            renderItem={({ item }) => renderItem(item, margin, height, styles)}
+            renderItem={({ item }) => renderItem(item, margin, height, styles, profile)}
             numColumns={3}
             keyExtractor={(item, index) => index.toString()}
             ListHeaderComponent={() => renderHeader(profile)}

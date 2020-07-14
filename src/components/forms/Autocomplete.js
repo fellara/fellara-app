@@ -27,7 +27,6 @@ const CustomAutoComplete = (props) => {
 
   const loadOptions = async (query = '', fromEffect) => {
     let res = []
-    console.log(query);
     
     if (props.loadOptions) res = await props.loadOptions(query, props.data)
     const cleaned = res.data.results.map(d => ({id: d.id, title: d.name}))

@@ -25,9 +25,6 @@ const CustomInput = (props) => {
         props.onChange(val)
     }
 
-    console.log('statusstatus', props);
-    
-
     return (
         <>
             <Input

@@ -1,10 +1,11 @@
 import React from 'react'
-import {View, Image as RNImage, ImageBackground} from 'react-native'
+import {View, Image as RNImage, ImageBackground, TouchableOpacity} from 'react-native'
 import styled from 'styled-components/native'
 import { Avatar, Icon } from '@ui-kitten/components'
 import { Image } from "react-native-expo-image-cache";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { useNavigation } from '@react-navigation/native';
 
 import { Images } from '../../assets/images'
 import layouts from '../../constants/layouts'
@@ -14,22 +15,22 @@ import Text, {Muted} from '../typography';
 dayjs.extend(relativeTime)
 
 const Container = styled(View)`
-  margin-top: 10px;
-  margin-bottom: 30px;
+  ${p => !p.standalone && `margin-top: 10px;
+  margin-bottom: 30px;`}
 `
 const PostHeader = styled(View)`
   height: 50px;
   align-items: center;
   flex-direction: row
+  ${p => p.standalone && `padding: 0 10px;`}
 `
-const PostImageWrapper = styled(View)`
-  margin-top: 5px;
+const PostImageWrapper = styled(TouchableOpacity)`
   justify-content: center;
   align-items: center;
 `
 const PostImage = styled(ImageBackground)`
-  width: ${layouts.window.width - 20}px;
-  height: ${p => (layouts.window.width - 20) * p.ratio}px;
+  width: ${p => layouts.window.width - p.padding}px;
+  height: ${p => (layouts.window.width - p.padding) * p.ratio}px;
   border-radius: 15px;
 `
 
@@ -51,29 +52,34 @@ const Location = styled(Muted)`
 const Post = props => {
   const {url, width, height} = props.clean_image_medium
   const {avatar, name, location} = props.user_info
+  const navigation = useNavigation();
   
   return (
-    <Container>
-      <PostHeader>
-        <Avatar size='medium' source={{uri: base_url + avatar}}/>
-        <NameAndLocationWrapper>
-          <View>
-            <Name>{name}</Name>
-            <Location>{location}</Location>
-          </View>
-          <Text 
-            category='label'
-            style={{
-              color: '#888',
-              alignSelf: 'flex-end',
-          }}>{dayjs(props.created_at).fromNow()}</Text>
-        </NameAndLocationWrapper>
-      </PostHeader>
-      <PostImageWrapper>
+    <Container
+      standalone={props.standalone}
+      // nopadding={true}
+    >
+      <PostImageWrapper
+        as={props.standalone ? View : TouchableOpacity}
+        onPress={() => navigation.navigate('post', {
+          name,
+          location,
+          avatar,
+          url,
+          width,
+          height,
+          tag: props.tag,
+          id: props.id,
+        })}
+      >
         {/* <PostImage uri={props.image_medium}/> */}
-        <PostImage source={{uri: base_url + url}} ratio={height / width} resizeMode='cover'
+        <PostImage 
+          source={{uri: url.startsWith('http') ? url : base_url + url}} 
+          ratio={height / width} 
+          resizeMode='cover'
+          padding={props.standalone ? 0 : 20}
           imageStyle={{
-            borderRadius: 15,
+            borderRadius: props.standalone ? 0 : 15,
           }}
         >
           {/* <Icon name='heart-outline' style={{
@@ -84,9 +90,25 @@ const Post = props => {
             // position: 'absolute',
             // zIndex: 9999,
           }} /> */}
-
         </PostImage>
       </PostImageWrapper>
+      <PostHeader
+        standalone={props.standalone}
+      >
+        <Avatar size='medium' source={{uri: avatar.startsWith('http') ? avatar : base_url + avatar}}/>
+        <NameAndLocationWrapper>
+          <View>
+            <Name>{name}</Name>
+            <Location>{location}</Location>
+          </View>
+          <Text 
+            category='label'
+            style={{
+              color: '#888',
+              alignSelf: 'flex-start',
+          }}>{dayjs(props.created_at).fromNow()}</Text>
+        </NameAndLocationWrapper>
+      </PostHeader>
     </Container>
   )
 }

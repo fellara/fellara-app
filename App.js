@@ -11,6 +11,7 @@ import {theme} from './theme'
 import {store} from './src/store'
 import useCachedResources from './src/hooks/useCachedResources';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
+import MainNavigator from './src/navigation/MainNavigator';
 import LinkingConfiguration from './src/navigation/LinkingConfiguration';
 import { getInitals } from './src/actions';
 
@@ -37,7 +38,7 @@ export default function App(props) {
             {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
             <NavigationContainer linking={LinkingConfiguration}>
               <Stack.Navigator headerMode='none'>
-                <Stack.Screen name="Root" component={BottomTabNavigator} />
+                <Stack.Screen name="Root" component={MainNavigator} />
               </Stack.Navigator>
             </NavigationContainer>
           </View>

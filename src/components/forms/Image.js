@@ -104,8 +104,6 @@ export default class CustomImage extends React.Component {
       if (!result.cancelled) {
         this.setState({ image: result.uri });
       }
-
-      console.log(result);
     } catch (E) {
       console.log(E);
     }
