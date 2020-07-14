@@ -44,6 +44,7 @@ const PostScreen = props => {
             name: post.name,
             location: post.location
           }}
+          created_at={post.created_at}
         />
       </ScrollView>
     </Layout>

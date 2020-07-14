@@ -194,6 +194,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
         height: item.clean_image_small.height,
         tag: item.tag,
         id: item.id,
+        created_at: item.created_at,
       })}
       style={{ flexDirection: 'column', margin, width: height}}>
       <Image style={styles.imageThumbnail} 

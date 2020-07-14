@@ -70,6 +70,7 @@ const Post = props => {
           height,
           tag: props.tag,
           id: props.id,
+          created_at: props.created_at,
         })}
       >
         {/* <PostImage uri={props.image_medium}/> */}
