@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "fellas",
-    "slug": "fellas",
+    "name": "fellara",
+    "slug": "fellara",
     "platforms": [
       "ios",
       "android",
@@ -10,7 +10,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/logo.png",
-    "scheme": "fellas",
+    "scheme": "fellara",
     "splash": {
       "image": "./src/assets/images/logo.png",
       "resizeMode": "contain",

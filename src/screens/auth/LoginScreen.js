@@ -55,7 +55,7 @@ const LoginScreen = props => {
       }}>
         <Container as={ScrollView}>
           <Heading>Login</Heading>
-          <Subheading marginbottom>{!props._back ? 'Login to get more of Fellas stuff!' : 'In order to move further you need to login first.'}</Subheading>
+          <Subheading marginbottom>{!props._back ? 'Login to get more of fellara!' : 'In order to move further you need to login first.'}</Subheading>
           <Form
             fields={fields}
             onSubmit={handleSubmit}
