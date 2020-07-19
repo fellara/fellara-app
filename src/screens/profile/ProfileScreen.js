@@ -108,6 +108,8 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
         setPosts([...posts, ...res.data.results])
         setNext(res.data.next)
       } else if (res.status === 404) {
+        console.log('null');
+        
         setNext(null)
       }
       setPaginationLoading(false)

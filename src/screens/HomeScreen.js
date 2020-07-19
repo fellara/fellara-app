@@ -57,7 +57,7 @@ const HomeScreen = props => {
     // source.cancel()
 
     getPosts(tag, page).then(res => {
-      if (res.status === 200) {
+        if (res.status === 200) {
         setPosts([...posts, ...res.data.results])
         setNext(res.data.next)
       } else if (res.status === 404) {
