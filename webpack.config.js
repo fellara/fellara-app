@@ -5,7 +5,8 @@ module.exports = async function(env, argv) {
         ...env,
         babel: {
             dangerouslyAddModulePathsToTranspile: ['@ui-kitten/components']
-        }
-    }, argv);
+        },
+    }, argv)
+    config.resolve.alias['react-native-modal'] = 'modal-enhanced-react-native-web'
     return config;
 };

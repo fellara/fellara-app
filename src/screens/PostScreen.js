@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { ScrollView, Alert } from 'react-native'
-import { Layout, Icon, MenuItem, OverflowMenu, 
-  TopNavigationAction } from '@ui-kitten/components';
+import { Layout, Icon, MenuItem, OverflowMenu,
+  TopNavigationAction, SafeAreaView } from '@ui-kitten/components';
 import { connect } from 'react-redux'
 
 import TopNavigation from '../components/layouts/TopNavigation'
@@ -28,7 +28,7 @@ const PostScreen = props => {
 
   const { params } = props.route;
   const tag = props.tags.find(t => t.id === parseInt(params.tag))
-  
+
   useEffect(() => {
     getPost(params.id).then(res => {
       if (res.status === 200) {
@@ -79,48 +79,50 @@ const PostScreen = props => {
     </React.Fragment>
   );
 
-  return (<>
-    <TopNavigation 
-      title={'From ' + (tag ? tag.title : '...')}
-      onBack={() => props.navigation.goBack()}
-      accessoryRight={post.is_mine ? renderOverflowMenuAction : null}
-    />
-    <Layout
-      style={{height: layouts.window.height}}
-    >
-      <ScrollView
-        style={{
-          flex: 1
-        }}
-        contentContainerStyle={{
-          paddingBottom: 150
-        }}
+  return (
+    <>
+      <TopNavigation
+        title={'From ' + (tag ? tag.title : '...')}
+        onBack={() => props.navigation.goBack()}
+        accessoryRight={post.is_mine ? renderOverflowMenuAction : null}
+      />
+      <Layout
+        style={{height: layouts.window.height}}
       >
-        {!loading && <Post
-          {...post}
-          standalone={true}
-        />}
-      </ScrollView>
-    </Layout>
-    <DialogueBox 
-      visible={modal}
-      onHide={() => setModal(false)}
-      title='Warning'
-      description="Once you delete your post, it'll be gone for good and you can't recover it! Are you sure you want to proceed?!"
-      buttons={
-        [
-          {
-            title: 'Delete It',
-            onPress: handleDelete
-          },
-          {
-            title: 'Never Mind',
-            onPress: handleNeverMind
-          }
-        ]
-      }
-    />
-  </>)
+        <ScrollView
+          style={{
+            flex: 1
+          }}
+          contentContainerStyle={{
+            paddingBottom: 150
+          }}
+        >
+          {!loading && <Post
+            {...post}
+            standalone={true}
+          />}
+        </ScrollView>
+      </Layout>
+      <DialogueBox
+        visible={modal}
+        onHide={() => setModal(false)}
+        title='Warning'
+        description="Once you delete your post, it'll be gone for good and you can't recover it! Are you sure you want to proceed?!"
+        buttons={
+          [
+            {
+              title: 'Delete It',
+              onPress: handleDelete
+            },
+            {
+              title: 'Never Mind',
+              onPress: handleNeverMind
+            }
+          ]
+        }
+      />
+    </>
+  )
 }
 
 PostScreen.navigationOptions = {
