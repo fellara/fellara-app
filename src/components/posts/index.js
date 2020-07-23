@@ -64,7 +64,7 @@ const Post = props => {
 
   const handleLike = () => {
     setLiked(!liked)
-    likePost(props.id)  
+    likePost(props.id)
   }
 
   return (
@@ -73,6 +73,7 @@ const Post = props => {
       // nopadding={true}
     >
       <PostImageWrapper
+        activeOpacity={1}
         as={props.standalone ? View : TouchableOpacity}
         onPress={() => navigation.navigate('post', {
           tag: props.tag,
@@ -81,16 +82,16 @@ const Post = props => {
         })}
       >
         {/* <PostImage uri={props.image_medium}/> */}
-        <PostImage 
-          source={{uri: url.startsWith('http') ? url : base_url + url}} 
-          ratio={height / width} 
+        <PostImage
+          source={{uri: url.startsWith('http') ? url : base_url + url}}
+          ratio={height / width}
           resizeMode='cover'
           padding={props.standalone ? 0 : 20}
           imageStyle={{
             borderRadius: props.standalone ? 0 : 15,
           }}
         >
-          {props.standalone && !props.is_mine && <Button appearance='ghost' status='danger' 
+          {props.standalone && !props.is_mine && <Button appearance='ghost' status='danger'
             size='large'
             style={{
               width: 40,
@@ -112,7 +113,7 @@ const Post = props => {
             <Name>{name}</Name>
             <Location>{location}</Location>
           </View>
-          <Text 
+          <Text
             category='label'
             style={{
               color: '#888',
