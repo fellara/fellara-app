@@ -40,10 +40,9 @@ const HomeScreen = props => {
   }, [activeTag])
 
   useEffect(() => {
-    if (props.updates && (props.updates === activeTag)) {
-      handleGetPosts(activeTag)
-      props.forceTagUpdateDone()
-    }
+    setPosts([])
+    handleGetPosts(activeTag, 1, true)
+    props.forceTagUpdateDone()
   }, [props.updates])
 
   const changeActiveTag = (tag) => {
@@ -53,12 +52,14 @@ const HomeScreen = props => {
     }
   }
 
-  const handleGetPosts = (tag, page) => {
-    // source.cancel()
-
+  const handleGetPosts = (tag, page, refresh) => {
     getPosts(tag, page).then(res => {
-        if (res.status === 200) {
-        setPosts([...posts, ...res.data.results])
+      if (res.status === 200) {
+        if (!refresh) {
+          setPosts([...posts, ...res.data.results])
+        } else {
+          setPosts(res.data.results)
+        }
         setNext(res.data.next)
       } else if (res.status === 404) {
         setNext(null)
@@ -74,6 +75,7 @@ const HomeScreen = props => {
       setPage(page + 1)
     }
   }
+
   return (
     <Layout>
       <TagsList data={tags} active={activeTag} setActive={changeActiveTag}/>

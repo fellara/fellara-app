@@ -191,15 +191,8 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
   const renderItem = (item, margin, height, styles, profile) => {
     return (<TouchableOpacity 
       onPress={() => props.navigation.navigate('post', {
-        name: profile.first_name + ' ' + profile.last_name,
-        location: profile.location,
-        avatar: profile.profile_image_small,
-        url: item.clean_image_small.url,
-        width: item.clean_image_small.width,
-        height: item.clean_image_small.height,
         tag: item.tag,
         id: item.id,
-        created_at: item.created_at,
       })}
       style={{ flexDirection: 'column', margin, width: height}}>
       <Image style={styles.imageThumbnail} 

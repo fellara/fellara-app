@@ -20,3 +20,14 @@ export const getTags = async () => {
 export const createPost = async (payload) => {
     return await fetchAPI('post/create/', 'POST', payload, true)
 }
+
+export const likePost = async (id) => {
+    return await fetchAPI(`post/${id}/like/`, 'POST')
+}
+
+export const getPost = async (id) => {
+    return await fetchAPI(`post/${id}/`, 'GET')
+}
+export const deletePost = async (id) => {
+    return await fetchAPI(`post/${id}/delete/`, 'DELETE')
+}

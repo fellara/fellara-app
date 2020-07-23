@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {View, Image as RNImage, ImageBackground, TouchableOpacity} from 'react-native'
 import styled from 'styled-components/native'
-import { Avatar, Icon } from '@ui-kitten/components'
+import { Avatar, Icon, Button } from '@ui-kitten/components'
 import { Image } from "react-native-expo-image-cache";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Images } from '../../assets/images'
 import layouts from '../../constants/layouts'
 import {base_url} from '../../constants/'
+import {likePost} from '../../api/posts'
 import Text, {Muted} from '../typography';
 
 dayjs.extend(relativeTime)
@@ -17,6 +18,7 @@ dayjs.extend(relativeTime)
 const Container = styled(View)`
   ${p => !p.standalone && `margin-top: 10px;
   margin-bottom: 30px;`}
+  ${p => !p.standalone && `flex-direction: column-reverse`};
 `
 const PostHeader = styled(View)`
   height: 50px;
@@ -49,11 +51,22 @@ const Location = styled(Muted)`
 
 `
 
+const StarIcon = (props, is_liked) => {
+  return (<Icon {...props} name={is_liked ? 'star' : 'star-outline'}/>
+)};
+
 const Post = props => {
+  const [liked, setLiked] = useState(props.is_liked)
+
   const {url, width, height} = props.clean_image_medium
   const {avatar, name, location} = props.user_info
   const navigation = useNavigation();
-  
+
+  const handleLike = () => {
+    setLiked(!liked)
+    likePost(props.id)  
+  }
+
   return (
     <Container
       standalone={props.standalone}
@@ -62,15 +75,8 @@ const Post = props => {
       <PostImageWrapper
         as={props.standalone ? View : TouchableOpacity}
         onPress={() => navigation.navigate('post', {
-          name,
-          location,
-          avatar,
-          url,
-          width,
-          height,
           tag: props.tag,
           id: props.id,
-          created_at: props.created_at,
         })}
       >
         {/* <PostImage uri={props.image_medium}/> */}
@@ -83,14 +89,17 @@ const Post = props => {
             borderRadius: props.standalone ? 0 : 15,
           }}
         >
-          {/* <Icon name='heart-outline' style={{
-            width: 40,
-            height: 40,
-            padding: 10,
-            alignSelf: 'flex-end',
-            // position: 'absolute',
-            // zIndex: 9999,
-          }} /> */}
+          {props.standalone && !props.is_mine && <Button appearance='ghost' status='danger' 
+            size='large'
+            style={{
+              width: 40,
+              height: 40,
+              alignSelf: 'flex-end',
+              margin: 10,
+            }}
+            onPress={handleLike}
+            accessoryLeft={(p) => StarIcon(p, liked)}/>
+          }
         </PostImage>
       </PostImageWrapper>
       <PostHeader
@@ -106,7 +115,7 @@ const Post = props => {
             category='label'
             style={{
               color: '#888',
-              alignSelf: 'flex-start',
+              alignSelf: !props.standalone ? 'flex-end' : 'flex-start',
           }}>{dayjs(props.created_at).fromNow()}</Text>
         </NameAndLocationWrapper>
       </PostHeader>
