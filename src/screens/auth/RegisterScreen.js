@@ -9,6 +9,7 @@ import Text, { Heading, Subheading } from '../../components/typography';
 import {login, getProfile, register, getCountries, getCities} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
 import layouts from '../../constants/layouts'
+import TopNavigation from '../../components/layouts/TopNavigation'
 
 const fields = [
   {
@@ -114,7 +115,11 @@ const RegisterScreen = props => {
       setLoading(false)
     })
   }
-  return (
+  return (<>
+    <TopNavigation 
+      title={'Register'}
+      onBack={() => props.navigation.navigate('login')}
+    />
     <Layout
       style={{height: layouts.window.height}}
     >
@@ -132,7 +137,7 @@ const RegisterScreen = props => {
               }}
             >
 
-              <Heading>Register</Heading>
+              <Heading>Registration</Heading>
               <Subheading marginbottom>It took you less than a minute! But helps the others get to know you, your culture and your people.</Subheading>
               <Form
                 fields={fields}
@@ -149,7 +154,7 @@ const RegisterScreen = props => {
           </KeyboardAvoidingView>
         </SafeAreaView>
     </Layout>
-  );
+  </>);
 }
 
 export default connect(null, {setToken, setProfile})(RegisterScreen)

@@ -10,6 +10,7 @@ import Text, { Heading, Subheading } from '../../components/typography';
 import {login, getProfile} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
 import layouts from '../../constants/layouts'
+import TopNavigation from '../../components/layouts/TopNavigation'
 
 const StyledLayout = styled(Layout)`
 `
@@ -23,15 +24,9 @@ const fields = [
     name: 'email',
     required: true,
   },
-  {
-    label: 'Password',
-    type: 'password',
-    name: 'password',
-    required: true,
-  }
 ]
 
-const LoginScreen = props => {
+const ForgetPasswordScreen = props => {
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = (data) => {
@@ -46,7 +41,11 @@ const LoginScreen = props => {
       console.log(err);
     })
   }
-  return (
+  return (<>
+    <TopNavigation 
+      title={'Recover Password'}
+      onBack={() => props.navigation.navigate('login')}
+    />
     <StyledLayout
       style={{height: layouts.window.height}}
     >
@@ -54,27 +53,17 @@ const LoginScreen = props => {
         flex: 1,
       }}>
         <Container as={ScrollView}>
-          <Heading>Login</Heading>
-          <Subheading marginbottom>{!props._back ? 'Login to get more of fellara!' : 'In order to move further you need to login first.'}</Subheading>
+          <Heading>Forget Password</Heading>
+          <Subheading marginbottom>{'Enter the email address that you registered with to recover your password.'}</Subheading>
           <Form
             fields={fields}
             onSubmit={handleSubmit}
             loading={loading}
           />
-          <Button style={{marginTop: 20}} appearance='ghost' status='primary'
-            onPress={() => props.navigation.navigate('register', {_back: props._back})}
-          >
-            Not registered yet? Join now!
-          </Button>
-          <Button style={{marginTop: 0}} appearance='ghost' status='primary'
-            onPress={() => props.navigation.navigate('forget-register', {_back: props._back})}
-          >
-            Forgot your password? Recover it!
-          </Button>
         </Container>
       </SafeAreaView>
     </StyledLayout>
-  );
+  </>);
 }
 
-export default connect(null, {setToken, setProfile})(LoginScreen)
+export default connect(null, {setToken, setProfile})(ForgetPasswordScreen)

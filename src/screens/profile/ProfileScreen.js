@@ -69,7 +69,6 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
   const [showHeader, setShowHeader] = useState(false)
   const [posts, setPosts] = useState([])
   const [editing, setEditing] = useState(false)
-  // const [height, setHeight] = useState(100)
   const [loading, setLoading] = useState(false)
   const [menuVisible, setMenuVisible] = React.useState(false);
   const [next, setNext] = useState(null)
@@ -124,10 +123,18 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
     }
   }
 
+  const cleanIt = () => {
+    setMenuVisible(false);
+    setPosts([])
+    setNext(null)
+    setPage(1)
+    setEditing(false)
+  }
+
   const handleLogout = () => {
     props.logoutUser()
     logout()
-    setMenuVisible(false);
+    cleanIt()
   }
 
   if (!isLoggedIn) return <AuthScreen _back={_back} />;
@@ -193,6 +200,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
       onPress={() => props.navigation.navigate('post', {
         tag: item.tag,
         id: item.id,
+        _back: 'Profile',
       })}
       style={{ flexDirection: 'column', margin, width: height}}>
       <Image style={styles.imageThumbnail} 

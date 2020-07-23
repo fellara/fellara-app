@@ -5,6 +5,7 @@ import { TopNavigation, TopNavigationAction, Layout } from '@ui-kitten/component
 
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
+import ForgetPasswordScreen from '../screens/auth/ForgetPasswordScreen';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,7 @@ export default (props) => {
         {p => <LoginScreen {...p} {...props} />}
       </Stack.Screen>
       <Stack.Screen name="register" component={RegisterScreen} />
+      <Stack.Screen name="forget-register" component={ForgetPasswordScreen} />
     </Stack.Navigator>
   );
 }

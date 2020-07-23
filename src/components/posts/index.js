@@ -77,6 +77,7 @@ const Post = props => {
         onPress={() => navigation.navigate('post', {
           tag: props.tag,
           id: props.id,
+          _back: 'Home',
         })}
       >
         {/* <PostImage uri={props.image_medium}/> */}
