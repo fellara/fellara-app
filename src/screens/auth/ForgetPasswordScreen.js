@@ -41,29 +41,27 @@ const ForgetPasswordScreen = props => {
       console.log(err);
     })
   }
-  return (<>
-    <TopNavigation 
-      title={'Recover Password'}
-      onBack={() => props.navigation.navigate('login')}
-    />
-    <StyledLayout
-      style={{height: layouts.window.height}}
-    >
-      <SafeAreaView style={{
-        flex: 1,
-      }}>
-        <Container as={ScrollView}>
-          <Heading>Forget Password</Heading>
-          <Subheading marginbottom>{'Enter the email address that you registered with to recover your password.'}</Subheading>
-          <Form
-            fields={fields}
-            onSubmit={handleSubmit}
-            loading={loading}
-          />
-        </Container>
-      </SafeAreaView>
-    </StyledLayout>
-  </>);
+  return (
+      <SafeAreaView>
+        <TopNavigation
+          title={'Recover Password'}
+          onBack={() => props.navigation.navigate('login')}
+        />
+        <StyledLayout
+          style={{height: layouts.window.height}}
+        >
+          <Container as={ScrollView}>
+            <Heading>Forget Password</Heading>
+            <Subheading marginbottom>{'Enter the email address that you registered with to recover your password.'}</Subheading>
+            <Form
+              fields={fields}
+              onSubmit={handleSubmit}
+              loading={loading}
+            />
+          </Container>
+        </StyledLayout>
+    </SafeAreaView>
+  )
 }
 
 export default connect(null, {setToken, setProfile})(ForgetPasswordScreen)

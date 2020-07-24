@@ -115,23 +115,22 @@ const RegisterScreen = props => {
       setLoading(false)
     })
   }
-  return (<>
-    <TopNavigation 
-      title={'Register'}
-      onBack={() => props.navigation.navigate('login')}
-    />
-    <Layout
-      style={{height: layouts.window.height}}
-    >
-        <SafeAreaView style={{
-          flex: 1,
-        }}>
+  return (
+    <SafeAreaView>
+      <TopNavigation
+        title={'Register'}
+        onBack={() => props.navigation.navigate('login')}
+      />
+        <Layout
+          style={{height: layouts.window.height}}
+        >
           <KeyboardAvoidingView
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
             enabled={true}
             style={{flex: 1}}
           >
-            <Container as={ScrollView}
+            <Container
+              as={ScrollView}
               contentContainerStyle={{
                 paddingBottom: 90
               }}
@@ -144,17 +143,19 @@ const RegisterScreen = props => {
                 onSubmit={handleSubmit}
                 loading={loading}
               />
-              <Button style={{marginTop: 20}} appearance='ghost' status='primary'
+              <Button
+                style={{marginTop: 20}}
+                appearance='ghost'
+                status='primary'
                 onPress={() => props.navigation.navigate('login')}
               >
                 Already registered? Login then!
               </Button>
-
             </Container>
           </KeyboardAvoidingView>
-        </SafeAreaView>
-    </Layout>
-  </>);
+        </Layout>
+    </SafeAreaView>
+  )
 }
 
 export default connect(null, {setToken, setProfile})(RegisterScreen)
