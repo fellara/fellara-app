@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { View, Image, ScrollView } from 'react-native'
+import { View, Image, ScrollView, SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 
@@ -13,7 +13,7 @@ const StyledImage = styled(Image)`
     width: ${layouts.window.width}px;
     height: ${p => layouts.window.width * p.ratio}px;
 `
-  
+
 const PublishPostScreen = props => {
     const [ratio, setRatio] = useState(1)
     const [loading, setLoading] = useState(false)
@@ -52,6 +52,7 @@ const PublishPostScreen = props => {
     }
 
     return (
+      <SafeAreaView>
         <ScrollView style={{
             width: '100%',
             flex: 1,
@@ -59,7 +60,7 @@ const PublishPostScreen = props => {
         }}>
             <StyledImage source={{uri: props.image.uri}} ratio={ratio} />
             <Container paddingbottom={150}>
-                <Form 
+                <Form
                     fields={fields}
                     onSubmit={handleSubmit}
                     loading={loading}
@@ -67,11 +68,12 @@ const PublishPostScreen = props => {
                 />
             </Container>
         </ScrollView>
+      </SafeAreaView>
     )
 }
 
 export default connect(state => ({
-    isLoggedIn: state.user.isLoggedIn, 
+    isLoggedIn: state.user.isLoggedIn,
     tags: state.initials.tags,
     activeTag: state.posts.activeTag,
     uploadProgress: state.posts.uploadProgress,

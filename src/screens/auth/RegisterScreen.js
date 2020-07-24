@@ -119,7 +119,7 @@ const RegisterScreen = props => {
     <SafeAreaView>
       <TopNavigation
         title={'Register'}
-        onBack={() => props.navigation.navigate('login')}
+        onBack={() => props.navigation.goBack()}
       />
         <Layout
           style={{height: layouts.window.height}}
@@ -132,7 +132,7 @@ const RegisterScreen = props => {
             <Container
               as={ScrollView}
               contentContainerStyle={{
-                paddingBottom: 90
+                paddingBottom: 180
               }}
             >
 
@@ -147,7 +147,7 @@ const RegisterScreen = props => {
                 style={{marginTop: 20}}
                 appearance='ghost'
                 status='primary'
-                onPress={() => props.navigation.navigate('login')}
+                onPress={() => props.navigation.goBack()}
               >
                 Already registered? Login then!
               </Button>

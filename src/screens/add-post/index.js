@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import { Layout, Icon } from '@ui-kitten/components';
-import styled from 'styled-components/native';
+import React, {useEffect, useState} from 'react'
+import { SafeAreaView } from 'react-native'
+import { Layout, Icon } from '@ui-kitten/components'
+import styled from 'styled-components/native'
 
 import layouts from '../../constants/layouts'
 import TopNavigation from '../../components/layouts/TopNavigation'
 import Dots from '../../components/add-post/Dots'
 import {Muted} from '../../components/typography'
 import ImagePicker from '../../components/forms/Image'
-import PublishPostScreen from './PublishPostScreen';
+import PublishPostScreen from './PublishPostScreen'
 
 const StyledButton = styled(ImagePicker)`
     border-radius: 200px;
@@ -32,18 +33,19 @@ const AddPostScreen = (props) => {
         setImage({file, uri})
     }
 
-    return (<>
-      {image && <TopNavigation onBack={() => setImage(null)} title={'Publish Post'}/>}
-      <StyledLayout
-        style={{height: layouts.window.height}}
-      >
-        {!image ? <>
-            <Dots />
-            <StyledButton onChange={handleChange}/>
-            <Muted>Tap on the plus to add a photo</Muted>
-        </> : <PublishPostScreen image={image} setImage={setImage} navigation={props.navigation} />}
-      </StyledLayout>
-    </>
+    return (
+      <SafeAreaView>
+        {image && <TopNavigation onBack={() => setImage(null)} title={'Publish Post'}/>}
+        <StyledLayout
+          style={{height: layouts.window.height}}
+        >
+          {!image ? <>
+              <Dots />
+              <StyledButton onChange={handleChange}/>
+              <Muted>Tap on the plus to add a photo</Muted>
+          </> : <PublishPostScreen image={image} setImage={setImage} navigation={props.navigation} />}
+        </StyledLayout>
+    </SafeAreaView>
   )
 }
 

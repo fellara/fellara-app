@@ -45,7 +45,7 @@ const ForgetPasswordScreen = props => {
       <SafeAreaView>
         <TopNavigation
           title={'Recover Password'}
-          onBack={() => props.navigation.navigate('login')}
+          onBack={() => props.navigation.goBack()}
         />
         <StyledLayout
           style={{height: layouts.window.height}}
