@@ -180,7 +180,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
     <Header>
       <Avatar
         size='giant'
-        source={profile.profile_image_small}
+        source={{uri: profile.profile_image_small}}
         style={{'width': 100, 'height': 100, 'marginBottom': 10}}
         resizeMode='cover'
       />
@@ -225,7 +225,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
 
   const renderImage = (props) => (
     <Avatar
-      source={profile.profile_image_small}
+      source={{uri: profile.profile_image_small}}
       style={{'width': 30, 'height': 30, marginRight: 12}}
       resizeMode='cover'
     />
@@ -243,18 +243,20 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
       <StyledLayout
         style={{height: layouts.window.height}}
       >
-        {!editing ? <FlatList
-            data={posts}
-            onEndReached={handlePagination}
-            // onEndReachedThreshold={10}
-            onScroll={handleScroll}
-            renderItem={({ item }) => renderItem(item, margin, height, styles, profile)}
-            numColumns={3}
-            keyExtractor={(item, index) => index.toString()}
-            ListHeaderComponent={() => renderHeader(profile)}
-            ListFooterComponent={() => renderFooter(paginationLoading)}
-            contentContainerStyle={styles.list}
-          /> : <EditProfileScreen profile={profile} setEditing={setEditing}/>}
+        {!editing
+          ? <FlatList
+              data={posts}
+              onEndReached={handlePagination}
+              // onEndReachedThreshold={10}
+              onScroll={handleScroll}
+              renderItem={({ item }) => renderItem(item, margin, height, styles, profile)}
+              numColumns={3}
+              keyExtractor={(item, index) => index.toString()}
+              ListHeaderComponent={() => renderHeader(profile)}
+              ListFooterComponent={() => renderFooter(paginationLoading)}
+              contentContainerStyle={styles.list}
+            />
+          : <EditProfileScreen profile={profile} setEditing={setEditing}/>}
       </StyledLayout>
     </SafeAreaView>
   )
