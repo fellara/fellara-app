@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Images } from '../../assets/images'
 import layouts from '../../constants/layouts'
+import {getImageUrl} from '../../utils'
 import {base_url} from '../../constants/'
 import {likePost} from '../../api/posts'
 import Text, {Muted} from '../typography';
@@ -83,7 +84,7 @@ const Post = props => {
       >
         {/* <PostImage uri={props.image_medium}/> */}
         <PostImage
-          source={{uri: url.startsWith('http') ? url : base_url + url}}
+          source={{uri: getImageUrl(url)}}
           ratio={height / width}
           resizeMode='cover'
           padding={props.standalone ? 0 : 20}
@@ -107,7 +108,9 @@ const Post = props => {
       <PostHeader
         standalone={props.standalone}
       >
-        <Avatar size='medium' source={{uri: avatar.startsWith('http') ? avatar : base_url + avatar}}/>
+        <TouchableOpacity onPress={() => !props.is_mine ? navigation.navigate('others-profile', {id: props.user}) : navigation.navigate('Profile')}>
+          <Avatar size='medium' source={{uri: getImageUrl(avatar)}}/>
+        </TouchableOpacity>
         <NameAndLocationWrapper>
           <View>
             <Name>{name}</Name>

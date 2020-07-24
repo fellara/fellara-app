@@ -133,10 +133,9 @@ const RegisterScreen = props => {
           >
             <Container as={ScrollView}
               contentContainerStyle={{
-                paddingBottom: 90
+                paddingBottom: 150
               }}
             >
-
               <Heading>Registration</Heading>
               <Subheading marginbottom>It took you less than a minute! But helps the others get to know you, your culture and your people.</Subheading>
               <Form
@@ -149,7 +148,6 @@ const RegisterScreen = props => {
               >
                 Already registered? Login then!
               </Button>
-
             </Container>
           </KeyboardAvoidingView>
         </SafeAreaView>

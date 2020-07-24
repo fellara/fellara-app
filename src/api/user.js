@@ -29,3 +29,7 @@ export const getCities = async (query = '', country) => {
     if (country) url += `&country=${country}`
     return await fetchAPI(url)
 }
+
+export const getProfileByUserID = async (id) => {
+    return await fetchAPI(`user/rest-auth/user/${id}/`)
+}

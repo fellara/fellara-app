@@ -31,3 +31,8 @@ export const getPost = async (id) => {
 export const deletePost = async (id) => {
     return await fetchAPI(`post/${id}/delete/`, 'DELETE')
 }
+
+export const getPostsByUserID = async (id, page = 1) => {
+    let url = `post/list/user/${id}/?page=${page}`
+    return await fetchAPI(url)
+}

@@ -9,7 +9,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/logo.png",
+    "icon": "./src/assets/images/fellara_logo.png",
     "scheme": "fellara",
     "splash": {
       "image": "./src/assets/images/logo.png",
