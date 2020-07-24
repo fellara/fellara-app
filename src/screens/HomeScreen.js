@@ -47,8 +47,10 @@ const HomeScreen = props => {
 
   const changeActiveTag = (tag) => {
     if (activeTag !== tag) {
-      setActiveTag(tag)
+      setPage(1)
+      setNext(null)
       setPosts([])
+      setActiveTag(tag)
     }
   }
 
