@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import { ScrollView, Alert } from 'react-native'
+import { ScrollView, Alert, SafeAreaView } from 'react-native'
 import { Layout, Icon, MenuItem, OverflowMenu,
-  TopNavigationAction, SafeAreaView } from '@ui-kitten/components';
+  TopNavigationAction } from '@ui-kitten/components';
 import { connect } from 'react-redux'
 
 import TopNavigation from '../components/layouts/TopNavigation'
@@ -80,7 +80,7 @@ const PostScreen = props => {
   );
 
   return (
-    <>
+    <SafeAreaView>
       <TopNavigation
         title={'From ' + (tag ? tag.title : '...')}
         onBack={() => props.navigation.goBack()}
@@ -121,7 +121,7 @@ const PostScreen = props => {
           ]
         }
       />
-    </>
+    </SafeAreaView>
   )
 }
 
