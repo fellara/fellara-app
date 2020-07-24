@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import { TouchableOpacity, View, Image, FlatList, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Image, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
-import { Avatar, Button, Layout, Icon, MenuItem, OverflowMenu, 
+import { Avatar, Button, Layout, Icon, MenuItem, OverflowMenu,
   TopNavigationAction, Spinner } from '@ui-kitten/components';
 
 import Form from '../../components/forms'
@@ -108,7 +108,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
         setNext(res.data.next)
       } else if (res.status === 404) {
         console.log('null');
-        
+
         setNext(null)
       }
       setPaginationLoading(false)
@@ -178,10 +178,10 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
 
   const renderHeader = (profile) => (
     <Header>
-      <Avatar 
-        size='giant' 
-        source={profile.profile_image_small} 
-        style={{'width': 100, 'height': 100, 'marginBottom': 10}} 
+      <Avatar
+        size='giant'
+        source={profile.profile_image_small}
+        style={{'width': 100, 'height': 100, 'marginBottom': 10}}
         resizeMode='cover'
       />
       <Heading>{profile.first_name + ' ' + profile.last_name}</Heading>
@@ -196,14 +196,14 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
   )
 
   const renderItem = (item, margin, height, styles, profile) => {
-    return (<TouchableOpacity 
+    return (<TouchableOpacity
       onPress={() => props.navigation.navigate('post', {
         tag: item.tag,
         id: item.id,
         _back: 'Profile',
       })}
       style={{ flexDirection: 'column', margin, width: height}}>
-      <Image style={styles.imageThumbnail} 
+      <Image style={styles.imageThumbnail}
         resizeMode='cover'
         source={{ uri: base_url + item.clean_image_small?.url }} />
     </TouchableOpacity>
@@ -224,16 +224,17 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
 
 
   const renderImage = (props) => (
-    <Avatar 
-      source={profile.profile_image_small} 
-      style={{'width': 30, 'height': 30, marginRight: 12}} 
+    <Avatar
+      source={profile.profile_image_small}
+      style={{'width': 30, 'height': 30, marginRight: 12}}
       resizeMode='cover'
     />
   );
 
-  return (<>
-      <TopNavigation 
-        title={!editing ? !showHeader ? 'Profile' : profile.first_name + ' ' + profile.last_name : 'Edit Profile'} 
+  return (
+    <SafeAreaView>
+      <TopNavigation
+        title={!editing ? !showHeader ? 'Profile' : profile.first_name + ' ' + profile.last_name : 'Edit Profile'}
         noBack={!editing}
         onBack={() => setEditing(false)}
         accessoryRight={!editing ? renderOverflowMenuAction : null}
@@ -255,7 +256,7 @@ const ProfileScreen = ({isLoggedIn, profile, updates, ...props}) => {
             contentContainerStyle={styles.list}
           /> : <EditProfileScreen profile={profile} setEditing={setEditing}/>}
       </StyledLayout>
-    </>
+    </SafeAreaView>
   )
 }
 
