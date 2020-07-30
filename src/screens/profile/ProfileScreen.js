@@ -7,7 +7,7 @@ import { getMyPosts } from '../../api/posts';
 const ProfileScreen = props => {
   return (
     <Profile 
-      getPosts={(index) => getMyPosts(index)}
+      getPosts={(index) => props.isLoggedIn ? getMyPosts(index) : null}
       profile={props.profile}
     />
   )
@@ -15,4 +15,5 @@ const ProfileScreen = props => {
 
 export default connect(state => ({
   profile: state.user, 
+  isLoggedIn: state.user.isLoggedIn,
 }))(ProfileScreen)

@@ -5,6 +5,7 @@ import { TopNavigation, TopNavigationAction, Layout } from '@ui-kitten/component
 import BottomTabNavigator from './BottomTabNavigator';
 import PostScreen from '../screens/PostScreen';
 import OthersProfileScreen from '../screens/OthersProfileScreen';
+import LikedPostsScreen from '../screens/LikedPostsScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ export default (props) => {
     >
       <Stack.Screen name="post" component={PostScreen} />
       <Stack.Screen name="others-profile" component={OthersProfileScreen} />
+      <Stack.Screen name="liked-posts" component={LikedPostsScreen} />
       <Stack.Screen name="tabs" component={BottomTabNavigator} />
     </Stack.Navigator>
   );

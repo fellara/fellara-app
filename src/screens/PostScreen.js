@@ -27,10 +27,11 @@ const PostScreen = props => {
   const [post, setPost] = useState({})
 
   const { params } = props.route;
-  const tag = props.tags.find(t => t.id === parseInt(params.tag))
+  let tag = null
+  if (params) tag = props.tags.find(t => t.id === parseInt(params.tag))
 
   useEffect(() => {
-    getPost(params.id).then(res => {
+    if (params) getPost(params.id).then(res => {
       if (res.status === 200) {
         setPost(res.data)
         setLoading(false)

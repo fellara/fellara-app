@@ -13,6 +13,11 @@ export const getMyPosts = async (page = 1) => {
     return await fetchAPI(url)
 }
 
+export const getMyLikedPosts = async (page = 1) => {
+    let url = `post/list/liked/?page=${page}`
+    return await fetchAPI(url)
+}
+
 export const getTags = async () => {
     return await fetchAPI('post/tags/')
 }

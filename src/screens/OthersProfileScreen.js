@@ -15,7 +15,7 @@ const ProfileScreen = props => {
     getProfileByUserID(params.id).then(res => {
       setProfile(res.data)
       setLoading(false)
-  })
+    })
   }, [])
 
   return (

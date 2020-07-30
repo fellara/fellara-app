@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {View, Image as RNImage, ImageBackground, TouchableOpacity} from 'react-native'
 import styled from 'styled-components/native'
+import {connect} from 'react-redux'
 import { Avatar, Icon, Button } from '@ui-kitten/components'
 import { Image } from "react-native-expo-image-cache";
 import dayjs from 'dayjs';
@@ -64,8 +65,12 @@ const Post = props => {
   const navigation = useNavigation();
 
   const handleLike = () => {
-    setLiked(!liked)
-    likePost(props.id)
+    if (props.isLoggedIn) {
+      setLiked(!liked)
+      likePost(props.id)
+    } else {
+      navigation.navigate('Profile', {_back: 'post', id: props.id})
+    }
   }
 
   return (
@@ -128,4 +133,4 @@ const Post = props => {
   )
 }
 
-export default Post
+export default connect(state => ({isLoggedIn: state.user.isLoggedIn}))(Post)
