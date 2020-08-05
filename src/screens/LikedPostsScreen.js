@@ -4,9 +4,11 @@ import {connect} from 'react-redux'
 import Profile from '../components/profile';
 import { getMyLikedPosts } from '../api/posts';
 import Text, { Heading, Subheading } from '../components/typography';
+import { Button } from 'react-native';
 
 const LikedPostsScreen = props => {
   const [loading, setLoading] = useState(true)
+  const [forcePaginate, setForcePaginate] = useState(false)
   const {params} = props.route
   
   const renderHeader = props => (<>
@@ -14,14 +16,17 @@ const LikedPostsScreen = props => {
     <Subheading marginbottom>{!props._back ? 'Login to get more of fellara!' : 'In order to move further you need to login first.'}</Subheading>
   </>)
 
-  return (
-    <Profile 
-      getPosts={(index) => getMyLikedPosts(index)}
-      others={true}
-      noHeader={true}
-      ListHeaderComponent={() => renderHeader()}
-      // loading={loading}
-    />
+  return (<>
+      {/* <Button onPress={() => setForcePaginate(true)}>hey</Button> */}
+      <Profile 
+        getPosts={(index) => getMyLikedPosts(index)}
+        others={true}
+        noHeader={true}
+        forcePaginate={forcePaginate}
+        ListHeaderComponent={() => renderHeader()}
+        // loading={loading}
+      />
+    </>
   )
 }
 

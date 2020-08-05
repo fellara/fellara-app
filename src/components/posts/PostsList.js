@@ -16,9 +16,8 @@ const LoadingWrap = styled(View)`
 `
 
 const PostsList = props => {
-    // const [next, setNext]
     const handlePagination = () => {
-        if (props.onPagination) props.onPagination()
+        if (props.onPagination && !props.paginationLoading) props.onPagination()
     }
 
     return (

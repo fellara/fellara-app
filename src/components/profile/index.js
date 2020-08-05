@@ -43,7 +43,6 @@ const CheckIcon = (props) => (
   <Icon {...props} name='checkmark'/>
 );
 
-
 const StarIcon = (props) => (
   <Icon {...props} name={'star'}/>
 )
@@ -65,6 +64,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
   const [menuVisible, setMenuVisible] = React.useState(false);
   const [next, setNext] = useState(null)
   const [page, setPage] = useState(1)
+  const [seenPages, setSeenPages] = useState([1])
   const [paginationLoading, setPaginationLoading] = useState(false)
 
   const navigation = useNavigation()
@@ -82,19 +82,18 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
   if (route?.params) _back = route.params._back;
 
   useEffect(() => {
-    handleGetPosts()
+    if (isLoggedIn) handleGetPosts()
   }, [isLoggedIn])
 
   useEffect(() => {
     if (updates) {
       handleGetPosts()
-
       props.forceProfileUpdateDone()
     }
   }, [updates])
 
   const handleGetPosts = (pageIndex) => {
-    if (props.getPosts()) props.getPosts(pageIndex).then(res => {
+    if (props.getPosts) props.getPosts(pageIndex).then(res => {
       if (res.status === 200) {
         setPosts([...posts, ...res.data.results])
         setNext(res.data.next)
@@ -106,12 +105,17 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
   }
 
   const handlePagination = () => {
-    if (next) {
+    const nextPage = page + 1
+
+    if (next && !seenPages.includes(nextPage)) {
       setPaginationLoading(true)
-      handleGetPosts(page + 1)
-      setPage(page + 1)
+      handleGetPosts(nextPage)
+      setPage(nextPage)
+      setSeenPages([...seenPages, nextPage])
     }
   }
+
+  
 
   const cleanIt = () => {
     setMenuVisible(false);
@@ -169,9 +173,11 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
     </Header>
   );
 
-  const renderFooter = (paginationLoading) => (
-    paginationLoading && <LoadingWrap>
-      <Spinner />
+  const renderFooter = () => (
+    <LoadingWrap style={{
+      paddingBottom: 150
+    }}>
+      {paginationLoading && <Spinner />}
     </LoadingWrap>
   )
 
@@ -217,9 +223,11 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
         {!props.loading ? !editing ? <PostsGrid
             data={posts}
             onPagination={handlePagination}
+            paginationLoading={paginationLoading}
             onScroll={handleScroll}
-            ListHeaderComponent={() => !props.noHeader ? renderHeader(profile) : null}
-            ListFooterComponent={() => renderFooter(paginationLoading)}
+            forcePaginate={props.forcePaginate}
+            ListHeaderComponent={() => props.ListHeaderComponent ? props.ListHeaderComponent : !props.noHeader ? renderHeader(profile) : null}
+            ListFooterComponent={() => renderFooter()}
           /> : <EditProfileScreen profile={profile} setEditing={setEditing}/> : <LoadingWrap><Spinner /></LoadingWrap>}
       </StyledLayout>
     </>

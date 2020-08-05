@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { TouchableOpacity, View, Image, FlatList, StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -6,13 +6,18 @@ import layouts from '../../constants/layouts'
 import {getImageUrl} from '../../utils/'
 
 const PostsGrid = props => {
+    const [callOnScrollEnd, setCallOnScrollEnd] = useState(true)
     const navigation = useNavigation()
+
+    useEffect(() => {
+      if (props.forcePaginate) handlePagination()
+    }, [props.forcePaginate])
     
     const handlePagination = () => {
-        if (props.onPagination) props.onPagination()
+      if (props.onPagination && !props.paginationLoading) props.onPagination()
     }    
     const handleScroll = (event) => {
-        if (props.onScroll) props.onScroll(event)
+      if (props.onScroll) props.onScroll(event)
     }
 
     const margin = 2;
@@ -53,6 +58,14 @@ const PostsGrid = props => {
         <FlatList
             data={props.data}
             onEndReached={handlePagination}
+            // onEndReached={() => setCallOnScrollEnd(true)}
+            // onEndReached={() => {
+            //   if (!callOnScrollEnd) {
+            //     setCallOnScrollEnd(true);
+            //     handlePagination();
+            //   }
+            // }}
+            // onMomentumScrollBegin={() => setCallOnScrollEnd(false)}
             onEndReachedThreshold={50}
             onScroll={handleScroll}
             renderItem={({ item }) => renderItem(item, margin, height, styles)}
