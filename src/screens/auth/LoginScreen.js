@@ -22,12 +22,14 @@ const fields = [
     regex: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
     name: 'email',
     required: true,
+    autoCapitalize: 'none',
   },
   {
     label: 'Password',
     type: 'password',
     name: 'password',
     required: true,
+    autoCapitalize: 'none',
   }
 ]
 

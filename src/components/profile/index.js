@@ -136,9 +136,9 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
     navigation.navigate('liked-posts')
   }
 
-  if (!isLoggedIn) return <AuthScreen _back={_back} />;
+  if (!isLoggedIn) return <AuthScreen _back={_back} params={route.params} />;
   if (_back) {
-    navigation.navigate(_back)
+    navigation.navigate(_back, {...route.params, authSuccessful: true})
   }
 
   const renderOverflowMenuAction = () => (
@@ -160,7 +160,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
     </React.Fragment>
   );
 
-  const renderHeader = (profile) => (
+  const renderProfileHeader = (profile) => (
     <Header>
       <Avatar 
         size='giant' 
@@ -179,6 +179,14 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
     }}>
       {paginationLoading && <Spinner />}
     </LoadingWrap>
+  )
+
+  const renderHeader = () => (
+    props.ListHeaderComponent 
+      ? props.ListHeaderComponent 
+      : !props.noHeader 
+        ? renderProfileHeader(profile) 
+        : null
   )
 
   const handleScroll = ({nativeEvent}) => {
@@ -209,7 +217,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
         onBack={() => setEditing(false)}
         accessoryRight={!editing ? renderOverflowMenuAction : null}
         accessoryLeft={!editing ? showHeader ? renderImage() : null : null}
-      /> : !props.noHeader ? <TopNavigation
+      /> : !(props.noHeader || props.ListHeaderComponent) ? <TopNavigation
         onBack={() => navigation.goBack()}
         accessoryLeft={showHeader ? renderImage() : null}
         title={!props.loading ? profile.first_name.toUpperCase() + "'s Profile" : 'Loading...'} 
@@ -226,7 +234,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
             paginationLoading={paginationLoading}
             onScroll={handleScroll}
             forcePaginate={props.forcePaginate}
-            ListHeaderComponent={() => props.ListHeaderComponent ? props.ListHeaderComponent : !props.noHeader ? renderHeader(profile) : null}
+            ListHeaderComponent={() => renderHeader()}
             ListFooterComponent={() => renderFooter()}
           /> : <EditProfileScreen profile={profile} setEditing={setEditing}/> : <LoadingWrap><Spinner /></LoadingWrap>}
       </StyledLayout>

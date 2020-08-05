@@ -36,6 +36,7 @@ const CustomInput = (props) => {
                 captionIcon={props.caption && AlertIcon}
                 secureTextEntry={props.type === 'password' && secureTextEntry}
                 onChangeText={handleChange}
+                autoCapitalize = {props.autoCapitalize}
                 blurOnSubmit={false}
             />
         </>

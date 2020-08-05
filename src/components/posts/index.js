@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {View, Image as RNImage, ImageBackground, TouchableOpacity} from 'react-native'
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
@@ -6,7 +6,7 @@ import { Avatar, Icon, Button } from '@ui-kitten/components'
 import { Image } from "react-native-expo-image-cache";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { Images } from '../../assets/images'
 import layouts from '../../constants/layouts'
@@ -63,13 +63,30 @@ const Post = props => {
   const {url, width, height} = props.clean_image_medium
   const {avatar, name, location} = props.user_info
   const navigation = useNavigation();
+  const route = useRoute();
+
+  let action = null;
+  if (route?.params) action = route.params.action;
+
+  console.log(props);
+
+  useEffect(() => {
+    switch (action) {
+      case 'LIKE':
+        handleLike();
+        break;
+    
+      default:
+        break;
+    }
+  }, [action])
 
   const handleLike = () => {
     if (props.isLoggedIn) {
       setLiked(!liked)
       likePost(props.id)
     } else {
-      navigation.navigate('Profile', {_back: 'post', id: props.id})
+      navigation.navigate('Profile', {_back: 'post', id: props.id, tag: props.tag, action: 'LIKE'})
     }
   }
 

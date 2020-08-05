@@ -61,6 +61,7 @@ const fields = [
     type: 'text',
     name: 'email',
     required: true,
+    autoCapitalize: 'none',
   },
   {
     label: 'Gender',
@@ -91,12 +92,14 @@ const fields = [
     },
     validatorError: 'Password and confirm password must be the same.',
     required: true,
+    autoCapitalize: 'none',
   },
   {
     label: 'Confirm Password',
     type: 'password',
     name: 'password2',
     required: true,
+    autoCapitalize: 'none',
   }
 ]
 

@@ -12,8 +12,8 @@ const LikedPostsScreen = props => {
   const {params} = props.route
   
   const renderHeader = props => (<>
-    <Heading>Login</Heading>
-    <Subheading marginbottom>{!props._back ? 'Login to get more of fellara!' : 'In order to move further you need to login first.'}</Subheading>
+    <Heading>Starreds</Heading>
+    <Subheading marginbottom>All posts that you've starred before will be kept here. To remove them from the Starreds just open up the post and tap on the star icon again.</Subheading>
   </>)
 
   return (<>
@@ -21,9 +21,8 @@ const LikedPostsScreen = props => {
       <Profile 
         getPosts={(index) => getMyLikedPosts(index)}
         others={true}
-        noHeader={true}
         forcePaginate={forcePaginate}
-        ListHeaderComponent={() => renderHeader()}
+        ListHeaderComponent={renderHeader()}
         // loading={loading}
       />
     </>
