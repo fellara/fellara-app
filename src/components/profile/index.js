@@ -235,6 +235,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
             onScroll={handleScroll}
             forcePaginate={props.forcePaginate}
             ListHeaderComponent={() => renderHeader()}
+            endReached={posts.length > 0 && !next}
             ListFooterComponent={() => renderFooter()}
           /> : <EditProfileScreen profile={profile} setEditing={setEditing}/> : <LoadingWrap><Spinner /></LoadingWrap>}
       </StyledLayout>

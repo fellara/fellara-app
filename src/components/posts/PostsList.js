@@ -4,9 +4,9 @@ import styled from 'styled-components/native'
 import { Avatar, Layout, Spinner } from '@ui-kitten/components'
 
 import Post from './'
-import { Images } from '../../assets/images'
 import Container from '../../components/layouts'
 import layouts from '../../constants/layouts'
+import {renderEndReached, renderScrollToReveal} from './shared'
 
 const LoadingWrap = styled(View)`
     padding-bottom: 120px;
@@ -18,6 +18,19 @@ const LoadingWrap = styled(View)`
 const PostsList = props => {
     const handlePagination = () => {
         if (props.onPagination && !props.paginationLoading) props.onPagination()
+    }
+
+    const renderFooter = () => {
+        return (!props.endReached 
+          ? (props.data.length == 9 && !props.paginationLoading) 
+            ? renderScrollToReveal() 
+            : props.paginationLoading 
+                ? <LoadingWrap>
+                    <Spinner />
+                </LoadingWrap>
+                : null
+          : renderEndReached()
+        )
     }
 
     return (
@@ -36,9 +49,7 @@ const PostsList = props => {
                 contentContainerStyle={{
                     paddingBottom: 150,
                 }}
-                ListFooterComponent={props.paginationLoading && <LoadingWrap>
-                    <Spinner />
-                </LoadingWrap>}
+                ListFooterComponent={renderFooter}
             />
         </Container>
     )

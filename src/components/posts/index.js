@@ -68,9 +68,7 @@ const Post = props => {
   let action = null;
   if (route?.params) action = route.params.action;
 
-  console.log(props);
-
-  useEffect(() => {
+  useEffect(() => { 
     switch (action) {
       case 'LIKE':
         handleLike();

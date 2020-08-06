@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
-import { TouchableOpacity, View, Image, FlatList, StyleSheet } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { TouchableOpacity, Image, FlatList, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
+import {renderEndReached, renderScrollToReveal} from './shared'
 import layouts from '../../constants/layouts'
 import {getImageUrl} from '../../utils/'
 
@@ -54,6 +55,15 @@ const PostsGrid = props => {
         </TouchableOpacity>
     )}
 
+    const renderFooter = () => {
+      return (!props.endReached 
+        ? (props.data.length == 9 && !props.paginationLoading) 
+          ? renderScrollToReveal() 
+          : props.ListFooterComponent() 
+        : renderEndReached()
+      )
+    }
+
     return (
         <FlatList
             data={props.data}
@@ -72,7 +82,7 @@ const PostsGrid = props => {
             numColumns={3}
             keyExtractor={(item, index) => index.toString()}
             ListHeaderComponent={props.ListHeaderComponent}
-            ListFooterComponent={props.ListFooterComponent}
+            ListFooterComponent={() => renderFooter()}
             contentContainerStyle={styles.list}
         />
     )
