@@ -43,7 +43,7 @@ const NameAndLocationWrapper = styled(View)`
   margin-left: 10px;
   justify-content: space-between;
   flex: 1;
-  align-items: flex-end;
+  align-items: ${p => p.standalone ? 'flex-start' : `flex-end`};
 `
 
 const Name = styled(Text)`
@@ -67,6 +67,7 @@ const Post = props => {
 
   let action = null;
   if (route?.params) action = route.params.action;
+  const tag = props.tags.find(t => t.id === parseInt(props.tag))
 
   useEffect(() => { 
     switch (action) {
@@ -131,21 +132,34 @@ const Post = props => {
         <TouchableOpacity onPress={() => !props.is_mine ? navigation.navigate('others-profile', {id: props.user}) : navigation.navigate('Profile')}>
           <Avatar size='medium' source={{uri: getImageUrl(avatar)}}/>
         </TouchableOpacity>
-        <NameAndLocationWrapper>
+        <NameAndLocationWrapper
+          standalone={props.standalone}
+        >
           <View>
             <Name>{name}</Name>
             <Location>{location}</Location>
           </View>
-          <Text
-            category='label'
+          <View
             style={{
-              color: '#888',
-              alignSelf: !props.standalone ? 'flex-end' : 'flex-start',
-          }}>{dayjs(props.created_at).fromNow()}</Text>
+              alignItems: 'flex-end'
+            }}
+          >
+            {props.showTag && <Text
+              category='label'
+            >{tag ? 'From ' + tag.title : ''}</Text>}
+            <Text
+              category='label'
+              style={{
+                color: '#888',
+            }}>{dayjs(props.created_at).fromNow()}</Text>
+          </View>
         </NameAndLocationWrapper>
       </PostHeader>
     </Container>
   )
 }
 
-export default connect(state => ({isLoggedIn: state.user.isLoggedIn}))(Post)
+export default connect(state => ({
+  tags: state.initials.tags,
+  isLoggedIn: state.user.isLoggedIn
+}))(Post)

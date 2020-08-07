@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import { ScrollView, Alert, SafeAreaView } from 'react-native'
+import { ScrollView, View, SafeAreaView } from 'react-native'
 import { Layout, Icon, MenuItem, OverflowMenu,
   TopNavigationAction } from '@ui-kitten/components';
 import { connect } from 'react-redux'
 
 import TopNavigation from '../components/layouts/TopNavigation'
 import Post from '../components/posts'
-import { getPost, deletePost } from '../api/posts'
+import PostsList from '../components/posts/PostsList'
+import Container from '../components/layouts'
+import { getPost, deletePost, getSimilarPosts } from '../api/posts'
 import layouts from '../constants/layouts'
-import Container from '../components/layouts';
+import {Heading, Subheading} from '../components/typography';
 import DialogueBox from '../components/modal/DialogueBox';
 import {forceProfileUpdate, forceTagUpdate} from '../actions/updates'
 
@@ -22,9 +24,11 @@ const DeleteIcon = (props) => (
 
 const PostScreen = props => {
   const [loading, setLoading] = useState(true)
+  const [similarsLoading, setSimilarsLoading] = useState(false)
   const [menuVisible, setMenuVisible] = useState(false);
   const [modal, setModal] = useState(false);
   const [post, setPost] = useState({})
+  const [similars, setSimilars] = useState([])
 
   const { params } = props.route;
   let tag = null
@@ -35,6 +39,11 @@ const PostScreen = props => {
       if (res.status === 200) {
         setPost(res.data)
         setLoading(false)
+        setSimilarsLoading(true)
+        getSimilarPosts(params.id).then(res => {
+          setSimilars(res.data.results)
+          setSimilarsLoading(false)
+        })
       } else {
         props.navigation.goBack()
       }
@@ -98,10 +107,26 @@ const PostScreen = props => {
             paddingBottom: 150
           }}
         >
-          {!loading && <Post
-            {...post}
-            standalone={true}
-          />}
+          {!loading && <>
+            <Post
+              {...post}
+              standalone={true}
+            />
+            <Container>
+              <Heading style={{
+                marginTop: 40,
+              }}>Similar Posts</Heading>
+              {
+                similars.map(post => (
+                  <Post
+                    showTag={true}
+                    {...post}
+                  />
+                ))
+              }
+            </Container>
+          </>}
+          
         </ScrollView>
       </Layout>
       <DialogueBox

@@ -33,8 +33,13 @@ export const likePost = async (id) => {
 export const getPost = async (id) => {
     return await fetchAPI(`post/${id}/`, 'GET')
 }
+
 export const deletePost = async (id) => {
     return await fetchAPI(`post/${id}/delete/`, 'DELETE')
+}
+
+export const getSimilarPosts = async (id, page = 1) => {
+    return await fetchAPI(`post/${id}/similar/?page=${page}`)
 }
 
 export const getPostsByUserID = async (id, page = 1) => {

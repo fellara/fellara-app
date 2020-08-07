@@ -31,3 +31,7 @@ export const getImageUrl = (url) => {
   if (!url) return
   return url.startsWith('http') ? url : base_url + url
 }
+
+export const capitalize = (text) => {
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+}

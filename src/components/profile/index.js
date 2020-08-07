@@ -12,7 +12,7 @@ import { logout } from '../../api/user';
 import { logoutUser } from '../../actions/user';
 import { forceProfileUpdateDone } from '../../actions/updates';
 import TopNavigation from '../../components/layouts/TopNavigation'
-import {getImageUrl} from '../../utils/'
+import {getImageUrl, capitalize} from '../../utils/'
 import layouts from '../../constants/layouts'
 import EditProfileScreen from './EditProfileScreen'
 import PostsGrid from '../posts/PostsGrid';
@@ -220,7 +220,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
       /> : !(props.noHeader || props.ListHeaderComponent) ? <TopNavigation
         onBack={() => navigation.goBack()}
         accessoryLeft={showHeader ? renderImage() : null}
-        title={!props.loading ? profile.first_name.toUpperCase() + "'s Profile" : 'Loading...'} 
+        title={!props.loading ? capitalize(profile.first_name) + "'s Profile" : 'Loading...'} 
       /> : <TopNavigation
         onBack={() => navigation.goBack()}
         title={!props.loading ? 'My Starred Posts' : 'Loading...'} 
