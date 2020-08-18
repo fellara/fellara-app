@@ -7,10 +7,11 @@ import { Button, Layout } from '@ui-kitten/components';
 import Form from '../../components/forms'
 import Container from '../../components/layouts';
 import Text, { Heading, Subheading } from '../../components/typography';
-import {login, getProfile} from '../../api/user'
+import {resetPassword, resetPasswordConfirm} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
 import layouts from '../../constants/layouts'
 import TopNavigation from '../../components/layouts/TopNavigation'
+import { makeToast } from '../../actions/toasts'
 
 const StyledLayout = styled(Layout)`
 `
@@ -32,14 +33,16 @@ const ForgetPasswordScreen = props => {
 
   const handleSubmit = (data) => {
     setLoading(true)
-    login(data).then(res => {
-      props.setToken(res.data.key)
-      getProfile().then(res => {
-        props.setProfile(res.data)
-        setLoading(false)
-      })
+    resetPassword(data).then(res => {
+      if (res.status <= 299) {
+        props.makeToast(res.data.detail, 'SUCCESS')
+      } else {
+        props.makeToast(res.data.email, 'ERROR')
+      }
+      setLoading(false)
     }).catch(err => {
-      console.log(err);
+      props.makeToast('Some error happend!', 'ERROR')
+      setLoading(false)
     })
   }
   return (
@@ -65,4 +68,6 @@ const ForgetPasswordScreen = props => {
   )
 }
 
-export default connect(null, {setToken, setProfile})(ForgetPasswordScreen)
+export default connect(null, {
+  makeToast
+})(ForgetPasswordScreen)

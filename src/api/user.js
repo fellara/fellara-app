@@ -8,6 +8,14 @@ export const register = async (data) => {
     return await fetchAPI('user/rest-auth/registration/', 'POST', data, true)
 }
 
+export const resetPassword = async (data) => {
+    return await fetchAPI(`user/rest-auth/password/reset/`, 'POST', data)
+}
+
+export const resetPasswordConfirm = async (data) => {
+    return await fetchAPI(`user/rest-auth/password/reset/confirm/`, 'POST', data)
+}
+  
 export const logout = async () => {
     return await fetchAPI('user/rest-auth/logout/', 'POST')
 }

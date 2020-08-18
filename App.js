@@ -13,6 +13,7 @@ import useCachedResources from './src/hooks/useCachedResources';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import MainNavigator from './src/navigation/MainNavigator';
 import LinkingConfiguration from './src/navigation/LinkingConfiguration';
+import Toast from './src/components/toasts';
 import { getInitals } from './src/actions';
 
 const Stack = createStackNavigator();
@@ -42,6 +43,7 @@ export default function App(props) {
               </Stack.Navigator>
             </NavigationContainer>
           </View>
+          <Toast />
         </UIProvider>
       </Provider>
     );

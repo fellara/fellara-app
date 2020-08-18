@@ -10,7 +10,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   stateReconciler: autoMergeLevel2,
-  blacklist: []
+  blacklist: ['toasts']
 }
 /*
 * Redux store is configured here.

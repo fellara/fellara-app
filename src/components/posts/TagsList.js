@@ -1,14 +1,10 @@
 import React, {useRef, useState, useEffect} from 'react'
-import { SafeAreaView, View, TouchableOpacity, FlatList } from 'react-native'
+import { SafeAreaView, TouchableOpacity, FlatList, View } from 'react-native'
 import styled from 'styled-components/native'
-import { Avatar, Layout } from '@ui-kitten/components'
 import {connect} from 'react-redux'
 
-import Post from './'
-import { Images } from '../../assets/images'
 import { setActiveTag } from '../../actions/posts'
-import Text from '../typography';
-import Container from '../../components/layouts'
+import Text, {Muted} from '../typography';
 
 const Tag = styled(TouchableOpacity)`
   background: ${p => p.active ? '#222' : '#fff'};
@@ -24,6 +20,17 @@ const Tag = styled(TouchableOpacity)`
 const StyledText = styled(Text)`
   color: ${p => !p.active ? '#444' : '#fff'};
 `
+
+const STextWrapper = styled(View)`
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin-right: 10px;
+`
+
+const TextWrapper = props => {
+  <STextWrapper>{props.children}</STextWrapper>
+}
 
 const TagsList = props => {
     let list = useRef();
@@ -83,6 +90,8 @@ const TagsList = props => {
             horizontal={true}
             getItemLayout={getItemLayout}
             ref={(ref) => { list = ref}}
+            ListHeaderComponent={() => props.data.length > 0 && <STextWrapper><Text category='h6'>fellara</Text></STextWrapper>}
+            // ListFooterComponent={() => props.data.length > 0 && <STextWrapper><Muted>the end</Muted></STextWrapper>}
             contentContainerStyle={{
                 paddingLeft: 10,
                 paddingTop: 10,

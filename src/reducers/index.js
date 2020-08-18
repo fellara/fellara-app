@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 import {user, token} from './user'
 import {updates} from './updates'
 import {posts} from './posts'
+import {toasts} from './toasts'
 
 export const initials = (state = {
   tags: []
@@ -43,6 +44,7 @@ export default combineReducers({
   initials,
   loading,
   posts,
+  toasts,
   token,
   updates,
   user,
