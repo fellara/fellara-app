@@ -1,4 +1,5 @@
-import {base_url} from '../constants'
+import {Platform} from 'react-native'
+import {base_url, api_url} from '../constants'
 
 export const urltoFile = (dataurl, filename)  => {
   var arr = dataurl.split(','),
@@ -34,4 +35,11 @@ export const getImageUrl = (url) => {
 
 export const capitalize = (text) => {
   return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+}
+
+export const formatURL = (url) => {
+  let new_url = api_url + url
+  let source = `source=${Platform.OS === 'web' ? 'PWA' : Platform.OS.toUpperCase()}`
+  if (url.includes('?')) return new_url + '&' + source
+  else return new_url + '?' + source
 }

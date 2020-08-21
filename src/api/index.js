@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import {store} from '../store'
-import {api_url} from '../constants'
+import {formatURL} from '../utils'
 import {setUploadProgress} from '../actions/posts'
 
 export const CancelToken = axios.CancelToken;
@@ -10,7 +10,7 @@ export const source = CancelToken.source();
 const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) => {
   let config = {
     method: method || 'GET',
-    url: api_url + url,
+    url: formatURL(url),
     headers: {
       'Content-Type': hasFile ? 'multipart/form-data' : 'application/json',
     }
