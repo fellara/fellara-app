@@ -7,12 +7,14 @@ import { connect } from 'react-redux'
 import TopNavigation from '../components/layouts/TopNavigation'
 import Post from '../components/posts'
 import PostsList from '../components/posts/PostsList'
+import MetaTags from '../components/shared/MetaTags'
 import Container from '../components/layouts'
 import { getPost, deletePost, getSimilarPosts } from '../api/posts'
 import layouts from '../constants/layouts'
 import {Heading, Subheading} from '../components/typography';
 import DialogueBox from '../components/modal/DialogueBox';
 import {forceProfileUpdate, forceTagUpdate} from '../actions/updates'
+import {getImageUrl} from '../utils'
 
 const MenuIcon = (props) => (
   <Icon {...props} name='more-vertical'/>
@@ -89,7 +91,16 @@ const PostScreen = props => {
     </React.Fragment>
   );
 
-  return (
+  return (<>
+    <MetaTags 
+      title={`fellara | Post ${post.user_info ? 'by ' + post.user_info.name + ' in ' + post.user_info.location : ''}`}
+      description={`
+        ${tag ? 'From ' + tag.title : ''}${' \n'}
+        ${'Fellara is platform for sharing your culture and traditions. People from all around the world share their daily life via fellara.'}
+      `}
+      image={getImageUrl(post.clean_image_medium?.url)}
+      url={`http://app.fellara.com/page?id=${params.id}&tag=${tag?.id}`}
+    />
     <SafeAreaView>
       <TopNavigation
         title={'From ' + (tag ? tag.title : '...')}
@@ -148,7 +159,7 @@ const PostScreen = props => {
         }
       />
     </SafeAreaView>
-  )
+  </>)
 }
 
 PostScreen.navigationOptions = {
