@@ -14,6 +14,7 @@ import layouts from '../constants/layouts'
 import {Heading, Subheading} from '../components/typography';
 import DialogueBox from '../components/modal/DialogueBox';
 import {forceProfileUpdate, forceTagUpdate} from '../actions/updates'
+import { makeToast } from '../actions/toasts'
 import {getImageUrl} from '../utils'
 
 const MenuIcon = (props) => (
@@ -66,6 +67,7 @@ const PostScreen = props => {
       props.forceTagUpdate(tag.id)
       props.forceProfileUpdate()
       props.navigation.goBack()
+      props.makeToast('Post successfully deleted', 'SUCCESS')
     })
   }
 
@@ -171,4 +173,5 @@ export default connect(state => ({
 }), {
   forceProfileUpdate,
   forceTagUpdate,
+  makeToast,
 })(PostScreen)

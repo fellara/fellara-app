@@ -112,7 +112,7 @@ const Form = ({loading, ...props}) => {
                     {errors
                         .filter(error => error.type === 'EMPTY')
                         .map(error => error.field)
-                        .includes(field.name) && <Label isError>This field is required!</Label>}
+                        .includes(field.name) && <Label isError>{field.label} field is required!</Label>}
                     {errors
                         .filter(error => error.type === 'CUSTOM')
                         .map(error => error.field)
@@ -120,7 +120,7 @@ const Form = ({loading, ...props}) => {
                     {errors
                         .filter(error => error.type === 'REGEX')
                         .map(error => error.field)
-                        .includes(field.name) && <Label isError>{field.regexError || 'This field is not valid!'}</Label>}
+                        .includes(field.name) && <Label isError>{field.regexError || `${field.label} field is not valid!`}</Label>}
                 </React.Fragment>)
             })}
 
@@ -132,7 +132,7 @@ const Form = ({loading, ...props}) => {
             >
                 {props.submitText || 'Submit'}
             </StyledButton>
-            {errors.length > 0 && <Label isError>Fix errors shown above!</Label>}
+            {errors.length > 0 && <Label isError>Fix error{errors.length > 1 ? 's' : ''} shown above!</Label>}
             {
                 // errors.length > 0 && <Card status='danger' style={{
                 //     marginTop: 15,

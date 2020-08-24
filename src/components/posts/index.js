@@ -8,12 +8,11 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { Images } from '../../assets/images'
 import layouts from '../../constants/layouts'
 import {getImageUrl} from '../../utils'
-import {base_url} from '../../constants/'
 import {likePost} from '../../api/posts'
 import Text, {Muted} from '../typography';
+import { makeToast } from '../../actions/toasts'
 
 dayjs.extend(relativeTime)
 
@@ -85,6 +84,7 @@ const Post = props => {
       setLiked(!liked)
       likePost(props.id)
     } else {
+      props.makeToast('Login is required')
       navigation.navigate('Profile', {_back: 'post', id: props.id, tag: props.tag, action: 'LIKE'})
     }
   }
@@ -162,4 +162,6 @@ const Post = props => {
 export default connect(state => ({
   tags: state.initials.tags,
   isLoggedIn: state.user.isLoggedIn
-}))(Post)
+}), {
+  makeToast,
+})(Post)
