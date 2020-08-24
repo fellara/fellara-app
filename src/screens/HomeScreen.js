@@ -18,6 +18,7 @@ const HomeScreen = props => {
   const [tags, setTags] = useState([])
   const [activeTag, setActiveTag] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [first, setFirst] = useState(true)
 
   useEffect(() => {
     if (props.tags.length > 0) {
@@ -32,14 +33,17 @@ const HomeScreen = props => {
 
   useEffect(() => {
     if (activeTag) {
-      handleGetPosts(activeTag)
+      handleGetPosts(activeTag, 1, false)
+      setFirst(false)
     }
   }, [activeTag])
 
   useEffect(() => {
-    setPosts([])
-    handleGetPosts(activeTag, 1, true)
-    props.forceTagUpdateDone()
+    if (activeTag) {
+      setPosts([])
+      handleGetPosts(activeTag, 1, true)
+      props.forceTagUpdateDone()
+    }
   }, [props.updates])
 
   const changeActiveTag = (tag) => {
@@ -52,7 +56,8 @@ const HomeScreen = props => {
   }
 
   const handleGetPosts = (tag, page, refresh) => {
-    getPosts(tag, page).then(res => {
+    let action = first && 'APP_VISIT'
+    getPosts(tag, page, action).then(res => {
       if (res.status === 200) {
         if (!refresh) {
           setPosts([...posts, ...res.data.results])

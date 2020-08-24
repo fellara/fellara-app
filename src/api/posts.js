@@ -1,10 +1,9 @@
 import fetchAPI from './'
 
-export const getPosts = async (tag, page = 1) => {
+export const getPosts = async (tag, page = 1, action) => {
     let url = `post/list/?page=${page}`
-    if (tag) {
-        url += '&tag=' + tag
-    }
+    if (tag) url += '&tag=' + tag
+    if (action) url += '&action=' + action
     return await fetchAPI(url)
 }
 
