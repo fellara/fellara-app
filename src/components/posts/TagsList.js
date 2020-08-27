@@ -1,5 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react'
 import { SafeAreaView, TouchableOpacity, FlatList, View } from 'react-native'
+import { Avatar} from '@ui-kitten/components'
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
@@ -7,6 +8,7 @@ import { useMediaQuery } from 'react-responsive'
 import { setActiveTag } from '../../actions/posts'
 import Text, {Muted} from '../typography';
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
+import Logo from '../../assets/images/logo_thumbnail.jpg'
 
 const Tag = styled(TouchableOpacity)`
   background: ${p => p.active ? '#222' : '#fff'};
@@ -28,6 +30,7 @@ const STextWrapper = styled(View)`
   justify-content: center;
   flex: 1;
   margin-right: 10px;
+  flex-direction: row;
 `
 
 const TextWrapper = props => {
@@ -74,6 +77,17 @@ const TagsList = props => {
         setSizes(prev => ([...prev, {id, width}]))
     }
 
+    const renderBrand = () => {
+        return (
+          <STextWrapper>
+            <Avatar source={Logo} size='small' style={{
+              marginRight: 5,
+            }} />
+            <Text category='h6'>fellara</Text>
+          </STextWrapper>
+        )
+    }
+
     const style = isDesktopOrLaptop ? {
       paddingHorizontal: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
       // marginLeft: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
@@ -101,7 +115,7 @@ const TagsList = props => {
             horizontal={true}
             getItemLayout={getItemLayout}
             ref={(ref) => { list = ref}}
-            ListHeaderComponent={() => props.data.length > 0 && <STextWrapper><Text category='h6'>fellara</Text></STextWrapper>}
+            ListHeaderComponent={() => renderBrand()}
             // ListFooterComponent={() => props.data.length > 0 && <STextWrapper><Muted>the end</Muted></STextWrapper>}
             contentContainerStyle={{
               paddingLeft: 10,
