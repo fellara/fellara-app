@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react'
 import { View, Image, ScrollView, SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
 
-import layouts from '../../constants/layouts'
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 import {forceProfileUpdate, forceTagUpdate} from '../../actions/updates'
 import Container from '../../components/layouts';
 import Form from '../../components/forms'
@@ -11,8 +12,8 @@ import { getTags, createPost } from '../../api/posts'
 import { makeToast } from '../../actions/toasts'
 
 const StyledImage = styled(Image)`
-    width: ${layouts.window.width}px;
-    height: ${p => layouts.window.width * p.ratio}px;
+    width: 100%;
+    height: ${p => (!p.isDesktop ? layouts.window.width : MAX_WIDTH) * p.ratio}px;
 `
 
 const PublishPostScreen = props => {
@@ -20,6 +21,10 @@ const PublishPostScreen = props => {
     const [loading, setLoading] = useState(false)
     const [tags, setTags] = useState([])
     const [activeTag, setActiveTag] = useState(props.activeTag || tags[0].id)
+
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-device-width: 1224px)'
+    })
 
     const fields = [
         {
@@ -67,9 +72,10 @@ const PublishPostScreen = props => {
             }}
             contentContainerStyle={{
                 height: layouts.window.height,
+                width: isDesktopOrLaptop ? MAX_WIDTH : '100%'
             }}
         >
-            <StyledImage source={{uri: props.image.uri}} ratio={ratio} />
+            <StyledImage source={{uri: props.image.uri}} ratio={ratio} isDesktop={isDesktopOrLaptop}/>
             <Container paddingbottom={150}>
                 <Form
                     fields={fields}

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Layout } from '@ui-kitten/components';
 import { connect } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
 
 import { getPosts } from '../api/posts'
 import { forceTagUpdateDone } from '../actions/updates'
@@ -19,6 +20,10 @@ const HomeScreen = props => {
   const [activeTag, setActiveTag] = useState(null)
   const [loading, setLoading] = useState(false)
   const [first, setFirst] = useState(true)
+
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
 
   useEffect(() => {
     if (props.tags.length > 0) {

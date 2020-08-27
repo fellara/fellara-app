@@ -26,13 +26,13 @@ export const renderScrollToReveal = (props) => {
                 marginTop: 5,
             }}
         >
-        <Icon
-            {...props}
-            ref={pulseIconRef}
-            animationConfig={{ cycles: Infinity }}
-            name='arrowhead-down-outline'
-            animation='pulse'
-        />
+            <Icon
+                {...props}
+                ref={pulseIconRef}
+                animationConfig={{ cycles: Infinity }}
+                name='arrowhead-down-outline'
+                animation='pulse'
+            />
         </View>
     </View>
 )}
@@ -46,5 +46,28 @@ export const renderEndReached = (props) => (
         }}
     >
         <Muted>You've reached the end</Muted>
+    </View>
+);
+
+export const renderEmptyList = (text) => (
+    <View
+        style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginVertical: 20,
+        }}
+    >
+        <View
+            style={{
+                width: 20,
+                marginBottom: 10,
+            }}
+        >
+            <Icon
+                name='moon'
+            />
+        </View>
+        <Muted>Nothing here</Muted>
+        {text && <Muted>{text}</Muted>}
     </View>
 );

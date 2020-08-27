@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import { Avatar, Layout, Icon, MenuItem, OverflowMenu, 
   TopNavigationAction, Spinner } from '@ui-kitten/components';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useMediaQuery } from 'react-responsive'
 
 import { Heading, Subheading } from '../../components/typography';
 import AuthScreen from '../../navigation/AuthNavigator';
@@ -13,7 +14,7 @@ import { logoutUser } from '../../actions/user';
 import { forceProfileUpdateDone } from '../../actions/updates';
 import TopNavigation from '../../components/layouts/TopNavigation'
 import {getImageUrl, capitalize} from '../../utils/'
-import layouts from '../../constants/layouts'
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 import EditProfileScreen from './EditProfileScreen'
 import PostsGrid from '../posts/PostsGrid';
 
@@ -65,10 +66,18 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
   const [next, setNext] = useState(null)
   const [page, setPage] = useState(1)
   const [seenPages, setSeenPages] = useState([1])
-  const [paginationLoading, setPaginationLoading] = useState(false)
+  const [paginationLoading, setPaginationLoading] = useState(true)
 
   const navigation = useNavigation()
   const route = useRoute()
+
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
+
+  const style = isDesktopOrLaptop ? {
+    paddingHorizontal: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
+  } : {}
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -147,10 +156,10 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
         anchor={renderMenuAction}
         visible={menuVisible}
         onBackdropPress={toggleMenu}>
-        <MenuItem accessoryLeft={EditIcon} title='Edit'
+        <MenuItem accessoryLeft={EditIcon} title='Edit Profile'
           onPress={handleSetEditing}
         />
-        <MenuItem accessoryLeft={StarIcon} title='Starred'
+        <MenuItem accessoryLeft={StarIcon} title='Starreds'
           onPress={handleStarred}
         />
         <MenuItem accessoryLeft={LogoutIcon} title='Logout'
@@ -237,6 +246,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
             ListHeaderComponent={() => renderHeader()}
             endReached={posts.length > 0 && !next}
             ListFooterComponent={() => renderFooter()}
+            style={style}
           /> : <EditProfileScreen profile={profile} setEditing={setEditing}/> : <LoadingWrap><Spinner /></LoadingWrap>}
       </StyledLayout>
     </>

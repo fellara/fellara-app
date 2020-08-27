@@ -1,15 +1,27 @@
 import React, {useState, useEffect} from 'react'
 import { ScrollView } from 'react-native'
 import {connect} from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
 
 import Form from '../../components/forms'
 import {updateProfile, getCountries, getCities} from '../../api/user'
 import Container from '../../components/layouts';
 import {setProfile} from '../../actions/user'
 import TopNavigation from '../../components/layouts/TopNavigation'
+import { makeToast } from '../../actions/toasts'
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 
 const EditProfileScreen = ({profile, ...props}) => {
     const [loading, setLoading] = useState(false)
+
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-device-width: 1224px)'
+    })
+    
+    const style = isDesktopOrLaptop ? {
+        width: MAX_WIDTH,
+        marginLeft: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
+    } : {}
 
     const fields = [
         {
@@ -78,11 +90,17 @@ const EditProfileScreen = ({profile, ...props}) => {
     const handleSubmit = (data) => {
       setLoading(true)
       updateProfile(data).then(res => {
-        props.setProfile(res.data)
-        props.setEditing(false)
+        if (res.status < 300) {
+            props.makeToast('Profile updated successfully', 'SUCCESS')
+            props.setProfile(res.data)
+            props.setEditing(false)
+        } else if (res.status < 500) {
+            props.makeToast(res.data.detail, 'ERROR')
+        } else {
+            props.makeToast('Something went wrong, try again', 'ERROR')
+        }
         setLoading(false)
       }).catch(err => {
-        console.log(err);
         setLoading(false)
       })
     }
@@ -90,7 +108,8 @@ const EditProfileScreen = ({profile, ...props}) => {
     return (
         <Container as={ScrollView}
               contentContainerStyle={{
-                paddingBottom: 150
+                paddingBottom: 150,
+                ...style
               }}
             >
             <Form
@@ -102,4 +121,4 @@ const EditProfileScreen = ({profile, ...props}) => {
     )
 }
 
-export default connect(null, {setProfile})(EditProfileScreen)
+export default connect(null, {setProfile, makeToast})(EditProfileScreen)

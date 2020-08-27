@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { TouchableOpacity, View, ScrollView } from "react-native";
 import {Layout} from '@ui-kitten/components'
 import styled from 'styled-components/native'
+import { useMediaQuery } from 'react-responsive'
 
 import Modal from './';
 import Text, {Heading, Subheading} from '../typography'
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 
 const Wrapper = styled(Layout)`
-  width: 90%;
+  width: ${p => p.isDesktop ? MAX_WIDTH + `px` : `90%`};
   min-height: 100;
   align-self: center;
   border-radius: 10px;
@@ -36,7 +38,11 @@ const Buttons = styled(View)`
 
 const DialogueBox = props => {
   const [visible, setVisible] = useState(props.visible)
-  
+
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
+
   useEffect(() => {
     setVisible(props.visible)
   }, [props.visible])
@@ -51,7 +57,9 @@ const DialogueBox = props => {
     visible={visible}
     onHide={props.onHide}
   >
-    <Wrapper>
+    <Wrapper
+      isDesktop={isDesktopOrLaptop}
+    >
       <Body>
         <Heading style={{
           marginBottom: 10,

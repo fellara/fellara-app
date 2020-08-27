@@ -3,13 +3,14 @@ import { ScrollView, SafeAreaView } from 'react-native';
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 import { Button, Layout } from '@ui-kitten/components';
+import { useMediaQuery } from 'react-responsive'
 
 import Form from '../../components/forms'
 import Container from '../../components/layouts';
 import Text, { Heading, Subheading } from '../../components/typography';
 import {resetPassword, resetPasswordConfirm} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
-import layouts from '../../constants/layouts'
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 import TopNavigation from '../../components/layouts/TopNavigation'
 import { makeToast } from '../../actions/toasts'
 
@@ -30,6 +31,14 @@ const fields = [
 
 const ForgetPasswordScreen = props => {
   const [loading, setLoading] = useState(false)
+
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
+
+  const style = isDesktopOrLaptop ? {
+      width: MAX_WIDTH
+  } : {}
 
   const handleSubmit = (data) => {
     setLoading(true)
@@ -52,9 +61,13 @@ const ForgetPasswordScreen = props => {
           onBack={() => props.navigation.goBack()}
         />
         <StyledLayout
-          style={{height: layouts.window.height}}
+          style={{height: layouts.window.height,
+            alignItems: 'center',
+          }}
         >
-          <Container as={ScrollView}>
+          <Container as={ScrollView} style={{
+            ...style
+          }}>
             <Heading>Forget Password</Heading>
             <Subheading marginbottom>{'Enter the email address that you registered with to recover your password.'}</Subheading>
             <Form
@@ -69,5 +82,5 @@ const ForgetPasswordScreen = props => {
 }
 
 export default connect(null, {
-  makeToast
+  makeToast,
 })(ForgetPasswordScreen)

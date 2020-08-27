@@ -7,8 +7,9 @@ import { Image } from "react-native-expo-image-cache";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useMediaQuery } from 'react-responsive'
 
-import layouts from '../../constants/layouts'
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 import {getImageUrl} from '../../utils'
 import {likePost} from '../../api/posts'
 import Text, {Muted} from '../typography';
@@ -20,11 +21,13 @@ const Container = styled(View)`
   ${p => !p.standalone && `margin-top: 10px;
   margin-bottom: 30px;`}
   ${p => !p.standalone && `flex-direction: column-reverse`};
+  align-items: center;
 `
 const PostHeader = styled(View)`
+  width: ${p => !p.isDesktop ? `100%` : MAX_WIDTH + `px`};
   height: 50px;
   align-items: center;
-  flex-direction: row
+  flex-direction: row;
   ${p => p.standalone && `padding: 0 10px;`}
 `
 const PostImageWrapper = styled(TouchableOpacity)`
@@ -32,8 +35,8 @@ const PostImageWrapper = styled(TouchableOpacity)`
   align-items: center;
 `
 const PostImage = styled(ImageBackground)`
-  width: ${p => layouts.window.width - p.padding}px;
-  height: ${p => (layouts.window.width - p.padding) * p.ratio}px;
+  width: ${p => !p.isDesktop ? layouts.window.width - p.padding : MAX_WIDTH}px;
+  height: ${p => (!p.isDesktop ? layouts.window.width - p.padding : MAX_WIDTH) * p.ratio}px;
   border-radius: 15px;
 `
 
@@ -67,6 +70,10 @@ const Post = props => {
   let action = null;
   if (route?.params) action = route.params.action;
   const tag = props.tags.find(t => t.id === parseInt(props.tag))
+
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
 
   useEffect(() => { 
     switch (action) {
@@ -105,10 +112,11 @@ const Post = props => {
       >
         {/* <PostImage uri={props.image_medium}/> */}
         <PostImage
+          isDesktop={isDesktopOrLaptop}
           source={{uri: getImageUrl(url)}}
           ratio={height / width}
           resizeMode='cover'
-          padding={props.standalone ? 0 : 20}
+          padding={props.standalone ? 0 : POSTS_LIST_PADDING}
           imageStyle={{
             borderRadius: props.standalone ? 0 : 15,
           }}
@@ -128,6 +136,7 @@ const Post = props => {
       </PostImageWrapper>
       <PostHeader
         standalone={props.standalone}
+        isDesktop={isDesktopOrLaptop}
       >
         <TouchableOpacity onPress={() => !props.is_mine ? navigation.navigate('others-profile', {id: props.user}) : navigation.navigate('Profile')}>
           <Avatar size='medium' source={{uri: getImageUrl(avatar)}}/>

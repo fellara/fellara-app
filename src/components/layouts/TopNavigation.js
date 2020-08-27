@@ -2,6 +2,9 @@ import React from 'react';
 import { Icon, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
+import { useMediaQuery } from 'react-responsive'
+
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 
 const BackIcon = (props) => (
   !props.noBack
@@ -40,12 +43,24 @@ const renderAccessoryLeft = (props) => {
 
 const CustomTopNavigation = (props) => {
     const navigation = useNavigation();
+
+    const isDesktopOrLaptop = useMediaQuery({
+      query: '(min-device-width: 1224px)'
+    })
+
+    const style = isDesktopOrLaptop ? {
+      paddingHorizontal: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
+    } : {}
+
     
     return (<TopNavigation
         accessoryLeft={() => renderAccessoryLeft(props)}
         accessoryRight={props.accessoryRight && props.accessoryRight}
         title={props.title}
         onBack={props.onBack}
+        style={{
+          ...style
+        }}
     />
 )};
 

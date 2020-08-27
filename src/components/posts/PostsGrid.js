@@ -1,15 +1,21 @@
 import React, {useEffect, useState} from 'react'
-import { TouchableOpacity, Image, FlatList, StyleSheet } from 'react-native';
+import { TouchableOpacity, Image, FlatList, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useMediaQuery } from 'react-responsive'
 
-import {renderEndReached, renderScrollToReveal} from './shared'
-import layouts from '../../constants/layouts'
+import {renderEndReached, renderScrollToReveal, renderEmptyList} from './shared'
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 import {getImageUrl} from '../../utils/'
+import Text from '../../components/typography'
 
 const PostsGrid = props => {
     const [callOnScrollEnd, setCallOnScrollEnd] = useState(true)
     const navigation = useNavigation()
 
+    const isDesktopOrLaptop = useMediaQuery({
+      query: '(min-device-width: 1224px)'
+    })
+  
     useEffect(() => {
       if (props.forcePaginate) handlePagination()
     }, [props.forcePaginate])
@@ -22,7 +28,7 @@ const PostsGrid = props => {
     }
 
     const margin = 2;
-    const height = (layouts.window.width - (20 + 6 * margin)) / 3
+    const height = ((!isDesktopOrLaptop ? layouts.window.width : MAX_WIDTH) - (20 + 6 * margin)) / 3
 
     const styles = StyleSheet.create({
         MainContainer: {
@@ -42,6 +48,7 @@ const PostsGrid = props => {
     });
 
     const renderItem = (item, margin, height, styles) => {
+        if (item.mock) return <View style={{background: '#eeeeee44', flexDirection: 'column', margin, height, width: height}} />
         return (<TouchableOpacity 
           onPress={() => navigation.navigate('post', {
             tag: item.tag,
@@ -83,7 +90,8 @@ const PostsGrid = props => {
             keyExtractor={(item, index) => index.toString()}
             ListHeaderComponent={props.ListHeaderComponent}
             ListFooterComponent={() => renderFooter()}
-            contentContainerStyle={styles.list}
+            ListEmptyComponent={() => !props.paginationLoading && renderEmptyList(props.listEmptyText)}
+            contentContainerStyle={{...styles.list, ...props.style}}
         />
     )
 }

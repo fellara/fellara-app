@@ -3,6 +3,7 @@ import { ScrollView, View, SafeAreaView } from 'react-native'
 import { Layout, Icon, MenuItem, OverflowMenu,
   TopNavigationAction } from '@ui-kitten/components';
 import { connect } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
 
 import TopNavigation from '../components/layouts/TopNavigation'
 import Post from '../components/posts'
@@ -10,7 +11,7 @@ import PostsList from '../components/posts/PostsList'
 import MetaTags from '../components/shared/MetaTags'
 import Container from '../components/layouts'
 import { getPost, deletePost, getSimilarPosts } from '../api/posts'
-import layouts from '../constants/layouts'
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../constants/layouts'
 import {Heading, Subheading} from '../components/typography';
 import DialogueBox from '../components/modal/DialogueBox';
 import {forceProfileUpdate, forceTagUpdate} from '../actions/updates'
@@ -36,6 +37,14 @@ const PostScreen = props => {
   const { params } = props.route;
   let tag = null
   if (params) tag = props.tags.find(t => t.id === parseInt(params.tag))
+  
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
+
+  const style = isDesktopOrLaptop ? {
+      marginLeft: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
+    } : {}
 
   useEffect(() => {
     if (params) getPost(params.id).then(res => {
@@ -128,6 +137,7 @@ const PostScreen = props => {
             <Container>
               <Heading style={{
                 marginTop: 40,
+                ...style
               }}>Similar Posts</Heading>
               {
                 similars.map(post => (

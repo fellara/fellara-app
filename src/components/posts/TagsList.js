@@ -2,9 +2,11 @@ import React, {useRef, useState, useEffect} from 'react'
 import { SafeAreaView, TouchableOpacity, FlatList, View } from 'react-native'
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
 
 import { setActiveTag } from '../../actions/posts'
 import Text, {Muted} from '../typography';
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 
 const Tag = styled(TouchableOpacity)`
   background: ${p => p.active ? '#222' : '#fff'};
@@ -35,6 +37,10 @@ const TextWrapper = props => {
 const TagsList = props => {
     let list = useRef();
     const [sizes, setSizes] = useState([])
+
+    const isDesktopOrLaptop = useMediaQuery({
+      query: '(min-device-width: 1224px)'
+    })
 
     useEffect(() => {
       if (props.active) {
@@ -68,6 +74,11 @@ const TagsList = props => {
         setSizes(prev => ([...prev, {id, width}]))
     }
 
+    const style = isDesktopOrLaptop ? {
+      paddingHorizontal: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
+      // marginLeft: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
+    } : {}
+
     return (
       <SafeAreaView>
         <FlatList
@@ -93,8 +104,9 @@ const TagsList = props => {
             ListHeaderComponent={() => props.data.length > 0 && <STextWrapper><Text category='h6'>fellara</Text></STextWrapper>}
             // ListFooterComponent={() => props.data.length > 0 && <STextWrapper><Muted>the end</Muted></STextWrapper>}
             contentContainerStyle={{
-                paddingLeft: 10,
-                paddingTop: 10,
+              paddingLeft: 10,
+              paddingTop: 10,
+              ...style
             }}
         />
       </SafeAreaView>

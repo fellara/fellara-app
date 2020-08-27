@@ -1,7 +1,10 @@
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import * as React from 'react';
+import { View } from 'react-native'
 import { BottomNavigation, BottomNavigationTab, Layout, Icon } from '@ui-kitten/components';
+import { useMediaQuery } from 'react-responsive'
 
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../constants/layouts'
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import AddPostScreen from '../screens/add-post';
@@ -34,17 +37,30 @@ const renderIcon = (props, icon, active) => {
   )
 }
 
-const BottomTabBar = ({ navigation, state }) => (
-  <BottomNavigation
+const BottomTabBar = ({ navigation, state }) => {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
+
+  const style = isDesktopOrLaptop ? {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
+  } : {}
+
+  return (<BottomNavigation
     selectedIndex={state.index}
     appearance='noIndicator'
     onSelect={index => navigation.navigate(state.routeNames[index])}
+    style={{
+      ...style
+    }}
   >
-    <BottomNavigationTab icon={(props) => renderIcon(props, 'globe-2', state.index === 0)} />
-    <BottomNavigationTab icon={(props) => renderIcon(props, 'camera', state.index === 1)} />
-    <BottomNavigationTab icon={(props) => renderIcon(props, 'person', state.index === 2)} />
+      <BottomNavigationTab icon={(props) => renderIcon(props, 'globe-2', state.index === 0)} />
+      <BottomNavigationTab icon={(props) => renderIcon(props, 'camera', state.index === 1)} />
+      <BottomNavigationTab icon={(props) => renderIcon(props, 'person', state.index === 2)} />
   </BottomNavigation>
-);
+)};
 
 export default function BottomTabNavigator({ navigation, route }) {
   return (

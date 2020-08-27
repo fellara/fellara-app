@@ -2,14 +2,16 @@ import React, {useState} from 'react';
 import { ScrollView, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Button, Layout } from '@ui-kitten/components';
 import {connect} from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
 
 import Form from '../../components/forms'
 import Container from '../../components/layouts';
 import Text, { Heading, Subheading } from '../../components/typography';
 import {login, getProfile, register, getCountries, getCities} from '../../api/user'
 import {setToken, setProfile} from '../../actions/user'
-import layouts from '../../constants/layouts'
+import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 import TopNavigation from '../../components/layouts/TopNavigation'
+import { makeToast } from '../../actions/toasts'
 
 const fields = [
   {
@@ -105,14 +107,30 @@ const fields = [
 
 const RegisterScreen = props => {
   const [loading, setLoading] = useState(false)
+
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
+
+  const style = isDesktopOrLaptop ? {
+      width: MAX_WIDTH
+  } : {}
+
   const handleSubmit = (data) => {
     setLoading(true)
     register(data).then(res => {
-      props.setToken(res.data.key)
-      getProfile().then(res => {
-        props.setProfile(res.data)
-        setLoading(false)
-      })
+      if (res.status < 300) {
+        props.setToken(res.data.key)
+        props.makeToast('Registered successfully', 'SUCCESS')
+        getProfile().then(res => {
+          props.setProfile(res.data)
+        })
+      } else if (res.status < 500) {
+        props.makeToast(res.data.detail, 'ERROR')
+      } else {
+        props.makeToast('Something went wrong, try again', 'ERROR')
+      }
+      setLoading(false)
     }).catch(err => {
       console.log(err);
       setLoading(false)
@@ -125,7 +143,9 @@ const RegisterScreen = props => {
         onBack={() => props.navigation.goBack()}
       />
         <Layout
-          style={{height: layouts.window.height}}
+          style={{height: layouts.window.height,
+            alignItems: 'center',
+          }}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
@@ -135,7 +155,8 @@ const RegisterScreen = props => {
             <Container
               as={ScrollView}
               contentContainerStyle={{
-                paddingBottom: 180
+                paddingBottom: 180,
+                ...style
               }}
             >
               <Heading>Registration</Heading>
@@ -160,4 +181,4 @@ const RegisterScreen = props => {
   )
 }
 
-export default connect(null, {setToken, setProfile})(RegisterScreen)
+export default connect(null, {setToken, setProfile, makeToast})(RegisterScreen)
