@@ -31,9 +31,17 @@ const tabs = [
 const renderIcon = (props, icon, active) => {
   let name = icon
   if (!active) name += '-outline'
-
+  let style = active ? {
+    ...props.style,
+    tintColor: '#222'
+  } : {
+    ...props.style,
+    tintColor: '#999'
+  }
   return (
-    <Icon {...props} name={name} />
+    <Icon style={{
+      ...style
+    }} name={name} />
   )
 }
 
