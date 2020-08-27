@@ -75,10 +75,6 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
     query: '(min-device-width: 1224px)'
   })
 
-  const style = isDesktopOrLaptop ? {
-    paddingHorizontal: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
-  } : {}
-
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
@@ -123,8 +119,6 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
       setSeenPages([...seenPages, nextPage])
     }
   }
-
-  
 
   const cleanIt = () => {
     setMenuVisible(false);
@@ -221,7 +215,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
 
   return (<>
       {!props.others ? <TopNavigation 
-        title={!editing ? !showHeader ? 'Profile' : profile.first_name + ' ' + profile.last_name : 'Edit Profile'} 
+        title={!editing ? !showHeader ? 'Profile' : capitalize(profile.first_name) + ' ' + capitalize(profile.last_name) : 'Edit Profile'} 
         noBack={!editing}
         onBack={() => setEditing(false)}
         accessoryRight={!editing ? renderOverflowMenuAction : null}
@@ -229,7 +223,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
       /> : !(props.noHeader || props.ListHeaderComponent) ? <TopNavigation
         onBack={() => navigation.goBack()}
         accessoryLeft={showHeader ? renderImage() : null}
-        title={!props.loading ? capitalize(profile.first_name) + "'s Profile" : 'Loading...'} 
+        title={!props.loading ? capitalize(profile.first_name) + ' ' + capitalize(profile.last_name) : 'Loading...'} 
       /> : <TopNavigation
         onBack={() => navigation.goBack()}
         title={!props.loading ? 'My Starred Posts' : 'Loading...'} 
@@ -246,7 +240,6 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
             ListHeaderComponent={() => renderHeader()}
             endReached={posts.length > 0 && !next}
             ListFooterComponent={() => renderFooter()}
-            style={style}
           /> : <EditProfileScreen profile={profile} setEditing={setEditing}/> : <LoadingWrap><Spinner /></LoadingWrap>}
       </StyledLayout>
     </>

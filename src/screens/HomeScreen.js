@@ -2,11 +2,14 @@ import React, {useEffect, useState} from 'react';
 import { Layout } from '@ui-kitten/components';
 import { connect } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
+import axios from 'axios';
 
 import { getPosts } from '../api/posts'
 import { forceTagUpdateDone } from '../actions/updates'
 import PostsList from '../components/posts/PostsList';
 import TagsList from '../components/posts/TagsList';
+import {formatURL} from '../utils'
+import {store} from '../store'
 
 const HomeScreen = props => {
   let tag = null;
@@ -25,6 +28,10 @@ const HomeScreen = props => {
     query: '(min-device-width: 1224px)'
   })
 
+    
+  const CancelToken = axios.CancelToken;
+  const source = CancelToken.source();
+  
   useEffect(() => {
     if (props.tags.length > 0) {
       setTags(props.tags)
@@ -53,6 +60,8 @@ const HomeScreen = props => {
 
   const changeActiveTag = (tag) => {
     if (activeTag !== tag) {
+      console.log(source);
+      source.cancel('Operation canceled by the user.');
       setPage(1)
       setNext(null)
       setPosts([])
@@ -61,8 +70,25 @@ const HomeScreen = props => {
   }
 
   const handleGetPosts = (tag, page, refresh) => {
+    let url = `post/list/?page=${page}`
+    if (tag) url += '&tag=' + tag
+
     let action = first && 'APP_VISIT'
-    getPosts(tag, page, action).then(res => {
+    if (action) url += '&action=' + action
+    
+
+    const config = {
+      method: 'GET',
+      url: formatURL(url),
+      cancelToken: source.token,
+      headers: {}
+    }
+    const token = store.getState().token
+    if (token) {
+      config.headers.Authorization = 'Token ' + token
+    }
+
+    axios(config).then(res => {
       if (res.status === 200) {
         if (!refresh) {
           setPosts([...posts, ...res.data.results])
@@ -74,7 +100,13 @@ const HomeScreen = props => {
         setNext(null)
       }
       setPaginationLoading(false)
-    })
+    }).catch(function (thrown) {
+      if (axios.isCancel(thrown)) {
+        console.log('Request canceled', thrown.message);
+      } else {
+        // handle error
+      }
+    });
   }
 
   const handlePagination = () => {

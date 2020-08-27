@@ -30,6 +30,10 @@ const PostsGrid = props => {
     const margin = 2;
     const height = ((!isDesktopOrLaptop ? layouts.window.width : MAX_WIDTH) - (20 + 6 * margin)) / 3
 
+    const style = isDesktopOrLaptop ? {
+      paddingHorizontal: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
+    } : {}
+
     const styles = StyleSheet.create({
         MainContainer: {
           justifyContent: 'center',
@@ -38,6 +42,7 @@ const PostsGrid = props => {
         },
         list: {
           paddingBottom: 150,
+          ...style
         },
         imageThumbnail: {
           justifyContent: 'center',
@@ -91,7 +96,7 @@ const PostsGrid = props => {
             ListHeaderComponent={props.ListHeaderComponent}
             ListFooterComponent={() => renderFooter()}
             ListEmptyComponent={() => !props.paginationLoading && renderEmptyList(props.listEmptyText)}
-            contentContainerStyle={{...styles.list, ...props.style}}
+            contentContainerStyle={styles.list}
         />
     )
 }
