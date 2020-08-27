@@ -43,7 +43,8 @@ const LoginScreen = props => {
   })
 
   const style = isDesktopOrLaptop ? {
-      width: MAX_WIDTH
+      width: MAX_WIDTH,
+      marginLeft: (layouts.window.width - MAX_WIDTH) / 2
   } : {}
 
   const handleSubmit = (data) => {
@@ -69,7 +70,8 @@ const LoginScreen = props => {
     <StyledLayout
       style={{
         height: layouts.window.height,
-        alignItems: 'center',
+        // alignItems: 'center',
+        flex: 1,
       }}
     >
       <SafeAreaView style={{
