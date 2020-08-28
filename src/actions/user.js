@@ -1,5 +1,7 @@
+import jsCookie from 'js-cookie'
 
 export const setToken = (token) => (dispatch) => {
+    jsCookie.set('TOKEN', token)
     dispatch({type: 'GOT_TOKEN', token})
 } 
 

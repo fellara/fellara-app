@@ -52,8 +52,9 @@ const DialogueBox = props => {
     setVisible(false);
   }
 
-  return (
-  <Modal
+  const style = props.comp ? {marginBottom: 10} : {}
+
+  return ( <Modal
     visible={visible}
     onHide={props.onHide}
   >
@@ -64,7 +65,10 @@ const DialogueBox = props => {
         <Heading style={{
           marginBottom: 10,
         }}>{props.title}</Heading>
-        <Text>{props.description}</Text>
+        <Text style={{
+          ...style
+        }}>{props.description}</Text>
+        {props.comp && props.comp}
       </Body>
       {props.buttons && <Buttons>
         {props.buttons?.map((button, index) => <Button key={index} 

@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import { ScrollView, View, SafeAreaView } from 'react-native'
+import { ScrollView, Clipboard, SafeAreaView, TouchableOpacity } from 'react-native'
 import { Layout, Icon, MenuItem, OverflowMenu,
   TopNavigationAction } from '@ui-kitten/components';
 import { connect } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
+import styled from 'styled-components'
 
 import TopNavigation from '../components/layouts/TopNavigation'
 import Post from '../components/posts'
@@ -12,11 +13,12 @@ import { PostMetaTags } from '../components/shared/MetaTags'
 import Container from '../components/layouts'
 import { getPost, deletePost, getSimilarPosts } from '../api/posts'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../constants/layouts'
-import {Heading, Subheading} from '../components/typography';
+import Text, {Heading, Subheading} from '../components/typography';
 import DialogueBox from '../components/modal/DialogueBox';
 import {forceProfileUpdate, forceTagUpdate} from '../actions/updates'
 import { makeToast } from '../actions/toasts'
 import {isClient} from '../constants'
+import {getPostSharableLink} from '../utils'
 
 const MenuIcon = (props) => (
   <Icon {...props} name='more-vertical'/>
@@ -26,11 +28,16 @@ const DeleteIcon = (props) => (
   <Icon {...props} name='trash'/>
 );
 
+const ShareIcon = (props) => (
+  <Icon {...props} name='share'/>
+);
+
 const PostScreen = props => {
   const [loading, setLoading] = useState(true)
   const [similarsLoading, setSimilarsLoading] = useState(false)
   const [menuVisible, setMenuVisible] = useState(false);
   const [modal, setModal] = useState(false);
+  const [shareModal, setShareModal] = useState(false);
   const [post, setPost] = useState({})
   const [similars, setSimilars] = useState([])
 
@@ -80,6 +87,11 @@ const PostScreen = props => {
       props.makeToast('Post successfully deleted', 'SUCCESS')
     })
   }
+  const handleCopyLink = () => {
+    setShareModal(false)
+    Clipboard.setString(getPostSharableLink(params.id))
+    props.makeToast('Link copied to clipboard', 'SUCCESS')
+  }
 
   const handleNeverMind = () => {
     setModal(false)
@@ -90,14 +102,22 @@ const PostScreen = props => {
     setMenuVisible(false)
   };
 
+  const handleShareLink = () => {
+    setShareModal(true)
+    setMenuVisible(false)
+  };
+
   const renderOverflowMenuAction = () => (
     <React.Fragment>
       <OverflowMenu
         anchor={renderMenuAction}
         visible={menuVisible}
         onBackdropPress={toggleMenu}>
-        <MenuItem accessoryLeft={DeleteIcon} title='Delete'
+        {post.is_mine && <MenuItem accessoryLeft={DeleteIcon} title='Delete'
           onPress={() => handleDeleteAlert()}
+        />}
+        <MenuItem accessoryLeft={ShareIcon} title='Share Link'
+          onPress={() => handleShareLink()}
         />
       </OverflowMenu>
     </React.Fragment>
@@ -112,7 +132,7 @@ const PostScreen = props => {
       <TopNavigation
         title={'From ' + (tag ? tag.title : '...')}
         onBack={() => props.navigation.goBack()}
-        accessoryRight={post.is_mine ? renderOverflowMenuAction : null}
+        accessoryRight={renderOverflowMenuAction}
       />
       <Layout
         style={{height: layouts.window.height}}
@@ -166,8 +186,39 @@ const PostScreen = props => {
           ]
         }
       />
+      <DialogueBox
+        visible={shareModal}
+        onHide={() => setModal(false)}
+        title='Share Link'
+        description={`Share this post link with your friends and enjoy it together!`}
+        comp={<SharableLink id={params.id} onPress={handleCopyLink} />}
+        buttons={
+          [
+            {
+              title: 'Copy It',
+              onPress: handleCopyLink
+            }
+          ]
+        }
+      />
     </SafeAreaView>
   </>)
+}
+
+const Box = styled(TouchableOpacity)`
+  // border: 1px solid #999;
+  background: #eee;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+`
+
+const SharableLink = props => {
+  return (
+    <Box onPress={props.onPress}>
+      <Subheading>{getPostSharableLink(props.id, true)}</Subheading>
+    </Box>
+  )
 }
 
 PostScreen.navigationOptions = {

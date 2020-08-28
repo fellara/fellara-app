@@ -1,5 +1,5 @@
 import {Platform} from 'react-native'
-import {base_url, api_url} from '../constants'
+import {base_url, api_url, app_url} from '../constants'
 
 export const urltoFile = (dataurl, filename)  => {
   var arr = dataurl.split(','),
@@ -42,4 +42,10 @@ export const formatURL = (url) => {
   let source = `source=${Platform.OS === 'web' ? 'PWA' : Platform.OS.toUpperCase()}`
   if (url.includes('?')) return new_url + '&' + source
   else return new_url + '?' + source
+}
+export const getPostSharableLink = (id, noUtm) => {
+  let new_url = app_url + 'p/' + id + '/'
+  let source = `utm_source=${Platform.OS === 'web' ? 'pwa' : Platform.OS}_sharable_link`
+  if (noUtm) return new_url
+  return new_url + '?' + source
 }

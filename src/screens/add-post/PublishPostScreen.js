@@ -72,7 +72,8 @@ const PublishPostScreen = props => {
             }}
             contentContainerStyle={{
                 height: layouts.window.height,
-                width: isDesktopOrLaptop ? MAX_WIDTH : '100%'
+                flex: 1,
+                width: isDesktopOrLaptop ? MAX_WIDTH : layouts.window.width
             }}
         >
             <StyledImage source={{uri: props.image.uri}} ratio={ratio} isDesktop={isDesktopOrLaptop}/>

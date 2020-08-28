@@ -25,7 +25,6 @@ const PostPage = ({post, tags}) => {
   let tag = {}
   if (tags) tag = tags.find(t => post.tag === t.id)
 
-
   if (post && typeof(window) !== 'undefined') return (<>
     <PostMetaTags
       post={post}
