@@ -7,7 +7,7 @@ import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
 
 import TopNavigation from '../components/layouts/TopNavigation'
-import Post from '../components/posts'
+import Post, {PostTemplate} from '../components/posts'
 import PostsList from '../components/posts/PostsList'
 import { PostMetaTags } from '../components/shared/MetaTags'
 import Container from '../components/layouts'
@@ -34,36 +34,21 @@ const ShareIcon = (props) => (
 
 const PostScreen = props => {
   const [loading, setLoading] = useState(true)
-  const [similarsLoading, setSimilarsLoading] = useState(false)
   const [menuVisible, setMenuVisible] = useState(false);
   const [modal, setModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
   const [post, setPost] = useState({})
-  const [similars, setSimilars] = useState([])
 
   let params;
   if (isClient) params = props.route.params;
   let tag = null
   if (params) tag = props.tags.find(t => t.id === parseInt(params.tag))
-  
-  const isDesktopOrLaptop = useMediaQuery({
-    query: '(min-device-width: 1224px)'
-  })
-
-  const style = isDesktopOrLaptop ? {
-      marginLeft: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
-    } : {}
 
   useEffect(() => {
     if (params) getPost(params.id).then(res => {
       if (res.status === 200) {
         setPost(res.data)
         setLoading(false)
-        setSimilarsLoading(true)
-        getSimilarPosts(params.id).then(res => {
-          setSimilars(res.data.results)
-          setSimilarsLoading(false)
-        })
       } else {
         props.navigation.goBack()
       }
@@ -150,20 +135,7 @@ const PostScreen = props => {
               {...post}
               standalone={true}
             />
-            <Container>
-              <Heading style={{
-                marginTop: 40,
-                ...style
-              }}>Similar Posts</Heading>
-              {
-                similars.map(post => (
-                  <Post
-                    showTag={true}
-                    {...post}
-                  />
-                ))
-              }
-            </Container>
+            <SimilarPosts id={params.id} tags={props.tags} />
           </>}
           
         </ScrollView>
@@ -203,6 +175,46 @@ const PostScreen = props => {
       />
     </SafeAreaView>
   </>)
+}
+
+export const SimilarPosts = props => {
+  const [similars, setSimilars] = useState([])
+  const [similarsLoading, setSimilarsLoading] = useState(false)
+
+  useEffect(() => {
+    setSimilarsLoading(true)
+    getSimilarPosts(props.id).then(res => {
+      setSimilars(res.data.results)
+      setSimilarsLoading(false)
+    })
+  }, [])
+
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
+
+  const style = isDesktopOrLaptop ? {
+    marginLeft: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
+  } : {}
+
+  if (similarsLoading) return ''
+  return (
+    <Container>
+      <Heading style={{
+        marginTop: 40,
+        ...style
+      }}>Similar Posts</Heading>
+      {
+        similars.map(post => (
+          <PostTemplate
+            showTag={true}
+            {...post}
+            tag={props.tags?.find(t => t.id === parseInt(post.tag))}
+          />
+        ))
+      }
+    </Container>
+  )
 }
 
 const Box = styled(TouchableOpacity)`

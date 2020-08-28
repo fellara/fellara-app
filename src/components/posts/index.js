@@ -119,6 +119,9 @@ export const PostTemplate = props => {
     query: '(min-device-width: 1224px)'
   })
 
+  let tag = null
+  tag = props.tags?.find(t => t.id === parseInt(props.tag))
+
   return (<Container
     standalone={props.standalone}
     // nopadding={true}

@@ -9,6 +9,8 @@ import {PostMetaTags} from '../../src/components/shared/MetaTags'
 import {getImageUrl} from '../../src/utils'
 import TopNavigation from '../../src/components/layouts/TopNavigation'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../src/constants/layouts'
+import {SimilarPosts} from '../../src/screens/PostScreen'
+import {base_url, app_url} from '../../src/constants'
 
 const PostPage = ({post, tags}) => {
   const { isFallback } = useRouter();
@@ -33,7 +35,7 @@ const PostPage = ({post, tags}) => {
     <SafeAreaView>
       <TopNavigation
         title={'From ' + (tag ? tag.title : '...')}
-        onBack={() => props.navigation.goBack()}
+        onBack={() => window.location.href = (app_url)}
         accessoryRight={post.is_mine ? renderOverflowMenuAction : null}
       />
       <Layout
@@ -47,7 +49,12 @@ const PostPage = ({post, tags}) => {
             paddingBottom: 150
           }}
         >
-          <PostTemplate {...post} standalone={true} />
+          <PostTemplate 
+            {...post} 
+            standalone={true} 
+          
+          />
+          <SimilarPosts id={post.id} tags={tags} />
         </ScrollView>
       </Layout>
     </ SafeAreaView>
