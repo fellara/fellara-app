@@ -1,5 +1,6 @@
+import React, {useEffect, useState} from 'react'
 import { useRouter } from 'next/router'
-import { SafeAreaView, ScrollView } from 'react-native'
+import { SafeAreaView, ScrollView, Dimensions } from 'react-native'
 import { Layout } from '@ui-kitten/components';
 import Error from 'next/error';
 
@@ -11,16 +12,21 @@ import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../src/constants/layout
 
 const PostPage = ({post, tags}) => {
   const { isFallback } = useRouter();
+  const [layout, setLayout] = useState({})
+  useEffect(() => {
+    setLayout(layouts);
 
-  // console.log(isFallback);
-  // if (!isFallback && !post) {
-  //   return <Error statusCode={404} title="This post could not be found" />;
-  // }
+  }, [layouts.window.height])
+
+  if (!isFallback && post.detail) {
+    return <Error statusCode={404} title="This post could not be found" />;
+  }
 
   let tag = {}
   if (tags) tag = tags.find(t => post.tag === t.id)
 
-  if (post) return (<>
+
+  if (post && typeof(window) !== 'undefined') return (<>
     <PostMetaTags
       post={post}
       tag={tag} 
@@ -32,7 +38,7 @@ const PostPage = ({post, tags}) => {
         accessoryRight={post.is_mine ? renderOverflowMenuAction : null}
       />
       <Layout
-        style={{height: layouts.window.height}}
+        style={{height: layouts.window.width}}
       >
         <ScrollView
           style={{
@@ -47,15 +53,21 @@ const PostPage = ({post, tags}) => {
       </Layout>
     </ SafeAreaView>
   </>)
-  return 'Loading...'
+
+  return ''
 }
 
 export async function getServerSideProps({params}) {
-  const postRes = await fetch(`https://fellara.com/api/v1/post/${params.id}/?source=PWA`)
-  const tagsRes = await fetch(`https://fellara.com/api/v1/post/tags/`)
-  const post = await postRes.json()
-  const tags = await tagsRes.json()
-  return { props: { post, tags } }
+  try {
+    const postRes = await fetch(`https://fellara.com/api/v1/post/${params.id}/?source=PWA`)
+    const tagsRes = await fetch(`https://fellara.com/api/v1/post/tags/`)
+    const post = await postRes.json()
+    const tags = await tagsRes.json()
+    return {props: {post, tags}}
+  } catch (error) {
+    return {props: {}}
+  }
+
 }
 
 // export async function getStaticPaths() {

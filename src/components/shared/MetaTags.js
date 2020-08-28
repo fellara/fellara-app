@@ -44,7 +44,7 @@ export const PostMetaTags = ({post, tag}) => (<MetaTags
         ${tag ? 'In ' + tag.title : ''}
     `}
     description={`
-      ${'fellara is platform for sharing your culture and traditions. People from all around the world share their daily life via fellara.'}
+      ${'fellara is a platform for sharing your culture and traditions through photos. People from all around the world share their daily life via fellara.'}
     `}
     image={getImageUrl(post.clean_image_medium?.url)}
     url={`https://app.fellara.com/p/${post?.id}?tag=${tag?.id}`}
