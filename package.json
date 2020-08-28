@@ -1,6 +1,7 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
+    "dev": "next dev",
     "start": "next start -p 3333",
     "android": "expo start --android",
     "ios": "expo start --ios",

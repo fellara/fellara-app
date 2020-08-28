@@ -10,13 +10,13 @@ import TopNavigation from '../../src/components/layouts/TopNavigation'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../src/constants/layouts'
 
 const PostPage = ({post, tags}) => {
-  const router = useRouter()
-  const { id } = router.query
+  const { isFallback } = useRouter();
 
-  console.log(tags);
-  if (!router.isFallback && !post) {
+  console.log(isFallback);
+  if (!isFallback && !post) {
     return <Error statusCode={404} title="This post could not be found" />;
   }
+
   let tag = {}
   if (tags) tag = tags.find(t => post.tag === t.id)
 
@@ -51,15 +51,16 @@ const PostPage = ({post, tags}) => {
 }
 
 export async function getStaticProps({params}) {
-  // Fetch data from external API
-  const postRes = await fetch(`https://fellara.com/api/v1/post/${params.id}/?source=PWA`)
-  const tagsRes = await fetch(`https://fellara.com/api/v1/post/tags/`)
-  const post = await postRes.json()
-  const tags = await tagsRes.json()
-  console.log(tags);
-
-  // Pass data to the page via props
-  return { props: { post, tags } }
+  try {
+    const postRes = await fetch(`https://fellara.com/api/v1/post/${params.id}/?source=PWA`)
+    const tagsRes = await fetch(`https://fellara.com/api/v1/post/tags/`)
+    const post = await postRes.json()
+    const tags = await tagsRes.json()
+    return { props: { post, tags } }
+  } catch (error) {
+    console.error(error);
+    return { props: {} };
+  }
 }
 
 export async function getStaticPaths() {
