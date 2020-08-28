@@ -12,10 +12,10 @@ import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../src/constants/layout
 const PostPage = ({post, tags}) => {
   const { isFallback } = useRouter();
 
-  console.log(isFallback);
-  if (!isFallback && !post) {
-    return <Error statusCode={404} title="This post could not be found" />;
-  }
+  // console.log(isFallback);
+  // if (!isFallback && !post) {
+  //   return <Error statusCode={404} title="This post could not be found" />;
+  // }
 
   let tag = {}
   if (tags) tag = tags.find(t => post.tag === t.id)
