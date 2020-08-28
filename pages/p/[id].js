@@ -50,7 +50,7 @@ const PostPage = ({post, tags}) => {
   return 'Loading...'
 }
 
-export async function getStaticProps({params}) {
+export async function getServerSideProps({params}) {
   const postRes = await fetch(`https://fellara.com/api/v1/post/${params.id}/?source=PWA`)
   const tagsRes = await fetch(`https://fellara.com/api/v1/post/tags/`)
   const post = await postRes.json()
@@ -58,8 +58,8 @@ export async function getStaticProps({params}) {
   return { props: { post, tags } }
 }
 
-export async function getStaticPaths() {
-  return { paths: [], fallback: true };
-}
+// export async function getStaticPaths() {
+//   return { paths: [], fallback: true };
+// }
 
 export default PostPage

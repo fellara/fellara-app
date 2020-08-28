@@ -9,9 +9,7 @@ const MetaTags = props => {
         <Helmet>
             <meta charSet="utf-8" />
             <title>{props.title}</title>
-            <description style={{
-                display: 'none'
-            }}>{props.description}</description>
+            <meta name="description" content={props.description} />
             <link rel="canonical" href={props.url} />
             <meta property="og:title" content={props.title} />
             <meta property="og:description" content={props.description} />
@@ -25,9 +23,7 @@ const MetaTags = props => {
         <Head>
             <meta charSet="utf-8" />
             <title>{props.title}</title>
-            <description style={{
-                display: 'none'
-            }}>{props.description}</description>
+            <meta name="description" content={props.description} />
             <link rel="canonical" href={props.url} />
             <meta property="og:title" content={props.title} />
             <meta property="og:description" content={props.description} />
