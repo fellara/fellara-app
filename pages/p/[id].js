@@ -4,7 +4,7 @@ import { Layout } from '@ui-kitten/components';
 import Error from 'next/error';
 
 import {PostTemplate} from '../../src/components/posts'
-import MetaTags from '../../src/components/shared/MetaTags'
+import {PostMetaTags} from '../../src/components/shared/MetaTags'
 import {getImageUrl} from '../../src/utils'
 import TopNavigation from '../../src/components/layouts/TopNavigation'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../src/constants/layouts'
