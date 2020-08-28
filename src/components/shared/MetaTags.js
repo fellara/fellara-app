@@ -47,7 +47,7 @@ export const PostMetaTags = ({post, tag}) => (<MetaTags
       ${'fellara is platform for sharing your culture and traditions. People from all around the world share their daily life via fellara.'}
     `}
     image={getImageUrl(post.clean_image_medium?.url)}
-    url={`http://app.fellara.com/page?id=${post?.id}&tag=${tag?.id}`}
+    url={`https://app.fellara.com/p/${post?.id}?tag=${tag?.id}`}
 />)
 
 export default MetaTags
