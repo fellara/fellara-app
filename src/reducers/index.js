@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import {HYDRATE} from 'next-redux-wrapper';
 
 import {user, token} from './user'
 import {updates} from './updates'
@@ -9,6 +10,8 @@ export const initials = (state = {
   tags: []
 }, action) => {
   switch (action.type) {
+    case HYDRATE:
+      return {...state, ...action.payload};
     case 'GOT_TAGS':
       return {...state, tags: action.tags}
     default:

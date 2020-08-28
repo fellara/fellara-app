@@ -18,8 +18,10 @@ import { makeToast } from '../../actions/toasts'
 dayjs.extend(relativeTime)
 
 const Container = styled(View)`
-  ${p => !p.standalone && `margin-top: 10px;
-  margin-bottom: 30px;`}
+  ${p => !p.standalone && `
+    margin-top: 10px;
+    margin-bottom: 30px;
+  `}
   ${p => !p.standalone && `flex-direction: column-reverse`};
   align-items: center;
 `
@@ -62,18 +64,12 @@ const StarIcon = (props, is_liked) => {
 const Post = props => {
   const [liked, setLiked] = useState(props.is_liked)
 
-  const {url, width, height} = props.clean_image_medium
-  const {avatar, name, location} = props.user_info
   const navigation = useNavigation();
   const route = useRoute();
 
   let action = null;
   if (route?.params) action = route.params.action;
   const tag = props.tags.find(t => t.id === parseInt(props.tag))
-
-  const isDesktopOrLaptop = useMediaQuery({
-    query: '(min-device-width: 1224px)'
-  })
 
   useEffect(() => { 
     switch (action) {
@@ -97,76 +93,97 @@ const Post = props => {
   }
 
   return (
-    <Container
-      standalone={props.standalone}
-      // nopadding={true}
-    >
-      <PostImageWrapper
-        activeOpacity={1}
-        as={props.standalone ? View : TouchableOpacity}
-        onPress={() => navigation.navigate('post', {
-          tag: props.tag,
-          id: props.id,
-          _back: 'Home',
-        })}
-      >
-        {/* <PostImage uri={props.image_medium}/> */}
-        <PostImage
-          isDesktop={isDesktopOrLaptop}
-          source={{uri: getImageUrl(url)}}
-          ratio={height / width}
-          resizeMode='cover'
-          padding={props.standalone ? 0 : POSTS_LIST_PADDING}
-          imageStyle={{
-            borderRadius: props.standalone ? 0 : 15,
-          }}
-        >
-          {props.standalone && !props.is_mine && <Button appearance='ghost' status='danger'
-            size='large'
-            style={{
-              width: 40,
-              height: 40,
-              alignSelf: 'flex-end',
-              margin: 10,
-            }}
-            onPress={handleLike}
-            accessoryLeft={(p) => StarIcon(p, liked)}/>
-          }
-        </PostImage>
-      </PostImageWrapper>
-      <PostHeader
-        standalone={props.standalone}
-        isDesktop={isDesktopOrLaptop}
-      >
-        <TouchableOpacity onPress={() => !props.is_mine ? navigation.navigate('others-profile', {id: props.user}) : navigation.navigate('Profile')}>
-          <Avatar size='medium' source={{uri: getImageUrl(avatar)}}/>
-        </TouchableOpacity>
-        <NameAndLocationWrapper
-          standalone={props.standalone}
-        >
-          <View>
-            <Name>{name}</Name>
-            <Location>{location}</Location>
-          </View>
-          <View
-            style={{
-              alignItems: 'flex-end'
-            }}
-          >
-            {props.showTag && <Text
-              category='label'
-            >{tag ? 'From ' + tag.title : ''}</Text>}
-            <Text
-              category='label'
-              style={{
-                color: '#888',
-            }}>{dayjs(props.created_at).fromNow()}</Text>
-          </View>
-        </NameAndLocationWrapper>
-      </PostHeader>
-    </Container>
+    <PostTemplate 
+      {...props} 
+      onPress={() => navigation.navigate('post', {
+        tag: props.tag,
+        id: props.id,
+        _back: 'Home',
+      })}
+      onAvatarPress={() => !props.is_mine 
+        ? navigation.navigate('others-profile', {id: props.user}) 
+        : navigation.navigate('Profile')
+      }
+      onLike={handleLike}
+      liked={liked}
+    />
   )
 }
+
+
+export const PostTemplate = props => {
+  const {url, width, height} = props.clean_image_medium
+  const {avatar, name, location} = props.user_info
+
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
+
+  return (<Container
+    standalone={props.standalone}
+    // nopadding={true}
+  >
+    <PostImageWrapper
+      activeOpacity={1}
+      as={props.standalone ? View : TouchableOpacity}
+      onPress={props.onPress}
+    >
+      {/* <PostImage uri={props.image_medium}/> */}
+      <PostImage
+        isDesktop={isDesktopOrLaptop}
+        source={{uri: getImageUrl(url)}}
+        ratio={height / width}
+        resizeMode='cover'
+        padding={props.standalone ? 0 : POSTS_LIST_PADDING}
+        imageStyle={{
+          borderRadius: props.standalone ? 0 : 15,
+        }}
+      >
+        {props.standalone && !props.is_mine && <Button appearance='ghost' status='danger'
+          size='large'
+          style={{
+            width: 40,
+            height: 40,
+            alignSelf: 'flex-end',
+            margin: 10,
+          }}
+          onPress={props.onLike}
+          accessoryLeft={(p) => StarIcon(p, props.liked)}/>
+        }
+      </PostImage>
+    </PostImageWrapper>
+    <PostHeader
+      standalone={props.standalone}
+      isDesktop={isDesktopOrLaptop}
+    >
+      <TouchableOpacity onPress={props.onAvatarPress}>
+        <Avatar size='medium' source={{uri: getImageUrl(avatar)}}/>
+      </TouchableOpacity>
+      <NameAndLocationWrapper
+        standalone={props.standalone}
+      >
+        <View>
+          <Name>{name}</Name>
+          <Location>{location}</Location>
+        </View>
+        <View
+          style={{
+            alignItems: 'flex-end'
+          }}
+        >
+          {props.showTag && <Text
+            category='label'
+          >{props.tag ? 'From ' + props.tag.title : ''}</Text>}
+          <Text
+            category='label'
+            style={{
+              color: '#888',
+          }}>{dayjs(props.created_at).fromNow()}</Text>
+        </View>
+      </NameAndLocationWrapper>
+    </PostHeader>
+  </Container>
+)}
 
 export default connect(state => ({
   tags: state.initials.tags,

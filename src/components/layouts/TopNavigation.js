@@ -42,8 +42,6 @@ const renderAccessoryLeft = (props) => {
 };
 
 const CustomTopNavigation = (props) => {
-    const navigation = useNavigation();
-
     const isDesktopOrLaptop = useMediaQuery({
       query: '(min-device-width: 1224px)'
     })
@@ -51,7 +49,6 @@ const CustomTopNavigation = (props) => {
     const style = isDesktopOrLaptop ? {
       paddingHorizontal: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
     } : {}
-
     
     return (<TopNavigation
         accessoryLeft={() => renderAccessoryLeft(props)}

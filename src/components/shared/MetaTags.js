@@ -1,8 +1,9 @@
 import React from 'react'
 import {Helmet} from "react-helmet";
 
-const MetaTags = props => {
+import {getImageUrl} from '../../utils'
 
+const MetaTags = props => {
     return (<Helmet>
         <meta charSet="utf-8" />
         <title>{props.title}</title>
@@ -18,5 +19,15 @@ const MetaTags = props => {
         <meta property="twitter:card" content={props.url}></meta>
     </Helmet>)
 }
+
+export const PostMetaTags = ({post, tag}) => (<MetaTags 
+    title={`fellara | Post ${post.user_info ? 'by ' + post.user_info.name + ' in ' + post.user_info.location : ''}`}
+    description={`
+      ${tag ? 'From ' + tag.title : ''}${' \n'}
+      ${'Fellara is platform for sharing your culture and traditions. People from all around the world share their daily life via fellara.'}
+    `}
+    image={getImageUrl(post.clean_image_medium?.url)}
+    url={`http://app.fellara.com/page?id=${post?.id}&tag=${tag?.id}`}
+/>)
 
 export default MetaTags

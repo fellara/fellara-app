@@ -8,7 +8,7 @@ import { useMediaQuery } from 'react-responsive'
 import TopNavigation from '../components/layouts/TopNavigation'
 import Post from '../components/posts'
 import PostsList from '../components/posts/PostsList'
-import MetaTags from '../components/shared/MetaTags'
+import { PostMetaTags } from '../components/shared/MetaTags'
 import Container from '../components/layouts'
 import { getPost, deletePost, getSimilarPosts } from '../api/posts'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../constants/layouts'
@@ -16,7 +16,7 @@ import {Heading, Subheading} from '../components/typography';
 import DialogueBox from '../components/modal/DialogueBox';
 import {forceProfileUpdate, forceTagUpdate} from '../actions/updates'
 import { makeToast } from '../actions/toasts'
-import {getImageUrl} from '../utils'
+import {isClient} from '../constants'
 
 const MenuIcon = (props) => (
   <Icon {...props} name='more-vertical'/>
@@ -34,7 +34,8 @@ const PostScreen = props => {
   const [post, setPost] = useState({})
   const [similars, setSimilars] = useState([])
 
-  const { params } = props.route;
+  let params;
+  if (isClient) params = props.route.params;
   let tag = null
   if (params) tag = props.tags.find(t => t.id === parseInt(params.tag))
   
@@ -72,7 +73,7 @@ const PostScreen = props => {
 
   const handleDelete = () => {
     setModal(false)
-    deletePost(params.id).then(res => {
+    if (params) deletePost(params.id).then(res => {
       props.forceTagUpdate(tag.id)
       props.forceProfileUpdate()
       props.navigation.goBack()
@@ -103,14 +104,9 @@ const PostScreen = props => {
   );
 
   return (<>
-    <MetaTags 
-      title={`fellara | Post ${post.user_info ? 'by ' + post.user_info.name + ' in ' + post.user_info.location : ''}`}
-      description={`
-        ${tag ? 'From ' + tag.title : ''}${' \n'}
-        ${'Fellara is platform for sharing your culture and traditions. People from all around the world share their daily life via fellara.'}
-      `}
-      image={getImageUrl(post.clean_image_medium?.url)}
-      url={`http://app.fellara.com/page?id=${params.id}&tag=${tag?.id}`}
+    <PostMetaTags
+      post={post}
+      tag={tag} 
     />
     <SafeAreaView>
       <TopNavigation

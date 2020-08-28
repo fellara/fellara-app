@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider as UIProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { ThemeProvider } from 'styled-components'
 
 import {theme} from './theme'
 import {store} from './src/store'
