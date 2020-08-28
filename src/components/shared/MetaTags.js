@@ -32,7 +32,7 @@ const MetaTags = props => {
             <meta property="twitter:title" content={props.title} />
             <meta property="twitter:description" content={props.description} />
             <meta property="twitter:image" content={props.image} />
-            <meta property="twitter:card" content={props.url}></meta>
+            <meta property="twitter:card" content='summary_large_image'></meta>
         </Head>
     </>)
 }
