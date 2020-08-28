@@ -51,16 +51,11 @@ const PostPage = ({post, tags}) => {
 }
 
 export async function getStaticProps({params}) {
-  try {
-    const postRes = await fetch(`https://fellara.com/api/v1/post/${params.id}/?source=PWA`)
-    const tagsRes = await fetch(`https://fellara.com/api/v1/post/tags/`)
-    const post = await postRes.json()
-    const tags = await tagsRes.json()
-    return { props: { post, tags } }
-  } catch (error) {
-    console.error(error);
-    return { props: {} };
-  }
+  const postRes = await fetch(`https://fellara.com/api/v1/post/${params.id}/?source=PWA`)
+  const tagsRes = await fetch(`https://fellara.com/api/v1/post/tags/`)
+  const post = await postRes.json()
+  const tags = await tagsRes.json()
+  return { props: { post, tags } }
 }
 
 export async function getStaticPaths() {
