@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Clipboard, TouchableOpacity } from 'react-native';
+import { View, Clipboard, TouchableOpacity, Linking } from 'react-native';
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 import { Avatar, Layout, Icon, MenuItem, OverflowMenu, 
@@ -15,7 +15,7 @@ import { forceProfileUpdateDone } from '../../actions/updates';
 import TopNavigation from '../../components/layouts/TopNavigation'
 import {getImageUrl, capitalize} from '../../utils/'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
-import {isClient} from '../../constants'
+import {isClient, base_url} from '../../constants'
 import EditProfileScreen from './EditProfileScreen'
 import PostsGrid from '../posts/PostsGrid';
 import DialogueBox from '../../components/modal/DialogueBox';
@@ -54,6 +54,10 @@ const StarIcon = (props) => (
 
 const ShareIcon = (props) => (
   <Icon {...props} name='share'/>
+);
+
+const AboutIcon = (props) => (
+  <Icon {...props} name='attach'/>
 );
 
 const EditIcon = (props) => (
@@ -163,6 +167,10 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
     props.makeToast('Link copied to clipboard', 'SUCCESS')
   }
 
+  const handleAboutFellara = () => {
+    Linking.openURL(base_url + 'about');
+  }
+
   if (!isLoggedIn && !props.others) return <AuthScreen _back={_back} params={route?.params} />;
   if (_back) {
     navigation?.navigate(_back, {...route?.params, authSuccessful: true})
@@ -174,18 +182,21 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
         anchor={renderMenuAction}
         visible={menuVisible}
         onBackdropPress={toggleMenu}>
-        <MenuItem accessoryLeft={EditIcon} title='Edit Profile'
+        {!props.others && <MenuItem accessoryLeft={EditIcon} title='Edit Profile'
           onPress={handleSetEditing}
-        />
-        <MenuItem accessoryLeft={StarIcon} title='Starreds'
+        />}
+        {!props.others && <MenuItem accessoryLeft={StarIcon} title='Starreds'
           onPress={handleStarred}
-        />
+        />}
         <MenuItem accessoryLeft={ShareIcon} title='Share Link'
           onPress={() => handleShareLink()}
         />
-        <MenuItem accessoryLeft={LogoutIcon} title='Logout'
+        {!props.others && <MenuItem accessoryLeft={AboutIcon} title='About fellara'
+          onPress={() => handleAboutFellara()}
+        />}
+        {!props.others && <MenuItem accessoryLeft={LogoutIcon} title='Logout'
           onPress={handleLogout}
-        />
+        />}
       </OverflowMenu>
     </React.Fragment>
   );
@@ -251,6 +262,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
         accessoryLeft={!editing ? showHeader ? renderImage() : null : null}
       /> : !(props.noHeader || props.ListHeaderComponent) ? <TopNavigation
         onBack={() => props.onBack ? props.onBack() : navigation?.goBack()}
+        accessoryRight={!editing ? renderOverflowMenuAction : null}
         accessoryLeft={showHeader ? renderImage() : null}
         title={!props.loading ? capitalize(profile.first_name) + ' ' + capitalize(profile.last_name) : 'Loading...'} 
       /> : <TopNavigation
@@ -289,7 +301,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
           visible={shareModal}
           onHide={() => setShareModal(false)}
           title='Share Link'
-          description={`Share this post link with your friends and enjoy it together!`}
+          description={`Share this profile link with your friends and enjoy it together!`}
           comp={<SharableLink id={profile?.id} onPress={handleCopyLink} />}
           buttons={
             [
