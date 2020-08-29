@@ -1,6 +1,5 @@
 import React from 'react';
-import { Icon, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { useNavigation } from '@react-navigation/native';
+import { Icon, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { View } from 'react-native';
 import { useMediaQuery } from 'react-responsive'
 

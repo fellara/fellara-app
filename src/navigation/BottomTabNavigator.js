@@ -82,14 +82,14 @@ export default function BottomTabNavigator({ navigation, route }) {
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Get Started',
+          title: 'Home',
         }}
       />
       <BottomTab.Screen
         name="AddPost"
         component={AddPostScreen}
         options={{
-          title: 'AddPost',
+          title: 'Publish Post',
         }}
       />
       <BottomTab.Screen

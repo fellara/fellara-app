@@ -4,6 +4,7 @@ import { ApplicationProvider as UIProvider, IconRegistry } from '@ui-kitten/comp
 import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { ThemeProvider } from 'styled-components'
+import { NavigationContainer } from '@react-navigation/native';
 
 import {store as reduxStore} from '../src/store';
 import {theme} from '../theme'
@@ -13,7 +14,9 @@ const MyApp = ({Component, pageProps}) => (
   <ThemeProvider theme={theme}>
     <UIProvider {...eva} theme={{...eva.light, ...theme}}>
       <IconRegistry icons={EvaIconsPack} />
-      <Component {...pageProps} />
+      <NavigationContainer>
+        <Component {...pageProps} />
+      </NavigationContainer>
     </UIProvider>
   </ThemeProvider>
 );

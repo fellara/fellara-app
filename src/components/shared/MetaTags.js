@@ -4,6 +4,8 @@ import Head from 'next/head'
 
 import {getImageUrl} from '../../utils'
 
+const description = 'fellara is a platform for sharing your culture and traditions through photos. People from all around the world share their daily life via fellara.'
+
 const MetaTags = props => {
     return (<>
         <Helmet>
@@ -44,10 +46,23 @@ export const PostMetaTags = ({post, tag}) => (<MetaTags
         ${tag ? 'In ' + tag.title : ''}
     `}
     description={`
-      ${'fellara is a platform for sharing your culture and traditions through photos. People from all around the world share their daily life via fellara.'}
+      ${description}
     `}
     image={getImageUrl(post.clean_image_medium?.url)}
     url={`https://app.fellara.com/p/${post?.id}?tag=${tag?.id}`}
 />)
+
+export const ProfileMetaTags = ({profile}) => {
+    return (<MetaTags 
+        title={`
+            fellara | Posts by ${profile.first_name + ' ' + profile.last_name} from ${profile.location}
+        `}
+        description={`
+            ${description}
+        `}
+        image={getImageUrl(profile.profile_image_small)}
+        url={`https://app.fellara.com/u/${profile?.id}`}
+    />)
+}
 
 export default MetaTags

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Platform } from 'react-native';
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 import { Avatar, Layout, Icon, MenuItem, OverflowMenu, 
@@ -15,6 +15,7 @@ import { forceProfileUpdateDone } from '../../actions/updates';
 import TopNavigation from '../../components/layouts/TopNavigation'
 import {getImageUrl, capitalize} from '../../utils/'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
+import {isClient} from '../../constants'
 import EditProfileScreen from './EditProfileScreen'
 import PostsGrid from '../posts/PostsGrid';
 
@@ -68,8 +69,13 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
   const [seenPages, setSeenPages] = useState([1])
   const [paginationLoading, setPaginationLoading] = useState(true)
 
-  const navigation = useNavigation()
-  const route = useRoute()
+  let navigation = null;
+  let route = null;
+  if (isClient && !props.ssr) {
+    navigation = useNavigation()
+    route = useRoute()
+  }
+  
 
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-device-width: 1224px)'
@@ -84,10 +90,10 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
   );
 
   let _back = null;
-  if (route?.params) _back = route.params._back;
+  if (route?.params) _back = route?.params._back;
 
   useEffect(() => {
-    if (isLoggedIn) handleGetPosts()
+    if (isLoggedIn || props.others) handleGetPosts()
   }, [isLoggedIn])
 
   useEffect(() => {
@@ -136,12 +142,12 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
 
   const handleStarred = () => {
     setMenuVisible(false);
-    navigation.navigate('liked-posts')
+    navigation?.navigate('liked-posts')
   }
 
-  if (!isLoggedIn) return <AuthScreen _back={_back} params={route.params} />;
+  if (!isLoggedIn && !props.others) return <AuthScreen _back={_back} params={route?.params} />;
   if (_back) {
-    navigation.navigate(_back, {...route.params, authSuccessful: true})
+    navigation?.navigate(_back, {...route?.params, authSuccessful: true})
   }
 
   const renderOverflowMenuAction = () => (
@@ -213,21 +219,28 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
     />
   );
 
-  return (<>
-      {!props.others ? <TopNavigation 
+  const TopBar = () => {
+
+    return (
+      !props.others ? <TopNavigation 
         title={!editing ? !showHeader ? 'Profile' : capitalize(profile.first_name) + ' ' + capitalize(profile.last_name) : 'Edit Profile'} 
         noBack={!editing}
         onBack={() => setEditing(false)}
         accessoryRight={!editing ? renderOverflowMenuAction : null}
         accessoryLeft={!editing ? showHeader ? renderImage() : null : null}
       /> : !(props.noHeader || props.ListHeaderComponent) ? <TopNavigation
-        onBack={() => navigation.goBack()}
+        onBack={() => props.onBack ? props.onBack() : navigation?.goBack()}
         accessoryLeft={showHeader ? renderImage() : null}
         title={!props.loading ? capitalize(profile.first_name) + ' ' + capitalize(profile.last_name) : 'Loading...'} 
       /> : <TopNavigation
-        onBack={() => navigation.goBack()}
+        onBack={() => navigation?.goBack()}
         title={!props.loading ? 'My Starred Posts' : 'Loading...'} 
-      />}
+      />
+    )
+  }
+  
+  return (<>
+      <TopBar />
       <StyledLayout
         style={{height: layouts.window.height}}
       >
@@ -236,10 +249,12 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
             onPagination={handlePagination}
             paginationLoading={paginationLoading}
             onScroll={handleScroll}
+            onPress={props.onPostPress}
             forcePaginate={props.forcePaginate}
             ListHeaderComponent={() => renderHeader()}
             endReached={posts.length > 0 && !next}
             ListFooterComponent={() => renderFooter()}
+            ssr={props.ssr}
           /> : <EditProfileScreen profile={profile} setEditing={setEditing}/> : <LoadingWrap><Spinner /></LoadingWrap>}
       </StyledLayout>
     </>

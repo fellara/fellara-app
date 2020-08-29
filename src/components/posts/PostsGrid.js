@@ -1,16 +1,20 @@
 import React, {useEffect, useState} from 'react'
-import { TouchableOpacity, Image, FlatList, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, Image, FlatList, StyleSheet, View, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useMediaQuery } from 'react-responsive'
 
 import {renderEndReached, renderScrollToReveal, renderEmptyList} from './shared'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 import {getImageUrl} from '../../utils/'
-import Text from '../../components/typography'
+import {isClient} from '../../constants'
 
 const PostsGrid = props => {
     const [callOnScrollEnd, setCallOnScrollEnd] = useState(true)
-    const navigation = useNavigation()
+
+    let navigation = null;
+    if (isClient && !props.ssr) {
+      navigation = useNavigation()
+    }
 
     const isDesktopOrLaptop = useMediaQuery({
       query: '(min-device-width: 1224px)'
@@ -52,14 +56,22 @@ const PostsGrid = props => {
         },
     });
 
+    const handleItemPress = item => {
+      if (props.onPress) {
+        props.onPress(item.id, item.tag)
+      } else {
+        navigation?.navigate('post', {
+          tag: item.tag,
+          id: item.id,
+          _back: 'Profile',
+        })
+      }
+    }
+
     const renderItem = (item, margin, height, styles) => {
         if (item.mock) return <View style={{background: '#eeeeee44', flexDirection: 'column', margin, height, width: height}} />
         return (<TouchableOpacity 
-          onPress={() => navigation.navigate('post', {
-            tag: item.tag,
-            id: item.id,
-            _back: 'Profile',
-          })}
+          onPress={() => handleItemPress(item)}
           style={{ flexDirection: 'column', margin, width: height}}>
           <Image style={styles.imageThumbnail} 
             resizeMode='cover'
