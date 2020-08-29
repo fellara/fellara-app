@@ -92,6 +92,15 @@ const Post = props => {
     }
   }
 
+  const handleAvatarPress = () => {
+    console.log('profile', props.is_mine, props.user);
+    if (!props.is_mine) {
+      navigation.navigate('others-profile', {id: props.user}) 
+    } else {
+      navigation.navigate('Profile')
+    } 
+  }
+
   return (
     <PostTemplate 
       {...props} 
@@ -100,10 +109,7 @@ const Post = props => {
         id: props.id,
         _back: 'Home',
       })}
-      onAvatarPress={() => !props.is_mine 
-        ? navigation.navigate('others-profile', {id: props.user}) 
-        : navigation.navigate('Profile')
-      }
+      onAvatarPress={handleAvatarPress}
       onLike={handleLike}
       liked={liked}
     />

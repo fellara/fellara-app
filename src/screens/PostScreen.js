@@ -92,6 +92,15 @@ const PostScreen = props => {
     setMenuVisible(false)
   };
 
+  const handleAvatarPress = (isMine, user) => {
+    console.log('profile', props.navigation);
+    if (!isMine) {
+      props.navigation.navigate('others-profile', {id: user}) 
+    } else {
+      props.navigation.navigate('Profile')
+    } 
+  }
+
   const renderOverflowMenuAction = () => (
     <React.Fragment>
       <OverflowMenu
@@ -135,7 +144,11 @@ const PostScreen = props => {
               {...post}
               standalone={true}
             />
-            <SimilarPosts id={params.id} tags={props.tags} />
+            <SimilarPosts 
+              id={params.id} 
+              tags={props.tags}
+              onAvatarPress={handleAvatarPress}
+            />
           </>}
           
         </ScrollView>
@@ -197,6 +210,7 @@ export const SimilarPosts = props => {
     marginLeft: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
   } : {}
 
+
   if (similarsLoading) return ''
   return (
     <Container>
@@ -210,6 +224,8 @@ export const SimilarPosts = props => {
             showTag={true}
             {...post}
             tag={props.tags?.find(t => t.id === parseInt(post.tag))}
+            onAvatarPress={() => props.onAvatarPress && props.onAvatarPress(post.is_mine, post.user)}
+            onPress={() => props.onPress && props.onPress(post.id, post.tag)}
           />
         ))
       }

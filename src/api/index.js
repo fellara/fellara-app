@@ -51,7 +51,6 @@ const fetchAPI = (url, method, data, hasFile) => new Promise((resolve, reject) =
     const {response} = error
     
     if (axios.isCancel(error)) {
-      console.log('Request canceled', error);
     } else {
       if (response) {
         resolve({

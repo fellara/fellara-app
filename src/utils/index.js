@@ -34,7 +34,13 @@ export const getImageUrl = (url) => {
 }
 
 export const capitalize = (text) => {
-  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+  let capitalized = ''
+  try {
+    capitalized = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+  } catch(error) {
+    capitalized = text
+  }
+  return capitalized
 }
 
 export const formatURL = (url) => {
@@ -43,8 +49,30 @@ export const formatURL = (url) => {
   if (url.includes('?')) return new_url + '&' + source
   else return new_url + '?' + source
 }
+
 export const getPostSharableLink = (id, noUtm) => {
   let new_url = app_url + 'p/' + id + '/'
+  let source = `utm_source=${Platform.OS === 'web' ? 'pwa' : Platform.OS}_sharable_link`
+  if (noUtm) return new_url
+  return new_url + '?' + source
+}
+
+export const getProfileLink = (id, noUtm, isMine) => {
+  let new_url = app_url
+  if (!isMine) {
+    new_url += 'root/others-profile?id=' + id
+  } else {
+    new_url += 'root/tabs/Profile'
+  }
+
+  let source = `utm_source=${Platform.OS === 'web' ? 'pwa' : Platform.OS}_sharable_link`
+  if (noUtm) return new_url
+  return new_url + '?' + source
+}
+
+export const getPostLink = (id, tag, noUtm) => {
+  let new_url = app_url + `root/post?id=${id}&tag=${tag}`
+
   let source = `utm_source=${Platform.OS === 'web' ? 'pwa' : Platform.OS}_sharable_link`
   if (noUtm) return new_url
   return new_url + '?' + source

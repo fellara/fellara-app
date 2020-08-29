@@ -60,7 +60,6 @@ const HomeScreen = props => {
 
   const changeActiveTag = (tag) => {
     if (activeTag !== tag) {
-      console.log(source);
       source.cancel('Operation canceled by the user.');
       setPage(1)
       setNext(null)

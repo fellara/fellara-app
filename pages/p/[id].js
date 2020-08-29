@@ -6,7 +6,7 @@ import Error from 'next/error';
 
 import {PostTemplate} from '../../src/components/posts'
 import {PostMetaTags} from '../../src/components/shared/MetaTags'
-import {getImageUrl} from '../../src/utils'
+import {getProfileLink, getPostLink} from '../../src/utils'
 import TopNavigation from '../../src/components/layouts/TopNavigation'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../src/constants/layouts'
 import {SimilarPosts} from '../../src/screens/PostScreen'
@@ -14,11 +14,6 @@ import {base_url, app_url} from '../../src/constants'
 
 const PostPage = ({post, tags}) => {
   const { isFallback } = useRouter();
-  const [layout, setLayout] = useState({})
-  useEffect(() => {
-    setLayout(layouts);
-
-  }, [layouts.window.height])
 
   if (!isFallback && post.detail) {
     return <Error statusCode={404} title="This post could not be found" />;
@@ -39,22 +34,26 @@ const PostPage = ({post, tags}) => {
         accessoryRight={post.is_mine ? renderOverflowMenuAction : null}
       />
       <Layout
-        style={{height: layouts.window.width}}
+        style={{height: layouts.window.height}}
       >
         <ScrollView
           style={{
             flex: 1
           }}
           contentContainerStyle={{
-            paddingBottom: 150
+            paddingBottom: 150,
           }}
         >
           <PostTemplate 
             {...post} 
             standalone={true} 
-          
+            onAvatarPress={() => window.location.href = getProfileLink(post.user)}
           />
-          <SimilarPosts id={post.id} tags={tags} />
+          <SimilarPosts 
+            id={post.id} tags={tags} 
+            onAvatarPress={(isMine, id) => window.location.href = getProfileLink(id)}
+            onPress={(id, tag) => window.location.href = getPostLink(id, tag)}
+          />
         </ScrollView>
       </Layout>
     </ SafeAreaView>
