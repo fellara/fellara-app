@@ -72,11 +72,6 @@ const PostScreen = props => {
       props.makeToast('Post successfully deleted', 'SUCCESS')
     })
   }
-  const handleCopyLink = () => {
-    setShareModal(false)
-    Clipboard.setString(getPostSharableLink(params.id))
-    props.makeToast('Link copied to clipboard', 'SUCCESS')
-  }
 
   const handleNeverMind = () => {
     setModal(false)
@@ -92,8 +87,13 @@ const PostScreen = props => {
     setMenuVisible(false)
   };
 
+  const handleCopyLink = () => {
+    setShareModal(false)
+    Clipboard.setString(getPostSharableLink(params.id))
+    props.makeToast('Link copied to clipboard', 'SUCCESS')
+  }
+
   const handleAvatarPress = (isMine, user) => {
-    console.log('profile', props.navigation);
     if (!isMine) {
       props.navigation.navigate('others-profile', {id: user}) 
     } else {
@@ -173,7 +173,7 @@ const PostScreen = props => {
       />
       <DialogueBox
         visible={shareModal}
-        onHide={() => setModal(false)}
+        onHide={() => setShareModal(false)}
         title='Share Link'
         description={`Share this post link with your friends and enjoy it together!`}
         comp={<SharableLink id={params.id} onPress={handleCopyLink} />}

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Image, Platform } from 'react-native';
+import { View, Clipboard, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 import { Avatar, Layout, Icon, MenuItem, OverflowMenu, 
@@ -18,6 +18,9 @@ import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 import {isClient} from '../../constants'
 import EditProfileScreen from './EditProfileScreen'
 import PostsGrid from '../posts/PostsGrid';
+import DialogueBox from '../../components/modal/DialogueBox';
+import { makeToast } from '../../actions/toasts'
+import {getProfileSharableLink} from '../../utils'
 
 const Header = styled(View)`
   align-items: center;
@@ -49,6 +52,9 @@ const StarIcon = (props) => (
   <Icon {...props} name={'star'}/>
 )
 
+const ShareIcon = (props) => (
+  <Icon {...props} name='share'/>
+);
 
 const EditIcon = (props) => (
   <Icon {...props} name='edit'/>
@@ -68,6 +74,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
   const [page, setPage] = useState(1)
   const [seenPages, setSeenPages] = useState([1])
   const [paginationLoading, setPaginationLoading] = useState(true)
+  const [shareModal, setShareModal] = useState(false);
 
   let navigation = null;
   let route = null;
@@ -145,6 +152,17 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
     navigation?.navigate('liked-posts')
   }
 
+  const handleShareLink = () => {
+    setShareModal(true)
+    setMenuVisible(false)
+  };
+
+  const handleCopyLink = () => {
+    setShareModal(false)
+    Clipboard.setString(getProfileSharableLink(profile.id))
+    props.makeToast('Link copied to clipboard', 'SUCCESS')
+  }
+
   if (!isLoggedIn && !props.others) return <AuthScreen _back={_back} params={route?.params} />;
   if (_back) {
     navigation?.navigate(_back, {...route?.params, authSuccessful: true})
@@ -161,6 +179,9 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
         />
         <MenuItem accessoryLeft={StarIcon} title='Starreds'
           onPress={handleStarred}
+        />
+        <MenuItem accessoryLeft={ShareIcon} title='Share Link'
+          onPress={() => handleShareLink()}
         />
         <MenuItem accessoryLeft={LogoutIcon} title='Logout'
           onPress={handleLogout}
@@ -244,20 +265,59 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
       <StyledLayout
         style={{height: layouts.window.height}}
       >
-        {!props.loading ? !editing ? <PostsGrid
-            data={posts}
-            onPagination={handlePagination}
-            paginationLoading={paginationLoading}
-            onScroll={handleScroll}
-            onPress={props.onPostPress}
-            forcePaginate={props.forcePaginate}
-            ListHeaderComponent={() => renderHeader()}
-            endReached={posts.length > 0 && !next}
-            ListFooterComponent={() => renderFooter()}
-            ssr={props.ssr}
-          /> : <EditProfileScreen profile={profile} setEditing={setEditing}/> : <LoadingWrap><Spinner /></LoadingWrap>}
+        {
+          !props.loading 
+            ? !editing 
+              ? <PostsGrid
+                data={posts}
+                onPagination={handlePagination}
+                paginationLoading={paginationLoading}
+                onScroll={handleScroll}
+                onPress={props.onPostPress}
+                forcePaginate={props.forcePaginate}
+                ListHeaderComponent={() => renderHeader()}
+                endReached={posts.length > 0 && !next}
+                ListFooterComponent={() => renderFooter()}
+                ssr={props.ssr}
+              /> 
+              : <EditProfileScreen profile={profile} setEditing={setEditing}/> 
+            : <LoadingWrap>
+              <Spinner />
+            </LoadingWrap>
+        }
+        <DialogueBox
+          visible={shareModal}
+          onHide={() => setShareModal(false)}
+          title='Share Link'
+          description={`Share this post link with your friends and enjoy it together!`}
+          comp={<SharableLink id={profile.id} onPress={handleCopyLink} />}
+          buttons={
+            [
+              {
+                title: 'Copy It',
+                onPress: handleCopyLink
+              }
+            ]
+          }
+        />
       </StyledLayout>
     </>
+  )
+}
+
+const Box = styled(TouchableOpacity)`
+  // border: 1px solid #999;
+  background: #eee;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+`
+
+const SharableLink = props => {
+  return (
+    <Box onPress={props.onPress}>
+      <Subheading>{getProfileSharableLink(props.id, true)}</Subheading>
+    </Box>
   )
 }
 
@@ -266,5 +326,6 @@ export default connect(state => ({
   updates: state.updates.profile
 }), {
   logoutUser,
+  makeToast,
   forceProfileUpdateDone,
 })(Profile)

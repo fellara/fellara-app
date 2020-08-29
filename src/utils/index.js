@@ -70,6 +70,14 @@ export const getProfileLink = (id, noUtm, isMine) => {
   return new_url + '?' + source
 }
 
+export const getProfileSharableLink = (id, noUtm) => {
+    let new_url = app_url + 'u/' + id + '/'
+    let source = `utm_source=${Platform.OS === 'web' ? 'pwa' : Platform.OS}_sharable_link`
+    if (noUtm) return new_url
+    console.log((new_url + '?' + source));
+    return new_url + '?' + source
+}
+
 export const getPostLink = (id, tag, noUtm) => {
   let new_url = app_url + `root/post?id=${id}&tag=${tag}`
 

@@ -5,16 +5,22 @@ import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { ThemeProvider } from 'styled-components'
 import { NavigationContainer } from '@react-navigation/native';
+import Head from 'next/head'
 
 import {store as reduxStore} from '../src/store';
 import {theme} from '../theme'
 
+const description = 'fellara is a platform for sharing your culture and traditions through photos. People from all around the world share their daily life via fellara.'
 
 const MyApp = ({Component, pageProps}) => (
   <ThemeProvider theme={theme}>
     <UIProvider {...eva} theme={{...eva.light, ...theme}}>
       <IconRegistry icons={EvaIconsPack} />
       <NavigationContainer>
+      <Head>
+            <title>fellara</title>
+            <meta name="description" content={description} />
+        </Head>
         <Component {...pageProps} />
       </NavigationContainer>
     </UIProvider>
