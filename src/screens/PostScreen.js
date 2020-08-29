@@ -19,6 +19,7 @@ import {forceProfileUpdate, forceTagUpdate} from '../actions/updates'
 import { makeToast } from '../actions/toasts'
 import {isClient} from '../constants'
 import {getPostSharableLink} from '../utils'
+import { useNavigation } from '@react-navigation/native';
 
 const MenuIcon = (props) => (
   <Icon {...props} name='more-vertical'/>
@@ -40,7 +41,11 @@ const PostScreen = props => {
   const [post, setPost] = useState({})
 
   let params;
-  if (isClient) params = props.route.params;
+  let navigation;
+  if (isClient) {
+    params = props.route.params;
+    navigation = useNavigation()
+  }
   let tag = null
   if (params) tag = props.tags.find(t => t.id === parseInt(params.tag))
 
@@ -117,6 +122,8 @@ const PostScreen = props => {
     </React.Fragment>
   );
 
+  console.log(params._back);
+
   return (<>
     <PostMetaTags
       post={post}
@@ -125,7 +132,7 @@ const PostScreen = props => {
     <SafeAreaView>
       <TopNavigation
         title={'From ' + (tag ? tag.title : '...')}
-        onBack={() => props.navigation.goBack()}
+        onBack={() => !params._back ? navigation.goBack() : navigation.replace(params._back)}
         accessoryRight={renderOverflowMenuAction}
       />
       <Layout

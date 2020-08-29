@@ -290,7 +290,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
           onHide={() => setShareModal(false)}
           title='Share Link'
           description={`Share this post link with your friends and enjoy it together!`}
-          comp={<SharableLink id={profile.id} onPress={handleCopyLink} />}
+          comp={<SharableLink id={profile?.id} onPress={handleCopyLink} />}
           buttons={
             [
               {
