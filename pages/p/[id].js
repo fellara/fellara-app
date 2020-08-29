@@ -22,10 +22,6 @@ const PostPage = ({post, tags}) => {
   let tag = {}
   if (tags) tag = tags.find(t => post.tag === t.id)
 
-  if (post) return (<PostMetaTags
-    post={post}
-  />)
-
   if (post && typeof(window) !== 'undefined') return (<>
     <PostMetaTags
       post={post}
@@ -62,6 +58,10 @@ const PostPage = ({post, tags}) => {
       </Layout>
     </ SafeAreaView>
   </>)
+
+  if (post) return (<PostMetaTags
+    post={post}
+  />)
 
   return ''
 }

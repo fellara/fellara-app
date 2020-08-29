@@ -15,10 +15,6 @@ const ProfilePage = ({profile}) => {
     return <Error statusCode={404} title="This profile could not be found" />;
   }
 
-  if (profile) return (<ProfileMetaTags
-    profile={profile}
-  />)
-
   if (profile && typeof(window) !== 'undefined') return (<>
       <ProfileMetaTags
         profile={profile}
@@ -35,6 +31,10 @@ const ProfilePage = ({profile}) => {
     </>
   )
 
+  if (profile) return (<ProfileMetaTags
+    profile={profile}
+  />)
+  
   return ''
 }
 
