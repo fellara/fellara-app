@@ -93,7 +93,6 @@ const Post = props => {
   }
 
   const handleAvatarPress = () => {
-    console.log('profile', props.is_mine, props.user);
     if (!props.is_mine) {
       navigation.navigate('others-profile', {id: props.user}) 
     } else {

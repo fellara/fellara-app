@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import { ScrollView, Clipboard, SafeAreaView, TouchableOpacity } from 'react-native'
 import { Layout, Icon, MenuItem, OverflowMenu,
   TopNavigationAction } from '@ui-kitten/components';
@@ -39,6 +39,7 @@ const PostScreen = props => {
   const [modal, setModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
   const [post, setPost] = useState({})
+  let scrollViewRef = useRef()
 
   let params;
   let navigation;
@@ -50,6 +51,8 @@ const PostScreen = props => {
   if (params) tag = props.tags.find(t => t.id === parseInt(params.tag))
 
   useEffect(() => {
+    setLoading(true)
+    scrollViewRef.scrollTo({x: 0, y: 0, animated: true})
     if (params) getPost(params.id).then(res => {
       if (res.status === 200) {
         setPost(res.data)
@@ -58,7 +61,7 @@ const PostScreen = props => {
         props.navigation.goBack()
       }
     })
-  }, [])
+  }, [params?.id])
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -122,7 +125,13 @@ const PostScreen = props => {
     </React.Fragment>
   );
 
-  console.log(params._back);
+  const handlePostPress = (id ,tag) => {
+    navigation.navigate('post', {
+      tag: tag,
+      id: id,
+      _back: 'Home',
+    })
+  }
 
   return (<>
     <PostMetaTags
@@ -142,6 +151,7 @@ const PostScreen = props => {
           style={{
             flex: 1
           }}
+          ref={ref => scrollViewRef = ref}
           contentContainerStyle={{
             paddingBottom: 150
           }}
@@ -155,6 +165,7 @@ const PostScreen = props => {
               id={params.id} 
               tags={props.tags}
               onAvatarPress={handleAvatarPress}
+              onPress={handlePostPress}
             />
           </>}
           
@@ -233,6 +244,7 @@ export const SimilarPosts = props => {
             tag={props.tags?.find(t => t.id === parseInt(post.tag))}
             onAvatarPress={() => props.onAvatarPress && props.onAvatarPress(post.is_mine, post.user)}
             onPress={() => props.onPress && props.onPress(post.id, post.tag)}
+            standalone={false}
           />
         ))
       }
