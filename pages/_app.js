@@ -17,10 +17,6 @@ const MyApp = ({Component, pageProps}) => (
     <UIProvider {...eva} theme={{...eva.light, ...theme}}>
       <IconRegistry icons={EvaIconsPack} />
       <NavigationContainer>
-      <Head>
-            <title>fellara</title>
-            <meta name="description" content={description} />
-        </Head>
         <Component {...pageProps} />
       </NavigationContainer>
     </UIProvider>
