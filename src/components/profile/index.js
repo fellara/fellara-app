@@ -13,7 +13,7 @@ import { logout } from '../../api/user';
 import { logoutUser } from '../../actions/user';
 import { forceProfileUpdateDone } from '../../actions/updates';
 import TopNavigation from '../../components/layouts/TopNavigation'
-import {getImageUrl, capitalize} from '../../utils/'
+import {getFileUrl, capitalize} from '../../utils/'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 import {isClient, base_url} from '../../constants'
 import EditProfileScreen from './EditProfileScreen'
@@ -205,7 +205,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
     <Header>
       <Avatar 
         size='giant' 
-        source={getImageUrl(profile.profile_image_small)} 
+        source={getFileUrl(profile.profile_image_small)} 
         style={{'width': 100, 'height': 100, 'marginBottom': 10}} 
         resizeMode='cover'
       />
@@ -245,7 +245,7 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
 
   const renderImage = (props) => (
     <Avatar 
-      source={getImageUrl(profile.profile_image_small)} 
+      source={getFileUrl(profile.profile_image_small)} 
       style={{'width': 30, 'height': 30, marginRight: 12}} 
       resizeMode='cover'
     />

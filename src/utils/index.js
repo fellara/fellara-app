@@ -28,7 +28,7 @@ export const checkRegex = (text, regex) => {
   // return new RegExp(text, 'g').test(text) // 'g' is for global search
 } 
 
-export const getImageUrl = (url) => {
+export const getFileUrl = (url) => {
   if (!url) return
   return url.startsWith('http') ? url : base_url + url.substring(1)
 }

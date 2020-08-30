@@ -10,7 +10,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useMediaQuery } from 'react-responsive'
 
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
-import {getImageUrl} from '../../utils'
+import {getFileUrl} from '../../utils'
 import {likePost} from '../../api/posts'
 import Text, {Muted} from '../typography';
 import { makeToast } from '../../actions/toasts'
@@ -139,7 +139,7 @@ export const PostTemplate = props => {
       {/* <PostImage uri={props.image_medium}/> */}
       <PostImage
         isDesktop={isDesktopOrLaptop}
-        source={{uri: getImageUrl(url)}}
+        source={{uri: getFileUrl(url)}}
         ratio={height / width}
         resizeMode='cover'
         padding={props.standalone ? 0 : POSTS_LIST_PADDING}
@@ -165,7 +165,7 @@ export const PostTemplate = props => {
       isDesktop={isDesktopOrLaptop}
     >
       <TouchableOpacity onPress={props.onAvatarPress}>
-        <Avatar size='medium' source={{uri: getImageUrl(avatar)}}/>
+        <Avatar size='medium' source={{uri: getFileUrl(avatar)}}/>
       </TouchableOpacity>
       <NameAndLocationWrapper
         standalone={props.standalone}

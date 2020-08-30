@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Layout } from '@ui-kitten/components';
 import { connect } from 'react-redux'
+import { View, TouchableOpacity } from 'react-native'
 import { useMediaQuery } from 'react-responsive'
 import axios from 'axios';
 
@@ -8,6 +9,7 @@ import { getPosts } from '../api/posts'
 import { forceTagUpdateDone } from '../actions/updates'
 import PostsList from '../components/posts/PostsList';
 import TagsList from '../components/posts/TagsList';
+import MusicButton from '../components/musics/MusicButton';
 import {formatURL} from '../utils'
 import {store} from '../store'
 
@@ -116,7 +118,7 @@ const HomeScreen = props => {
     }
   }
 
-  return (
+  return (<>
     <Layout>
       <TagsList data={tags} active={activeTag} setActive={changeActiveTag}/>
       <PostsList 
@@ -124,7 +126,8 @@ const HomeScreen = props => {
         endReached={posts.length > 0 && !next}
       />
     </Layout>
-  )
+    <MusicButton />
+  </>)
 }
 
 HomeScreen.navigationOptions = {

@@ -2,7 +2,7 @@ import React from 'react'
 import {Helmet} from "react-helmet";
 import Head from 'next/head'
 
-import {getImageUrl} from '../../utils'
+import {getFileUrl} from '../../utils'
 
 const description = 'fellara is a platform for sharing your culture and traditions through photos. People from all around the world share their daily life via fellara.'
 
@@ -48,7 +48,7 @@ export const PostMetaTags = ({post, tag}) => (<MetaTags
     description={`
       ${description}
     `}
-    image={getImageUrl(post.clean_image_medium?.url)}
+    image={getFileUrl(post.clean_image_medium?.url)}
     url={`https://app.fellara.com/p/${post?.id}?tag=${tag?.id}`}
 />)
 
@@ -60,7 +60,7 @@ export const ProfileMetaTags = ({profile}) => {
         description={`
             ${description}
         `}
-        image={getImageUrl(profile.profile_image_small)}
+        image={getFileUrl(profile.profile_image_small)}
         url={`https://app.fellara.com/u/${profile?.id}`}
     />)
 }

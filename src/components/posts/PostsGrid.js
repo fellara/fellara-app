@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive'
 
 import {renderEndReached, renderScrollToReveal, renderEmptyList} from './shared'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
-import {getImageUrl} from '../../utils/'
+import {getFileUrl} from '../../utils/'
 import {isClient} from '../../constants'
 
 const PostsGrid = props => {
@@ -75,7 +75,7 @@ const PostsGrid = props => {
           style={{ flexDirection: 'column', margin, width: height}}>
           <Image style={styles.imageThumbnail} 
             resizeMode='cover'
-            source={{ uri: getImageUrl(item.clean_image_small.url)}} />
+            source={{ uri: getFileUrl(item.clean_image_small.url)}} />
         </TouchableOpacity>
     )}
 
