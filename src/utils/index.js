@@ -30,7 +30,7 @@ export const checkRegex = (text, regex) => {
 
 export const getImageUrl = (url) => {
   if (!url) return
-  return url.startsWith('http') ? url : base_url + url
+  return url.startsWith('http') ? url : base_url + url.substring(1)
 }
 
 export const capitalize = (text) => {

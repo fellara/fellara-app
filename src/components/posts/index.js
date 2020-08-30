@@ -69,7 +69,7 @@ const Post = props => {
 
   let action = null;
   if (route?.params) action = route.params.action;
-  const tag = props.tags.find(t => t.id === parseInt(props.tag))
+  const tag = props.tags.find(t => t.id === parseInt(props.tag_new))
 
   useEffect(() => { 
     switch (action) {
@@ -88,7 +88,7 @@ const Post = props => {
       likePost(props.id)
     } else {
       props.makeToast('Login is required')
-      navigation.navigate('Profile', {_back: 'post', id: props.id, tag: props.tag, action: 'LIKE'})
+      navigation.navigate('Profile', {_back: 'post', id: props.id, tag: props.tag_new, action: 'LIKE'})
     }
   }
 
@@ -104,7 +104,7 @@ const Post = props => {
     <PostTemplate 
       {...props} 
       onPress={() => navigation.navigate('post', {
-        tag: props.tag,
+        tag: props.tag_new,
         id: props.id,
         _back: 'Home',
       })}
@@ -125,7 +125,7 @@ export const PostTemplate = props => {
   })
 
   let tag = null
-  tag = props.tags?.find(t => t.id === parseInt(props.tag))
+  tag = props.tags?.find(t => t.id === parseInt(props.tag_new))
 
   return (<Container
     standalone={props.standalone}

@@ -50,6 +50,8 @@ const PostScreen = props => {
   let tag = null
   if (params) tag = props.tags.find(t => t.id === parseInt(params.tag))
 
+  console.log(params);
+
   useEffect(() => {
     setLoading(true)
     scrollViewRef.scrollTo({x: 0, y: 0, animated: true})
@@ -241,9 +243,9 @@ export const SimilarPosts = props => {
           <PostTemplate
             showTag={true}
             {...post}
-            tag={props.tags?.find(t => t.id === parseInt(post.tag))}
+            tag={props.tags?.find(t => t.id === parseInt(post.tag_new))}
             onAvatarPress={() => props.onAvatarPress && props.onAvatarPress(post.is_mine, post.user)}
-            onPress={() => props.onPress && props.onPress(post.id, post.tag)}
+            onPress={() => props.onPress && props.onPress(post.id, post.tag_new)}
             standalone={false}
           />
         ))

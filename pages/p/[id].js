@@ -20,7 +20,7 @@ const PostPage = ({post, tags}) => {
   }
 
   let tag = {}
-  if (tags) tag = tags.find(t => post.tag === t.id)
+  if (tags) tag = tags.find(t => post.tag_new === t.id)
 
   if (post && typeof(window) !== 'undefined') return (<>
     <PostMetaTags
@@ -62,7 +62,7 @@ const PostPage = ({post, tags}) => {
   if (post) return (<PostMetaTags
     post={post}
     tag={tag} 
-    />)
+  />)
 
   return ''
 }

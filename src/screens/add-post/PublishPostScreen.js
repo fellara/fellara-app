@@ -31,7 +31,7 @@ const PublishPostScreen = props => {
             label: 'Tag',
             type: 'select',
             placeholder: 'Choose a Tag',
-            name: 'tag',
+            name: 'tag_new',
             default: activeTag,
             options: props.tags.map(tag => ({value: tag.id, title: tag.title})),
             required: true,
@@ -48,10 +48,10 @@ const PublishPostScreen = props => {
             createPost({...data, image: props.image.file}).then(res => {
                 if (res.status === 201) {
                     props.makeToast('Post successfully published', 'SUCCESS')
-                    props.forceTagUpdate(data.tag)
+                    props.forceTagUpdate(data.tag_new)
                     props.forceProfileUpdate()
                     props.setImage(null)
-                    props.navigation.navigate('Home', {tag: data.tag})
+                    props.navigation.navigate('Home', {tag: data.tag_new})
                 } else {
                     props.makeToast('Something went wrong, try again', 'ERROR')
                 }

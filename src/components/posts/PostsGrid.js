@@ -58,10 +58,10 @@ const PostsGrid = props => {
 
     const handleItemPress = item => {
       if (props.onPress) {
-        props.onPress(item.id, item.tag)
+        props.onPress(item.id, item.tag_new)
       } else {
         navigation?.navigate('post', {
-          tag: item.tag,
+          tag: item.tag_new,
           id: item.id,
           _back: 'Profile',
         })
