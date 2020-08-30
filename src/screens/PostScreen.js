@@ -141,7 +141,7 @@ const PostScreen = props => {
     <SafeAreaView>
       <TopNavigation
         title={'From ' + (tag ? tag.title : '...')}
-        onBack={() => !params._back ? navigation.goBack() : navigation.replace(params._back)}
+        onBack={() => !params._back ? navigation.goBack() : navigation.navigate(params._back)}
         accessoryRight={renderOverflowMenuAction}
       />
       <Layout

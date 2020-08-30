@@ -61,7 +61,8 @@ const PostPage = ({post, tags}) => {
 
   if (post) return (<PostMetaTags
     post={post}
-  />)
+    tag={tag} 
+    />)
 
   return ''
 }
