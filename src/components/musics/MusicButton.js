@@ -79,7 +79,7 @@ const PlayButton = ({ onPress, fill, isPlaying, loading, size, width, background
 
 let soundObject = {}
 const MusicButton = props => {
-    const [visible, setVisible] = React.useState(true);
+    const [visible, setVisible] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [music, setMusic] = React.useState({});
     const [status, setStatus] = useState({})
