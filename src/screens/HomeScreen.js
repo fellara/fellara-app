@@ -7,9 +7,9 @@ import axios from 'axios';
 
 import { getPosts } from '../api/posts'
 import { forceTagUpdateDone } from '../actions/updates'
+import { setActiveTag } from '../actions/posts'
 import PostsList from '../components/posts/PostsList';
 import TagsList from '../components/posts/TagsList';
-import MusicButton from '../components/musics/MusicButton';
 import {formatURL} from '../utils'
 import {store} from '../store'
 
@@ -30,7 +30,6 @@ const HomeScreen = props => {
     query: '(min-device-width: 1224px)'
   })
 
-    
   const CancelToken = axios.CancelToken;
   const source = CancelToken.source();
   
@@ -67,6 +66,7 @@ const HomeScreen = props => {
       setNext(null)
       setPosts([])
       setActiveTag(tag)
+      props.setActiveTag(tag)
     }
   }
 
@@ -126,7 +126,6 @@ const HomeScreen = props => {
         endReached={posts.length > 0 && !next}
       />
     </Layout>
-    <MusicButton />
   </>)
 }
 
@@ -139,4 +138,5 @@ export default connect(state => ({
   updates: state.updates.tag,
 }), {
   forceTagUpdateDone,
+  setActiveTag,
 })(HomeScreen)

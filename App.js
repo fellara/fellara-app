@@ -16,6 +16,7 @@ import MainNavigator from './src/navigation/MainNavigator';
 import LinkingConfiguration from './src/navigation/LinkingConfiguration';
 import Toast from './src/components/toasts';
 import { getInitals } from './src/actions';
+import MusicButton from './src/components/musics/MusicButton';
 
 const Stack = createStackNavigator();
 
@@ -42,6 +43,7 @@ export default function App(props) {
               <Stack.Navigator headerMode='none'>
                 <Stack.Screen name="Root" component={MainNavigator} />
               </Stack.Navigator>
+              <MusicButton />
             </NavigationContainer>
           </View>
           <Toast />

@@ -18,7 +18,7 @@ if (isClient) {
     key: 'root',
     storage: AsyncStorage,
     stateReconciler: autoMergeLevel2,
-    blacklist: ['toasts']
+    blacklist: ['toasts', 'musics']
   }
   
   const persistedReducer = persistReducer(persistConfig, reducers)

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import {HYDRATE} from 'next-redux-wrapper';
 
+import {musics} from './musics'
 import {user, token} from './user'
 import {updates} from './updates'
 import {posts} from './posts'
@@ -45,6 +46,7 @@ const alerts = (state = [], action) => {
 
 export default combineReducers({
   initials,
+  musics,
   loading,
   posts,
   toasts,
