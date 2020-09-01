@@ -209,7 +209,7 @@ const MusicButton = props => {
                         // borderTopWidth: 1,
                         // paddingTop: 5,
                     }}>Soundtrack</Heading>
-                    <Subheading>Tap on the play to start {tag?.title}'s Soundtrack</Subheading>
+                    <Subheading>Each tag has its own, Tap on the play to start {tag?.title}'s Soundtrack</Subheading>
                     <Wrapper style={{
                         marginTop: 10,
                     }}>
