@@ -94,8 +94,8 @@ const MusicButton = props => {
     let prevTag = null
     prevTag = props.tags?.find(t => t.id === parseInt(props.prevMusic?.tag))
 
-    const handlePlay = async () => {
-        if (!props.prevMusic?.tag || (props.tag === props.prevMusic?.tag)) {
+    const handlePlay = async (tiny) => {
+        if (!props.prevMusic?.tag || (props.tag === props.prevMusic?.tag) || tiny) {
             handlePlayPause()
         } else {
             await soundObject.pauseAsync();
@@ -173,7 +173,7 @@ const MusicButton = props => {
                     alignItems: 'center',
                 }}>
                     <PlayButton
-                        // onPress={handlePlay}
+                        onPress={() => handlePlay(true)}
                         fill={status.durationMillis
                             ? status.positionMillis / status.durationMillis !== 0
                                 ? status.positionMillis / status.durationMillis * 100
