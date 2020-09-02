@@ -126,7 +126,6 @@ const MusicButton = props => {
         setLoading(true)
         getMusicByTag(props.tag).then(res => {
             setMusic(res.data)
-            console.log(res.data);
             setLoading(false)
         }).catch(err => {
             setLoading(false)
@@ -169,7 +168,7 @@ const MusicButton = props => {
                     marginBottom: 10,
                     flexDirection: 'row',
                     paddingHorizontal: 15,
-                    paddingVertical: 15,
+                    paddingVertical: 10,
                     alignItems: 'center',
                 }}>
                     <PlayButton
@@ -189,12 +188,20 @@ const MusicButton = props => {
                         marginLeft: 15,
                         flex: 1,
                     }}>
+                        <Muted style={{
+                            backgroundColor: 'rgb(34, 43, 69)',
+                            color: '#fff',
+                            borderRadius: 5,
+                            alignSelf: 'flex-start',
+                            paddingHorizontal: 5,
+                            paddingVertical: 2,
+                        }}>{prevTag.title}</Muted>
                         <Text
                             ellipsizeMode='tail' numberOfLines={1}
                             style={{
                                 flex: 1,
                                 width: '100%',
-                                marginBottom: 5,
+                                // marginBottom: 5,
                             }}>{props.prevMusic.title}
                         </Text>
                         <Muted
@@ -213,6 +220,23 @@ const MusicButton = props => {
                     <Wrapper style={{
                         marginTop: 10,
                     }}>
+                        <Muted style={{
+                            backgroundColor: 'rgb(34, 43, 69)',
+                            position: 'absolute',
+                            color: '#fff',
+                            alignSelf: 'flex-start',
+                            // left: 0,
+                            // top: 0,
+                            // borderRadius: 0,
+                            // borderTopLeftRadius: 10,
+                            // paddingHorizontal: 10,
+                            // paddingVertical: 5,
+                            left: 10,
+                            top: 10,
+                            borderRadius: 5,
+                            paddingHorizontal: 5,
+                            paddingVertical: 2,
+                        }}>{tag.title}</Muted>
                         <PlayButton
                             onPress={handlePlay}
                             fill={(props.tag === props.prevMusic?.tag) ? status.durationMillis
@@ -233,8 +257,7 @@ const MusicButton = props => {
                                     flex: 1,
                                     width: '100%',
                                     marginBottom: 5,
-
-                                }}>{music.title}</Text>
+                            }}>{music.title}</Text>
                             <Muted
                                 ellipsizeMode='tail' numberOfLines={1}
                             >{music.composer}</Muted>
@@ -247,10 +270,10 @@ const MusicButton = props => {
                                     appearance='ghost' size='small'
                                 >
                                     Source
-                            </Button>}
+                                </Button>}
                                 {music.license_type && <Button onPress={() => Linking.openURL(music.license_type)} style={styles.button} appearance='ghost' size='small'>
                                     License
-                            </Button>}
+                                </Button>}
                             </View>
                         </> : null}
                     </Wrapper>
