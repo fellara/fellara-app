@@ -45,7 +45,7 @@ const PlayCircle = styled(TouchableOpacity)`
     justify-content: center;
 `
 
-const PlayButton = ({ onPress, fill, isPlaying, loading, size, width, backgroundColor, ...props }) => {
+const PlayButton = ({ onPress, fill, isPlaying, isBuffering, loading, size, width, backgroundColor, ...props }) => {
 
     return (
         <PlayCircle
@@ -63,14 +63,17 @@ const PlayButton = ({ onPress, fill, isPlaying, loading, size, width, background
                     backgroundColor: backgroundColor || '#fff'
                 }}
             >
-                {() => (!loading
-                    ? !isPlaying
-                        ? <Icon name='arrow-right' style={{ zIndex: 9999, width: size * 3 / 5, height: size * 3 / 5, tintColor: 'rgb(34, 43, 69)' }} />
-                        : <View style={{ zIndex: 9999, width: size * 3 / 9, height: size * 3 / 9, flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={{ borderRadius: 10, width: size * 3 / 26, backgroundColor: 'rgb(34, 43, 69)' }} />
-                            <View style={{ borderRadius: 10, width: size * 3 / 26, backgroundColor: 'rgb(34, 43, 69)' }} />
-                        </View>
-                    : <Spinner />
+                {() => (
+                    !loading
+                        ? !isBuffering
+                            ? !isPlaying
+                                ? <Icon name='arrow-right' style={{ zIndex: 9999, width: size * 3 / 5, height: size * 3 / 5, tintColor: 'rgb(34, 43, 69)' }} />
+                                : <View style={{ zIndex: 9999, width: size * 3 / 10, height: size * 3 / 9, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View style={{ borderRadius: 10, width: size * 3 / 26, backgroundColor: 'rgb(34, 43, 69)' }} />
+                                    <View style={{ borderRadius: 10, width: size * 3 / 26, backgroundColor: 'rgb(34, 43, 69)' }} />
+                                </View>
+                            : <Spinner />
+                        : <Spinner />
                 )}
             </AnimatedCircularProgress>
         </PlayCircle>
@@ -81,39 +84,58 @@ let soundObject = {}
 const MusicButton = props => {
     const [visible, setVisible] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
+    const [buffering, setBuffering] = React.useState(false);
     const [music, setMusic] = React.useState({});
     const [status, setStatus] = useState({})
-    let audio = null
-
+    const [repeat, setRepeat] = useState(false)
+      
     useEffect(() => {
         soundObject = new Audio.Sound();
     }, [])
+
+    useEffect(() => {
+        if (props.tag !== props.prevMusic?.tag) handleGetMusic(props.tag)
+    }, [props.tag])
 
     let tag = null
     tag = props.tags?.find(t => t.id === parseInt(props.tag))
     let prevTag = null
     prevTag = props.tags?.find(t => t.id === parseInt(props.prevMusic?.tag))
 
-    const handlePlay = async (tiny) => {
-        if (!props.prevMusic?.tag || (props.tag === props.prevMusic?.tag) || tiny) {
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-device-width: 1224px)'
+    })
+
+    const handleGetMusic = (tag, startPlaying) => {
+        setLoading(true)
+        getMusicByTag(tag).then(res => {
+            setMusic(res.data)
+            setLoading(false)
+            if (startPlaying) handlePlay(false, true)
+        }).catch(err => {
+            setLoading(false)
+        })
+    }
+
+    const handlePlay = async (tiny, newMusic) => {
+        if ((!props.prevMusic?.tag || (props.tag === props.prevMusic?.tag) || tiny) && !newMusic) {
             handlePlayPause()
         } else {
             await soundObject.pauseAsync();
             await soundObject.unloadAsync();
-            console.log(status.isPlaying, status.isLoaded);
             handlePlayPause(true)
         }
     }
 
     const handlePlayPause = async (newMusic) => {
-        if (status.isPlaying && status.isLoaded && !newMusic) {
+        if (status.isPlaying && status.isLoaded && !newMusic && !status.isLooping) {
             await soundObject.pauseAsync();
         } else {
             try {
-                if (!status.isLoaded || newMusic) {
+                if (!status.isLoaded || newMusic && !status.isLooping) {
                     props.changeCurrentMusic({...music, tag: props.tag})
                     await soundObject.loadAsync({ uri: getFileUrl(music.music_file) })
-                    await soundObject.setOnPlaybackStatusUpdate(setStatus);
+                    await soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
                 }
                 await soundObject.playAsync();
             } catch (error) {
@@ -122,23 +144,70 @@ const MusicButton = props => {
         }
     }
 
-    useEffect(() => {
-        setLoading(true)
-        getMusicByTag(props.tag).then(res => {
-            setMusic(res.data)
-            setLoading(false)
-        }).catch(err => {
-            setLoading(false)
-        })
-    }, [props.tag])
+    const onPlaybackStatusUpdate = playbackStatus => {
+        setStatus(playbackStatus)
+        if (!playbackStatus.isLoaded) {
+            // Update your UI for the unloaded state
+            if (playbackStatus.error) {
+                console.log(`Encountered a fatal error during playback: ${playbackStatus.error}`);
+                // Send Expo team the error on Slack or the forums so we can help you debug!
+            }
+        } else {
+            // Update your UI for the loaded state
+        
+            if (playbackStatus.isPlaying) {
+                setBuffering(false)
+                // Update your UI for the playing state
+            } else {
+            // Update your UI for the paused state
+            }
+        
+            if (playbackStatus.isBuffering) {
+            // Update your UI for the buffering state
+                setBuffering(true)
+            }
+                
+            if (playbackStatus.didJustFinish && playbackStatus.isLooping) {
+                handlePlayPause()
+            }
 
-    const isDesktopOrLaptop = useMediaQuery({
-        query: '(min-device-width: 1224px)'
-    })
+            if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
+                handleGetMusic(props.tag, true)
+            }
+        }
+    };
+
+    const handleRepeat = async () => {
+        setRepeat(!repeat)
+        await soundObject.setIsLoopingAsync(!repeat);
+    }
+
+    const handleSkip = async () => {
+        handleGetMusic(props.tag, true)
+    }
 
     const style = isDesktopOrLaptop ? {
         marginRight: (layouts.window.width - MAX_WIDTH) / 2 + 10
     } : {}
+
+    const renderControlButton = (icon, onPress, size, active) => {
+        return (
+            <TouchableOpacity 
+                onPress={() => onPress && onPress()}
+                style={{
+                    backgroundColor: active ? 'rgb(34, 43, 69)' : '#fff',
+                    width: 45,
+                    height: 45,
+                    borderRadius: 100,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginHorizontal: 10,
+                }}
+            >
+                <Icon name={icon} style={{ zIndex: 9999, width: size || 20, height: size || 20, tintColor: !active ? 'rgb(34, 43, 69)' : '#fff' }} />
+            </TouchableOpacity>
+        )
+    }
 
     const renderToggleButton = () => (
         <SButton onPress={() => setVisible(true)}
@@ -146,7 +215,7 @@ const MusicButton = props => {
                 ...style
             }}
         >
-            <Icon name='music' style={{ zIndex: 9999, width: 25, height: 25, tintColor: '#222' }} />
+            <Icon name='music' style={{ zIndex: 9999, width: 25, height: 25, tintColor: 'rgb(34, 43, 69)' }} />
         </SButton>
     );
 
@@ -237,18 +306,29 @@ const MusicButton = props => {
                             paddingHorizontal: 5,
                             paddingVertical: 2,
                         }}>{tag.title}</Muted>
-                        <PlayButton
-                            onPress={handlePlay}
-                            fill={(props.tag === props.prevMusic?.tag) ? status.durationMillis
-                                ? status.positionMillis / status.durationMillis !== 0
-                                    ? status.positionMillis / status.durationMillis * 100
-                                    : 0
-                                : 0 : 0}
-                            size={80}
-                            width={3}
-                            loading={loading}
-                            isPlaying={status.isPlaying && (props.tag === props.prevMusic?.tag)}
-                        />
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginTop: 10,
+                        }}>
+                            {status.isLoaded && renderControlButton('repeat', handleRepeat, null, repeat)}
+                            <PlayButton
+                                onPress={handlePlay}
+                                fill={(props.tag === props.prevMusic?.tag) ? status.durationMillis
+                                    ? status.positionMillis / status.durationMillis !== 0
+                                        ? status.positionMillis / status.durationMillis * 100
+                                        : 0
+                                    : 0 : 0}
+                                size={80}
+                                isBuffering={buffering}
+                                width={3}
+                                loading={loading}
+                                isPlaying={status.isPlaying && (props.tag === props.prevMusic?.tag)}
+                            />
+                            {status.isLoaded && renderControlButton('skip-forward', handleSkip, 25)}
+                        </View>
+
                         {!loading ? <>
                             <Text
                                 ellipsizeMode='tail' numberOfLines={1}
@@ -257,6 +337,7 @@ const MusicButton = props => {
                                     flex: 1,
                                     width: '100%',
                                     marginBottom: 5,
+                                    textAlign: 'center',
                             }}>{music.title}</Text>
                             <Muted
                                 ellipsizeMode='tail' numberOfLines={1}
