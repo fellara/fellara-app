@@ -17,6 +17,7 @@ import LinkingConfiguration from './src/navigation/LinkingConfiguration';
 import Toast from './src/components/toasts';
 import { getInitals } from './src/actions';
 import MusicButton from './src/components/musics/MusicButton';
+import A2HS from './src/components/a2hs';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +45,7 @@ export default function App(props) {
                 <Stack.Screen name="Root" component={MainNavigator} />
               </Stack.Navigator>
               <MusicButton />
+              <A2HS />
             </NavigationContainer>
           </View>
           <Toast />
