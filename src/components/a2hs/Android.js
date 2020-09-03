@@ -46,12 +46,13 @@ const ANDROID_STEPS = [
     },
 ]
 
-const Android = ({setVisible}) => {
+const Android = ({setVisible, turnOffInstallPrompt}) => {
 
     return (
         <Body
             steps={ANDROID_STEPS}
             setVisible={setVisible}
+            turnOffInstallPrompt={turnOffInstallPrompt}
         />
     )   
 }

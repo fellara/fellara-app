@@ -49,12 +49,13 @@ const IOS_STEPS = [
     }
 ]
 
-const IOS = props => {
+const IOS = ({setVisible, turnOffInstallPrompt}) => {
 
     return (
         <Body
             steps={IOS_STEPS}
             setVisible={setVisible}
+            turnOffInstallPrompt={turnOffInstallPrompt}
         />
     )   
 }

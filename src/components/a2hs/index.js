@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import {View, Platform, Image} from 'react-native'
-import { Button } from '@ui-kitten/components';
+import { Button, CheckBox } from '@ui-kitten/components';
+import { connect } from 'react-redux';
 
 import IOS from './IOS'
 import Android from './Android'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
 import {isInStandaloneMode} from '../../constants'
 import {getOS} from '../../utils'
+import {turnOffInstallPrompt} from '../../actions/settings'
 import Logo from '../../assets/images/logo.jpg'
 import Text, {Heading, Subheading, Muted} from '../typography'
 
@@ -39,6 +41,16 @@ const Step = ({step, text, index}) => {
 }
 
 export const Body = props => {
+    const [checked, setChecked] = React.useState(false);
+
+    const handleDismiss = () => {
+        if (checked) {
+            console.log('asd');
+            props.turnOffInstallPrompt()
+        }
+        props.setVisible(false)
+    }
+
     return (
         <Wrapper>
             <Image source={Logo} style={{
@@ -61,9 +73,18 @@ export const Body = props => {
                     props.steps?.map((step, index) => <Step step={step} index={index} key={index} />)
                 }
             </View>
-            <Button onPress={() => props.setVisible(false)}>
+            <Button onPress={handleDismiss}>
                 Ok, Got It!
             </Button>
+            <CheckBox 
+                checked={checked}
+                onChange={nextChecked => setChecked(nextChecked)}
+                style={{
+                    marginTop: 15,
+                }}
+            >
+                Don't show this page again
+            </CheckBox>
         </Wrapper>
     )   
 }
@@ -71,14 +92,14 @@ export const Body = props => {
 const A2HS = props => {
     const [visible, setVisible] = useState(true)
     return (
-        (visible && !isInStandaloneMode && Platform.OS === 'web')
+        (props.installPrompt && visible && !isInStandaloneMode && Platform.OS === 'web')
             ? getOS() === 'ios'
-                ? <IOS setVisible={setVisible} />
+                ? <IOS setVisible={setVisible} turnOffInstallPrompt={props.turnOffInstallPrompt} />
                 : getOS() === 'android'
-                    ? <Android setVisible={setVisible} />
-                    : <Android setVisible={setVisible} />
+                    ? <Android setVisible={setVisible} turnOffInstallPrompt={props.turnOffInstallPrompt} />
+                    : null
             : null
     )   
 }
 
-export default A2HS
+export default connect(state => ({installPrompt: state.settings.installPrompt}), {turnOffInstallPrompt})(A2HS)

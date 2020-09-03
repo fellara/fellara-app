@@ -6,6 +6,7 @@ import {user, token} from './user'
 import {updates} from './updates'
 import {posts} from './posts'
 import {toasts} from './toasts'
+import {settings} from './settings'
 
 export const initials = (state = {
   tags: []
@@ -53,4 +54,5 @@ export default combineReducers({
   token,
   updates,
   user,
+  settings,
 })
