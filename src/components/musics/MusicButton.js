@@ -108,7 +108,7 @@ const MusicButton = props => {
 
     const handleGetMusic = (tag, startPlaying) => {
         setLoading(true)
-        getMusicByTag(tag).then(res => {
+        if (tag) getMusicByTag(tag).then(res => {
             setMusic(res.data)
             setLoading(false)
             if (startPlaying) handlePlay(false, true)
@@ -305,7 +305,7 @@ const MusicButton = props => {
                             borderRadius: 5,
                             paddingHorizontal: 5,
                             paddingVertical: 2,
-                        }}>{tag.title}</Muted>
+                        }}>{tag?.title}</Muted>
                         <View style={{
                             flexDirection: 'row',
                             alignItems: 'center',
