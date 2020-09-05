@@ -191,6 +191,9 @@ const Profile = ({isLoggedIn, profile, updates, ...props}) => {
         <MenuItem accessoryLeft={ShareIcon} title='Share Link'
           onPress={() => handleShareLink()}
         />
+        {false && !props.others && <MenuItem accessoryLeft={AboutIcon} title='Settings'
+          onPress={() => handleAboutFellara()}
+        />}
         {!props.others && <MenuItem accessoryLeft={AboutIcon} title='About fellara'
           onPress={() => handleAboutFellara()}
         />}

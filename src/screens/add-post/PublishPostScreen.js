@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from 'react'
-import { View, Image, ScrollView, SafeAreaView } from 'react-native'
+import React, {useState} from 'react'
+import { Image, ScrollView, SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 
-import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
+import layouts, {MAX_WIDTH} from '../../constants/layouts'
 import {forceProfileUpdate, forceTagUpdate} from '../../actions/updates'
 import Container from '../../components/layouts';
 import Form from '../../components/forms'
-import { getTags, createPost } from '../../api/posts'
+import { createPost } from '../../api/posts'
 import { makeToast } from '../../actions/toasts'
 
 const StyledImage = styled(Image)`

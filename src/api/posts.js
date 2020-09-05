@@ -17,8 +17,16 @@ export const getMyLikedPosts = async (page = 1) => {
     return await fetchAPI(url)
 }
 
-export const getTags = async () => {
-    return await fetchAPI('post/tags/')
+export const getTags = async (settings) => {
+    let url = 'post/tags/'
+    if (settings.order_by_interest && settings.order_by_random) {
+        url += '?order_by_interest=true&order_by_random=true'
+    } else if (settings.order_by_interest) {
+        url += '?order_by_interest=true'
+    } else if (settings.order_by_random) {
+        url += '?order_by_random=true'
+    }
+    return await fetchAPI(url)
 }
 
 export const createPost = async (payload) => {
