@@ -14,6 +14,7 @@ import {getFileUrl} from '../../utils'
 import {likePost} from '../../api/posts'
 import Text, {Muted} from '../typography';
 import { makeToast } from '../../actions/toasts'
+import {theme} from '../../../theme'
 
 dayjs.extend(relativeTime)
 
@@ -58,7 +59,11 @@ const Location = styled(Muted)`
 `
 
 const StarIcon = (props, is_liked) => {
-  return (<Icon {...props} name={is_liked ? 'star' : 'star-outline'}/>
+  return (<Icon {...props} name={is_liked ? 'star' : 'star-outline'} style={{
+    ...props.style,
+    width: 40,
+    height: 40,
+  }} />
 )};
 
 const Post = props => {
@@ -86,6 +91,8 @@ const Post = props => {
     if (props.isLoggedIn) {
       setLiked(!liked)
       likePost(props.id)
+      if (!liked) props.makeToast('Profile -> Menu -> Starreds', 'SUCCESS')
+      else props.makeToast('Post removed from Starreds', 'SUCCESS')
     } else {
       props.makeToast('Login is required')
       navigation.navigate('Profile', {_back: 'post', id: props.id, tag: props.tag_new, action: 'LIKE'})
@@ -147,13 +154,16 @@ export const PostTemplate = props => {
           borderRadius: props.standalone ? 0 : 15,
         }}
       >
-        {props.standalone && !props.is_mine && <Button appearance='ghost' status='danger'
+        {props.standalone && !props.is_mine && <Button 
+          appearance='ghost' 
+          status='danger'
           size='large'
           style={{
             width: 40,
             height: 40,
             alignSelf: 'flex-end',
             margin: 10,
+            backgroundColor: '#fff5',
           }}
           onPress={props.onLike}
           accessoryLeft={(p) => StarIcon(p, props.liked)}/>

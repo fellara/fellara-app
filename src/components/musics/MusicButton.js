@@ -12,6 +12,7 @@ import Text, { Heading, Subheading, Muted } from '../typography'
 import { getMusicByTag } from '../../api/musics'
 import { changeCurrentMusic } from '../../actions/musics'
 import { getFileUrl } from '../../utils'
+import { makeToast } from '../../actions/toasts'
 
 const SButton = styled(TouchableOpacity)`
     position: absolute;
@@ -130,13 +131,16 @@ const MusicButton = props => {
     const handlePlayPause = async (newMusic) => {
         if (status.isPlaying && status.isLoaded && !newMusic && !status.isLooping) {
             await soundObject.pauseAsync();
+            props.makeToast('Paused')
         } else {
             try {
                 if (!status.isLoaded || newMusic && !status.isLooping) {
                     props.changeCurrentMusic({...music, tag: props.tag})
+                    props.makeToast('Buffering')
                     await soundObject.loadAsync({ uri: getFileUrl(music.music_file) })
                     await soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
                 }
+                props.makeToast('Playing')
                 await soundObject.playAsync();
             } catch (error) {
                 console.log(error);
@@ -180,10 +184,12 @@ const MusicButton = props => {
     const handleRepeat = async () => {
         setRepeat(!repeat)
         await soundObject.setIsLoopingAsync(!repeat);
+        props.makeToast('Repeat mode ' + (!repeat ? 'On' : 'Off'))
     }
 
     const handleSkip = async () => {
         handleGetMusic(props.tag, true)
+        props.makeToast('Skiping forward')
     }
 
     const style = isDesktopOrLaptop ? {
@@ -370,6 +376,7 @@ export default connect(state => ({
     prevMusic: state.musics.current
 }), {
     changeCurrentMusic,
+    makeToast,
 })(MusicButton)
 
 const styles = StyleSheet.create({

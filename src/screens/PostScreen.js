@@ -50,8 +50,6 @@ const PostScreen = props => {
   let tag = null
   if (params) tag = props.tags.find(t => t.id === parseInt(params.tag))
 
-  console.log(params);
-
   useEffect(() => {
     setLoading(true)
     scrollViewRef.scrollTo({x: 0, y: 0, animated: true})
