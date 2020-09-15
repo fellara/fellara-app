@@ -3,6 +3,7 @@ import { Image, ScrollView, SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
 import {connect} from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
+import { Video } from 'expo-av';
 
 import layouts, {MAX_WIDTH} from '../../constants/layouts'
 import {forceProfileUpdate, forceTagUpdate} from '../../actions/updates'
@@ -42,10 +43,12 @@ const PublishPostScreen = props => {
         setRatio(height / width)
     })
 
+    console.log(props.image);
+
     const handleSubmit = (data) => {
         if (props.isLoggedIn) {
             setLoading(true)
-            createPost({...data, image: props.image.file}).then(res => {
+            createPost({...data, file: props.image.file}).then(res => {
                 if (res.status === 201) {
                     props.makeToast('Post successfully published', 'SUCCESS')
                     props.forceTagUpdate(data.tag_new)
@@ -62,6 +65,8 @@ const PublishPostScreen = props => {
             props.navigation.navigate('Profile', {_back: 'AddPost'})
         }
     }
+    const isImage = props.image.file.type.split('/')[0] !== 'video'
+    const imageVideoProps = isImage ? {ratio} : {}
 
     return (
       <SafeAreaView>
@@ -76,7 +81,19 @@ const PublishPostScreen = props => {
                 width: isDesktopOrLaptop ? MAX_WIDTH : layouts.window.width
             }}
         >
-            <StyledImage source={{uri: props.image.uri}} ratio={ratio} isDesktop={isDesktopOrLaptop}/>
+            <StyledImage
+                as={isImage ? Image : Video}
+                source={{ uri: props.image.uri }}
+                rate={1.0}
+                volume={1.0}
+                isMuted={true}
+                resizeMode="cover"
+                shouldPlay
+                isLooping
+                isDesktop={isDesktopOrLaptop}
+                ratio={ratio}
+                // {...imageVideoProps}
+            />
             <Container paddingbottom={150}>
                 <Form
                     fields={fields}

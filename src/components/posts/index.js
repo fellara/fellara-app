@@ -8,8 +8,10 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useMediaQuery } from 'react-responsive'
+import { Video } from 'expo-av'
 
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../../constants/layouts'
+import {IMAGE, VIDEO} from '../../constants'
 import {getFileUrl} from '../../utils'
 import {likePost} from '../../api/posts'
 import Text, {Muted} from '../typography';
@@ -40,7 +42,6 @@ const PostImageWrapper = styled(TouchableOpacity)`
 const PostImage = styled(ImageBackground)`
   width: ${p => !p.isDesktop ? layouts.window.width - p.padding : MAX_WIDTH}px;
   height: ${p => (!p.isDesktop ? layouts.window.width - p.padding : MAX_WIDTH) * p.ratio}px;
-  border-radius: 15px;
 `
 
 const NameAndLocationWrapper = styled(View)`
@@ -124,6 +125,12 @@ const Post = props => {
 
 
 export const PostTemplate = props => {
+  const playRef = React.useRef();
+
+  React.useEffect(() => {
+    playRef.current?.startAnimation();
+  }, []);
+
   const {url, width, height} = props.clean_image_medium
   const {avatar, name, location} = props.user_info
 
@@ -133,6 +140,15 @@ export const PostTemplate = props => {
 
   let tag = null
   tag = props.tags?.find(t => t.id === parseInt(props.tag_new))
+
+  const isImage = (props.type === '' || props.type === IMAGE) || !props.standalone
+  const imageVideoProps = isImage ? {ratio: height / width} : {}
+  const style = !props.standalone && props.type === VIDEO ? {
+    style: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
+  } : {}
 
   return (<Container
     standalone={props.standalone}
@@ -145,28 +161,55 @@ export const PostTemplate = props => {
     >
       {/* <PostImage uri={props.image_medium}/> */}
       <PostImage
+        as={isImage ? ImageBackground : Video}
         isDesktop={isDesktopOrLaptop}
-        source={{uri: getFileUrl(url)}}
-        ratio={height / width}
+        source={{uri: isImage ? getFileUrl(url) : props.file}}
         resizeMode='cover'
         padding={props.standalone ? 0 : POSTS_LIST_PADDING}
+        rate={1.0}
+        volume={1.0}
+        isMuted={true}
+        shouldPlay
+        isLooping
         imageStyle={{
           borderRadius: props.standalone ? 0 : 15,
         }}
+        ratio={height / width}
+        {...style}
+        // {...imageVideoProps}
       >
         {props.standalone && !props.is_mine && <Button 
           appearance='ghost' 
           status='danger'
           size='large'
           style={{
-            width: 40,
-            height: 40,
+            width: 30,
+            height: 30,
             alignSelf: 'flex-end',
             margin: 10,
             backgroundColor: '#fff5',
           }}
           onPress={props.onLike}
           accessoryLeft={(p) => StarIcon(p, props.liked)}/>
+        }
+        {
+          !props.standalone && props.type === VIDEO && <View style={{
+            width: 80, height: 80, 
+            margin: 5,
+            // flexDirection: 'row'
+          }}>
+            <Icon name='arrow-right' 
+              animation='pulse'
+              ref={playRef}
+              animationConfig={{ cycles: Infinity }}
+              style={{ 
+                // width: 40, height: 60, 
+                tintColor: 'rgba(34, 43, 69, 0.9)',
+                // alignSelf: 'center',
+                // justifySelf: 'center',
+              }} />
+              {/* <Muted>Play</Muted> */}
+          </View>
         }
       </PostImage>
     </PostImageWrapper>

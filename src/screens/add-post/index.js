@@ -42,7 +42,7 @@ const AddPostScreen = (props) => {
           {!image ? <>
               <Dots />
               <StyledButton onChange={handleChange}/>
-              <Muted>Tap on the plus to add a photo</Muted>
+              <Muted>Tap on the plus to add a photo or video</Muted>
           </> : <PublishPostScreen image={image} setImage={setImage} navigation={props.navigation} />}
         </StyledLayout>
     </SafeAreaView>
