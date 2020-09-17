@@ -122,7 +122,9 @@ const HomeScreen = props => {
     <Layout>
       <TagsList data={tags} active={activeTag} setActive={changeActiveTag}/>
       <PostsList 
-        data={posts} onPagination={handlePagination} paginationLoading={paginationLoading}
+        data={posts} 
+        onPagination={handlePagination} 
+        paginationLoading={paginationLoading}
         endReached={posts.length > 0 && !next}
       />
     </Layout>

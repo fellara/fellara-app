@@ -37,8 +37,13 @@ export const likePost = async (id) => {
     return await fetchAPI(`post/${id}/like/`, 'POST')
 }
 
+export const getPostReplies = async (id, page = 1) => {
+    let url = `post/${id}/replies/?page=${page}`
+    return await fetchAPI(url)
+}
+
 export const getPost = async (id) => {
-    return await fetchAPI(`post/${id}/`, 'GET')
+    return await fetchAPI(`post/${id}/`)
 }
 
 export const deletePost = async (id) => {

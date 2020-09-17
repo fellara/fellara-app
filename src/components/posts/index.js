@@ -21,18 +21,21 @@ import {theme} from '../../../theme'
 dayjs.extend(relativeTime)
 
 const Container = styled(View)`
-  ${p => !p.standalone && `
+  ${p => !(p.standalone || p.reply) && `
     margin-top: 10px;
     margin-bottom: 30px;
+  `}  
+  ${p => p.reply && `
+    margin-bottom: 30px;
   `}
-  ${p => !p.standalone && `flex-direction: column-reverse`};
+  ${p => !(p.standalone || p.reply) && `flex-direction: column-reverse`};
   align-items: center;
 `
 const PostHeader = styled(View)`
   width: ${p => !p.isDesktop ? `100%` : MAX_WIDTH + `px`};
   height: 50px;
   align-items: center;
-  flex-direction: row;
+  flex-direction: ${p => true ? 'row' : 'row-reverse'};
   ${p => p.standalone && `padding: 0 10px;`}
 `
 const PostImageWrapper = styled(TouchableOpacity)`
@@ -45,18 +48,19 @@ const PostImage = styled(ImageBackground)`
 `
 
 const NameAndLocationWrapper = styled(View)`
-  flex-direction: row;
-  margin-left: 10px;
   justify-content: space-between;
   flex: 1;
-  align-items: ${p => p.standalone ? 'flex-start' : `flex-end`};
+  align-items: ${p => (p.standalone || p.reply) ? 'flex-start' : `flex-end`};
+  flex-direction: ${p => true ? 'row' : `row-reverse`};
+  margin-${p => false ? 'right' : `left`}: 10px;
 `
 
 const Name = styled(Text)`
+  text-align: ${p => true ? 'left' : `right`};
 
 `
 const Location = styled(Muted)`
-
+  text-align: ${p => true ? 'left' : `right`};
 `
 
 const StarIcon = (props, is_liked) => {
@@ -123,6 +127,43 @@ const Post = props => {
   )
 }
 
+const SRepliers = styled(View)`
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 5px;
+  align-items: center;
+`
+const SReplier = styled(Avatar)`
+  // position: absolute;
+  // left: 10px;
+  // border: 2px solid #fff;
+  margin-right: 5px;
+`
+
+const More = styled(Muted)`
+  width: 32px;
+  height: 32px;
+  background: #eee;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Repliers = ({replies}) => {
+  if (!replies) return null
+  return (
+    <SRepliers>
+      {
+        Array.from(replies).splice(0, 3).map(replier => <SReplier 
+          size='small' source={{uri: getFileUrl(replier.user_info.avatar)}}
+        />)
+      }
+      {(replies.length - 3) > 0 && <More>+{replies.length - 3}</More>}
+    </SRepliers>
+  )
+}
 
 export const PostTemplate = props => {
   const playRef = React.useRef();
@@ -152,6 +193,7 @@ export const PostTemplate = props => {
 
   return (<Container
     standalone={props.standalone}
+    reply={props.reply}
     // nopadding={true}
   >
     <PostImageWrapper
@@ -173,6 +215,7 @@ export const PostTemplate = props => {
         isLooping
         imageStyle={{
           borderRadius: props.standalone ? 0 : 15,
+          backgroundColor: '#ccc',
         }}
         ratio={height / width}
         {...style}
@@ -212,20 +255,27 @@ export const PostTemplate = props => {
           </View>
         }
       </PostImage>
+      <Repliers replies={props.replies} />
     </PostImageWrapper>
     <PostHeader
       standalone={props.standalone}
+      reply={props.reply}
       isDesktop={isDesktopOrLaptop}
     >
       <TouchableOpacity onPress={props.onAvatarPress}>
-        <Avatar size='medium' source={{uri: getFileUrl(avatar)}}/>
+        <Avatar 
+          size='medium' 
+          source={{uri: getFileUrl(avatar)}}
+          style={{ backgroundColor: '#ccc'}}
+        />
       </TouchableOpacity>
       <NameAndLocationWrapper
         standalone={props.standalone}
+        reply={props.reply}
       >
         <View>
-          <Name>{name}</Name>
-          <Location>{location}</Location>
+          <Name reply={props.reply}>{name}</Name>
+          <Location reply={props.reply}>{location}</Location>
         </View>
         <View
           style={{

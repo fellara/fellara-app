@@ -1,7 +1,10 @@
 import React, {useEffect, useState, useRef} from 'react';
 import { ScrollView, Clipboard, SafeAreaView, TouchableOpacity } from 'react-native'
-import { Layout, Icon, MenuItem, OverflowMenu,
-  TopNavigationAction } from '@ui-kitten/components';
+import { Layout, Icon, MenuItem, OverflowMenu, 
+  TopNavigationAction, 
+  Button, 
+  Spinner,
+} from '@ui-kitten/components';
 import { connect } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
@@ -11,7 +14,7 @@ import Post, {PostTemplate} from '../components/posts'
 import PostsList from '../components/posts/PostsList'
 import { PostMetaTags } from '../components/shared/MetaTags'
 import Container from '../components/layouts'
-import { getPost, deletePost, getSimilarPosts } from '../api/posts'
+import { getPost, deletePost, getSimilarPosts, getPostReplies } from '../api/posts'
 import layouts, {MAX_WIDTH, POSTS_LIST_PADDING} from '../constants/layouts'
 import Text, {Heading, Subheading} from '../components/typography';
 import DialogueBox from '../components/modal/DialogueBox';
@@ -39,6 +42,8 @@ const PostScreen = props => {
   const [modal, setModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
   const [post, setPost] = useState({})
+  const [replies, setReplies] = useState({})
+  const [repliesLoading, setRepliesLoading] = useState(false)
   let scrollViewRef = useRef()
 
   let params;
@@ -52,16 +57,29 @@ const PostScreen = props => {
 
   useEffect(() => {
     setLoading(true)
+    setReplies({})
     scrollViewRef.scrollTo({x: 0, y: 0, animated: true})
     if (params) getPost(params.id).then(res => {
       if (res.status === 200) {
         setPost(res.data)
         setLoading(false)
+        handleGetRepliers()
       } else {
         props.navigation.goBack()
       }
     })
   }, [params?.id])
+
+  const handleGetRepliers = (page) => {
+    setRepliesLoading(true)
+    getPostReplies(params.id, page).then(res => {
+      if (res.status === 200) {
+        const {results, ...rest} = res.data
+        setReplies(prev => ({prev, ...rest, results: [...(prev.results || []), ...results]}));
+      }
+      setRepliesLoading(false)
+    })
+  }
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -160,15 +178,26 @@ const PostScreen = props => {
             <Post
               {...post}
               standalone={true}
+              style={{
+                marginBottom: 40
+              }}
             />
-            <SimilarPosts 
+            {!loading && <Replies 
+              replies={replies} 
+              tags={props.tags}
+              onAvatarPress={handleAvatarPress}
+              onPress={handlePostPress}
+              onPagination={() => handleGetRepliers(replies.next)}
+              loading={repliesLoading}
+              next={replies.next}
+            />}
+            {replies.results && <SimilarPosts 
               id={params.id} 
               tags={props.tags}
               onAvatarPress={handleAvatarPress}
               onPress={handlePostPress}
-            />
+            />}
           </>}
-          
         </ScrollView>
       </Layout>
       <DialogueBox
@@ -208,6 +237,57 @@ const PostScreen = props => {
   </>)
 }
 
+export const Replies = ({replies, ...props}) => {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
+
+  const style = isDesktopOrLaptop ? {
+    marginLeft: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
+  } : {}
+
+  if (!replies.results) return null
+  return (
+    <Container
+      style={{
+        paddingTop: 20
+      }}
+    >
+      <Heading style={{
+        paddingBottom: 15,
+        ...style
+      }}>Replies</Heading>
+      {
+        replies.results?.map(post => (
+          <PostTemplate
+            // showTag={true}
+            {...post}
+            tag={props.tags?.find(t => t.id === parseInt(post.tag_new))}
+            onAvatarPress={() => props.onAvatarPress && props.onAvatarPress(post.is_mine, post.user)}
+            onPress={() => props.onPress && props.onPress(post.id, post.tag_new)}
+            standalone={false}
+            reply={true}
+          />
+        ))
+      }
+      {props.next && <Button
+        appearance='ghost'
+        onPress={props.onPagination}
+        accessoryLeft={props.loading && LoadingIndicator}
+        disabled={props.loading}
+      >
+        Load more
+      </Button>}
+    </Container>
+  )
+}
+
+const LoadingIndicator = (props) => (
+  <Spinner size='small'
+    status='control'
+  />
+);
+
 export const SimilarPosts = props => {
   const [similars, setSimilars] = useState([])
   const [similarsLoading, setSimilarsLoading] = useState(false)
@@ -228,12 +308,15 @@ export const SimilarPosts = props => {
     marginLeft: (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING
   } : {}
 
-
-  if (similarsLoading) return ''
+  if (similarsLoading) return null
   return (
-    <Container>
+    <Container
+      style={{
+        background: '#eee',
+        paddingTop: 20
+      }}
+    >
       <Heading style={{
-        marginTop: 40,
         ...style
       }}>Similar Posts</Heading>
       {
