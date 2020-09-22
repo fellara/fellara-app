@@ -36,7 +36,7 @@ const PostHeader = styled(View)`
   height: 50px;
   align-items: center;
   flex-direction: ${p => true ? 'row' : 'row-reverse'};
-  ${p => (p.standalone || p.reply) && `padding: 0 10px;`}
+  ${p => (p.standalone || (p.reply && p.isDesktop)) && `padding: 0 10px;`}
 `
 const PostImageWrapper = styled(TouchableOpacity)`
   justify-content: center;

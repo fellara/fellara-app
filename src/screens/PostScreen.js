@@ -40,7 +40,7 @@ const ShareIcon = (props) => (
 
 const ReplyButton = styled(Button)`
   width: 150px;
-  margin: 0 10px;
+  // margin: 0 10px;
   margin-top: 15px;
   background-color: #fff !important;
   outline: 3px solid #fff;
