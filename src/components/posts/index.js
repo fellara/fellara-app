@@ -26,7 +26,7 @@ const Container = styled(View)`
     margin-bottom: 30px;
   `}  
   ${p => p.reply && `
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   `}
   ${p => !(p.standalone || p.reply) && `flex-direction: column-reverse`};
   align-items: center;
@@ -36,7 +36,7 @@ const PostHeader = styled(View)`
   height: 50px;
   align-items: center;
   flex-direction: ${p => true ? 'row' : 'row-reverse'};
-  ${p => p.standalone && `padding: 0 10px;`}
+  ${p => (p.standalone || p.reply) && `padding: 0 10px;`}
 `
 const PostImageWrapper = styled(TouchableOpacity)`
   justify-content: center;
@@ -66,8 +66,8 @@ const Location = styled(Muted)`
 const StarIcon = (props, is_liked) => {
   return (<Icon {...props} name={is_liked ? 'star' : 'star-outline'} style={{
     ...props.style,
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
   }} />
 )};
 
@@ -266,7 +266,7 @@ export const PostTemplate = props => {
         <Avatar 
           size='medium' 
           source={{uri: getFileUrl(avatar)}}
-          style={{ backgroundColor: '#ccc'}}
+          style={{ backgroundColor: '#ccc', outline: (props.reply || props.standalone) ? '3px solid #fff' : 'none'}}
         />
       </TouchableOpacity>
       <NameAndLocationWrapper

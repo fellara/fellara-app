@@ -30,8 +30,15 @@ export default class CustomImage extends React.Component {
   render() {
     let { image } = this.state;
     
-    return (
-      <StyledTouchable
+    return ( this.props.children
+      ? <TouchableOpacity
+        onPress={this._pickImage} 
+      >
+        {
+          this.props.children
+        }
+      </TouchableOpacity>
+      : <StyledTouchable
         {...this.props}
         onPress={this._pickImage} 
       >

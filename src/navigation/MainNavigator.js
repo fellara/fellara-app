@@ -6,6 +6,7 @@ import BottomTabNavigator from './BottomTabNavigator';
 import PostScreen from '../screens/PostScreen';
 import OthersProfileScreen from '../screens/OthersProfileScreen';
 import LikedPostsScreen from '../screens/LikedPostsScreen';
+import PublishPostScreen from '../screens/add-post/PublishPostScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ export default (props) => {
       }}
     >
       <Stack.Screen name="post" component={PostScreen} />
+      <Stack.Screen name="add-post" component={PublishPostScreen} />
       <Stack.Screen name="others-profile" component={OthersProfileScreen} />
       <Stack.Screen name="liked-posts" component={LikedPostsScreen} />
       <Stack.Screen name="tabs" component={BottomTabNavigator} />

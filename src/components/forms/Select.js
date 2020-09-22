@@ -21,6 +21,7 @@ const CustomSelect = (props) => {
         onSelect={handleSelect}
         placeholder={props.placeholder}
         value={props.options[selectedIndex.row]?.title}
+        disabled={props.disabled}
       >
         {props.options.map(option => <SelectItem key={option.value} title={option.title} />)}
       </Select>

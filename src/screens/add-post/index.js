@@ -27,24 +27,24 @@ const StyledLayout = styled(Layout)`
 `
 
 const AddPostScreen = (props) => {
-    const [image, setImage] = useState(null)
+  const [image, setImage] = useState(null)
 
-    const handleChange = (file, uri) => {
-        setImage({file, uri})
-    }
+  const handleChange = (file, uri) => {
+      setImage({file, uri})
+  }
 
-    return (
-      <SafeAreaView>
-        {image && <TopNavigation onBack={() => setImage(null)} title={'Publish Post'}/>}
-        <StyledLayout
-          style={{height: layouts.window.height}}
-        >
-          {!image ? <>
-              <Dots />
-              <StyledButton onChange={handleChange}/>
-              <Muted>Tap on the plus to add a photo or video</Muted>
-          </> : <PublishPostScreen image={image} setImage={setImage} navigation={props.navigation} />}
-        </StyledLayout>
+  return (
+    <SafeAreaView>
+      {image && <TopNavigation onBack={() => setImage(null)} title={'Publish Post'}/>}
+      <StyledLayout
+        style={{height: layouts.window.height}}
+      >
+        {!image ? <>
+            <Dots />
+            <StyledButton onChange={handleChange}/>
+            <Muted>Tap on the plus to add a photo or video</Muted>
+        </> : <PublishPostScreen image={image} setImage={setImage} />}
+      </StyledLayout>
     </SafeAreaView>
   )
 }

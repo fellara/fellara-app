@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import { ScrollView, Clipboard, SafeAreaView, TouchableOpacity } from 'react-native'
+import { ScrollView, Clipboard, SafeAreaView, TouchableOpacity, View } from 'react-native'
 import { Layout, Icon, MenuItem, OverflowMenu, 
   TopNavigationAction, 
   Button, 
@@ -10,6 +10,7 @@ import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
 
 import TopNavigation from '../components/layouts/TopNavigation'
+import PublishPostScreen from '../screens/add-post/PublishPostScreen'
 import Post, {PostTemplate} from '../components/posts'
 import PostsList from '../components/posts/PostsList'
 import { PostMetaTags } from '../components/shared/MetaTags'
@@ -23,6 +24,7 @@ import { makeToast } from '../actions/toasts'
 import {isClient} from '../constants'
 import {getPostSharableLink} from '../utils'
 import { useNavigation } from '@react-navigation/native';
+import ImagePicker from '../components/forms/Image'
 
 const MenuIcon = (props) => (
   <Icon {...props} name='more-vertical'/>
@@ -36,8 +38,23 @@ const ShareIcon = (props) => (
   <Icon {...props} name='share'/>
 );
 
+const ReplyButton = styled(Button)`
+  width: 150px;
+  margin: 0 10px;
+  margin-top: 15px;
+  background-color: #fff !important;
+  outline: 3px solid #fff;
+  left: ${p => (p.isDesktop ? (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING : 0) + 10}px;
+`
+
+const StyledLayout = styled(Layout)`
+    justify-content: center;
+    align-items: center;
+`
+
 const PostScreen = props => {
   const [loading, setLoading] = useState(true)
+  const [replyImage, setReplyImage] = useState(null)
   const [menuVisible, setMenuVisible] = useState(false);
   const [modal, setModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
@@ -75,7 +92,7 @@ const PostScreen = props => {
     getPostReplies(params.id, page).then(res => {
       if (res.status === 200) {
         const {results, ...rest} = res.data
-        setReplies(prev => ({prev, ...rest, results: [...(prev.results || []), ...results]}));
+        setReplies(prev => ({...prev, ...rest, results: [...(prev.results || []), ...results]}));
       }
       setRepliesLoading(false)
     })
@@ -151,6 +168,32 @@ const PostScreen = props => {
     })
   }
 
+  const handlePostReply = (file, uri) => {
+    setReplyImage({file, uri})
+  }
+
+  const handleReplySucess = (reply) => {
+    setReplies(prev => ({...prev, results: [reply, ...(prev.results || [])]}));
+  }
+
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)'
+  })
+
+  if (replyImage) return (
+    <SafeAreaView>
+      {replyImage && <TopNavigation onBack={() => setReplyImage(null)} title={'Reply'}/>}
+      <StyledLayout
+        style={{height: layouts.window.height}}
+      >
+        {replyImage && <PublishPostScreen 
+          image={replyImage} setImage={setReplyImage} 
+          onSucess={handleReplySucess}
+          tag={tag.id} replyTo={post.id} />}
+      </StyledLayout>
+    </SafeAreaView>
+  )
+
   return (<>
     <PostMetaTags
       post={post}
@@ -171,9 +214,12 @@ const PostScreen = props => {
           }}
           ref={ref => scrollViewRef = ref}
           contentContainerStyle={{
-            paddingBottom: 150
+            // paddingBottom: 150
           }}
         >
+          {replies.results && <LinkLine 
+            isDesktop={isDesktopOrLaptop}
+          />}
           {!loading && <>
             <Post
               {...post}
@@ -182,6 +228,17 @@ const PostScreen = props => {
                 marginBottom: 40
               }}
             />
+            <ImagePicker
+              onChange={handlePostReply}
+            >
+              <ReplyButton
+                appearance='outline'
+                isDesktop={isDesktopOrLaptop}
+                // status='control'
+              >
+                Post a Reply
+              </ReplyButton>
+            </ImagePicker>
             {!loading && <Replies 
               replies={replies} 
               tags={props.tags}
@@ -250,26 +307,28 @@ export const Replies = ({replies, ...props}) => {
   return (
     <Container
       style={{
-        paddingTop: 20
+        paddingTop: 10
       }}
     >
-      <Heading style={{
+      {/* <Heading style={{
         paddingBottom: 15,
         ...style
-      }}>Replies</Heading>
-      {
-        replies.results?.map(post => (
-          <PostTemplate
-            // showTag={true}
-            {...post}
-            tag={props.tags?.find(t => t.id === parseInt(post.tag_new))}
-            onAvatarPress={() => props.onAvatarPress && props.onAvatarPress(post.is_mine, post.user)}
-            onPress={() => props.onPress && props.onPress(post.id, post.tag_new)}
-            standalone={false}
-            reply={true}
-          />
-        ))
-      }
+      }}>Replies</Heading> */}
+      <RepliesWrapper>
+        {
+          replies.results?.map(post => (
+            <PostTemplate
+              // showTag={true}
+              {...post}
+              tag={props.tags?.find(t => t.id === parseInt(post.tag_new))}
+              onAvatarPress={() => props.onAvatarPress && props.onAvatarPress(post.is_mine, post.user)}
+              onPress={() => props.onPress && props.onPress(post.id, post.tag_new)}
+              standalone={false}
+              reply={true}
+            />
+          ))
+        }
+      </RepliesWrapper>
       {props.next && <Button
         appearance='ghost'
         onPress={props.onPagination}
@@ -281,6 +340,17 @@ export const Replies = ({replies, ...props}) => {
     </Container>
   )
 }
+
+const LinkLine = styled(View)`
+  position: absolute;
+  height: 100%;
+  width: 4px;
+  background: #ccc;
+  left: ${p => (p.isDesktop ? (layouts.window.width - MAX_WIDTH) / 2 - POSTS_LIST_PADDING / 2 : 0) + 28}px;
+`
+const RepliesWrapper = styled(View)`
+  position: relative;
+`
 
 const LoadingIndicator = (props) => (
   <Spinner size='small'
@@ -313,7 +383,8 @@ export const SimilarPosts = props => {
     <Container
       style={{
         background: '#eee',
-        paddingTop: 20
+        paddingTop: 20,
+        paddingBottom: 150,
       }}
     >
       <Heading style={{
