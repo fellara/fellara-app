@@ -42,9 +42,17 @@ const PostImageWrapper = styled(TouchableOpacity)`
   justify-content: center;
   align-items: center;
 `
-const PostImage = styled(ImageBackground)`
+const WidthWrapper = styled(View)`
   width: ${p => !p.isDesktop ? layouts.window.width - p.padding : MAX_WIDTH}px;
   height: ${p => (!p.isDesktop ? layouts.window.width - p.padding : MAX_WIDTH) * p.ratio}px;
+`
+const PostImage = styled(WidthWrapper)`
+`
+
+const RepliersReplyWrapper = styled(WidthWrapper)`
+  flex-direction: row;
+  justify-content: space-between;
+  
 `
 
 const NameAndLocationWrapper = styled(View)`
@@ -130,14 +138,20 @@ const Post = props => {
 const SRepliers = styled(View)`
   flex-direction: row;
   justify-content: flex-start;
-  width: 100%;
   margin-top: 5px;
   align-items: center;
+  flex: 1;
+`
+const SReplyTo = styled(View)`
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-top: 5px;
+  align-items: center;
+  background-color: #222; 
+  padding: 3px;
+  border-radius: 100px;
 `
 const SReplier = styled(Avatar)`
-  // position: absolute;
-  // left: 10px;
-  // border: 2px solid #fff;
   margin-right: 5px;
 `
 
@@ -162,6 +176,26 @@ const Repliers = ({replies}) => {
       }
       {(replies.length - 3) > 0 && <More>+{replies.length - 3}</More>}
     </SRepliers>
+  )
+}
+
+const ReplyTo = (props) => {
+  const navigation = useNavigation()
+  if (!props.id) return null
+
+  return (
+    <SReplyTo style={{}}
+      as={TouchableOpacity}
+      onClick={() => navigation.navigate('post', {
+        tag: props.tag,
+        id: props.id,
+      })}
+    >
+      <Avatar 
+        size='small' source={{uri: getFileUrl(props.user_info.avatar)}}
+      />
+      <Icon name='corner-up-left-outline' style={{width: 25, height: 25, tintColor: '#fff', marginLeft: 5}}/>
+    </SReplyTo>
   )
 }
 
@@ -196,6 +230,14 @@ export const PostTemplate = props => {
     reply={props.reply}
     // nopadding={true}
   >
+    {props.standalone && props.reply_to_expanded && <PostHeader
+        standalone={props.standalone}
+        reply={props.reply}
+        isDesktop={isDesktopOrLaptop}
+      >
+        <Repliers replies={props.replies} />
+        <ReplyTo {...props.reply_to_expanded} tag={props.tag_new} />
+      </PostHeader>}
     <PostImageWrapper
       activeOpacity={1}
       as={props.standalone ? View : TouchableOpacity}
@@ -255,7 +297,14 @@ export const PostTemplate = props => {
           </View>
         }
       </PostImage>
-      <Repliers replies={props.replies} />
+      {!props.standalone && props.reply_to_expanded && <PostHeader
+        standalone={props.standalone}
+        reply={props.reply}
+        isDesktop={isDesktopOrLaptop}
+      >
+        <Repliers replies={props.replies} />
+        <ReplyTo {...props.reply_to_expanded} tag={props.tag_new} />
+      </PostHeader>}
     </PostImageWrapper>
     <PostHeader
       standalone={props.standalone}
@@ -289,7 +338,7 @@ export const PostTemplate = props => {
             category='label'
             style={{
               color: '#888',
-          }}>{dayjs(props.created_at).fromNow()}</Text>
+          }}>{dayjs().diff(dayjs(props.created_at)) > 7 ? dayjs(props.created_at).format('MMM DD, YYYY') : dayjs(props.created_at).fromNow()}</Text>
         </View>
       </NameAndLocationWrapper>
     </PostHeader>

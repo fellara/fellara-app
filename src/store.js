@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { persistStore } from 'redux-persist'
 // import autoMergeLevel2 from 'redux-persist/lib/stateReconciler'
-import { AsyncStorage } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage';
 import reducers from './reducers'
 
 const isClient = typeof window !== 'undefined';
