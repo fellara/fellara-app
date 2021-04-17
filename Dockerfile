@@ -13,4 +13,4 @@ COPY . .
 
 # RUN npm run build -o app
 RUN expo build:web
-RUN serve -s build
+RUN serve -s web-build
