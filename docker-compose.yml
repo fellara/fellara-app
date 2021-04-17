@@ -1,0 +1,51 @@
+version: '3.7'
+
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: sh -c " python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - 3000:3000
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    build: nginx
+    restart: always
+    # ports:
+    #   - 1337:80
+    ports:
+      - 443:443
+      - 80:80
+    depends_on:
+      - web
+    volumes:
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+  nginx-proxy-letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    env_file:
+      - .env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+    depends_on:
+      - nginx-proxy   
+
+volumes:
+  letsencrypt:
+  certs:
+  html:
+  vhost:
+  static_volume:
+  media_volume:
