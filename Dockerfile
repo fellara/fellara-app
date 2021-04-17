@@ -1,15 +1,16 @@
 FROM node:alpine
 
-WORKDIR /app
-
-ENV PATH /app/node_modules/.bin:$PATH
-
-COPY package.json ./
-
-# COPY package-lock.json ./
+WORKDIR '/app'
+COPY package*.json ./
 
 RUN npm install
+RUN npm install -g next
+RUN npm install -g expo-cli
+RUN npm install -g serve
 
-COPY . ./
+COPY . .
 
-RUN npm run build -o app
+
+# RUN npm run build -o app
+RUN expo build:web
+RUN serve -s build
