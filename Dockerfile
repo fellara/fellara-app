@@ -4,7 +4,7 @@ WORKDIR '/app'
 COPY package*.json ./
 
 RUN npm install
-RUN npm install -g express
+# RUN npm install -g express
 RUN npm install -g next
 RUN npm install -g expo-cli
 # RUN npm install -g serve
