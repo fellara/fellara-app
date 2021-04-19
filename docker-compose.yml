@@ -12,7 +12,9 @@ services:
     ports:
       - 5000:5000
     networks:
-      - fellara-app
+      default:
+        aliases:
+          - fellara-app
 
   nginx-proxy:
     container_name: nginx-proxy
@@ -33,7 +35,9 @@ services:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
     networks:
-      - fellara-app
+      default:
+        aliases:
+          - fellara-app
 
   nginx-proxy-letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
@@ -47,7 +51,9 @@ services:
     depends_on:
       - nginx-proxy   
     networks:
-      - fellara-app
+      default:
+        aliases:
+          - fellara-app
 
 volumes:
   letsencrypt:
@@ -58,4 +64,6 @@ volumes:
   media_volume:
 
 networks:
-  fellara-app:
+  default:
+    external:
+      name: fellara-reverse-proxy
