@@ -15,4 +15,4 @@ COPY . .
 # RUN npm run build -o app
 RUN expo build:web
 # RUN serve -s web-build
-RUN nodemon server
+RUN nodemon -q server
