@@ -11,6 +11,8 @@ services:
       - '/app/node_modules'
     ports:
       - 5000:5000
+    networks:
+      - fellara-app
 
   nginx-proxy:
     container_name: nginx-proxy
@@ -30,6 +32,9 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
+    networks:
+      - fellara-app
+
   nginx-proxy-letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
     env_file:
@@ -41,6 +46,8 @@ services:
       - vhost:/etc/nginx/vhost.d
     depends_on:
       - nginx-proxy   
+    networks:
+      - fellara-app
 
 volumes:
   letsencrypt:
@@ -49,3 +56,6 @@ volumes:
   vhost:
   static_volume:
   media_volume:
+
+networks:
+  fellara-app:
